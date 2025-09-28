@@ -12,7 +12,7 @@ export default function LandscapeCanvas() {
     <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={1827} minScale={0} maxScale={1} className="mx-auto w-full overflow-hidden">
       <div className="relative w-[1650px] h-[1827px]">
         <div className="absolute left-0 top-0 w-[1650px] h-[1827px] bg-stone-50 rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] border border-black/0" />
-        <div className="sticky top-4 right-8 float-right text-black text-4xl font-bold font-['Caveat'] uppercase leading-7 z-10">MM</div>
+        {/* Local MM removed in favor of global StickyMM */}
         <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '47.52%', top: '7.22%', width: '46.24%' }}>
           One Sentence that lets people know what
           <br />
