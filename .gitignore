@@ -7,3 +7,11 @@ node_modules
 .vscode
 coverage
 
+
+# ignore local figma/token scripts
+scripts/
+figma-tokens.config.js
+style-dictionary.config.mjs
+src/styles/tokens*
+src/styles/tailwind-tokens.js
+
