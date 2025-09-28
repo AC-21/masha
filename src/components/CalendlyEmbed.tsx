@@ -13,7 +13,7 @@ type CalendlyEmbedProps = {
 
 export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const {
-    url = import.meta.env.VITE_CALENDLY_URL || "https://calendly.com/mashamaria/returning-clients-clone",
+    url = import.meta.env.VITE_CALENDLY_URL || "",
     height = 700,
     primaryColor = "3b5849",
     textColor = "ffffff",
@@ -24,15 +24,20 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   } = props;
 
   const finalUrl = useMemo(() => {
-    const u = new URL(url);
-    if (hideGDPR) u.searchParams.set("hide_gdpr_banner", "1");
-    if (hideDetails) {
-      u.searchParams.set("hide_event_type_details", "1");
-      u.searchParams.set("hide_landing_page_details", "1");
+    if (!url) return "";
+    try {
+      const u = new URL(url);
+      if (hideGDPR) u.searchParams.set("hide_gdpr_banner", "1");
+      if (hideDetails) {
+        u.searchParams.set("hide_event_type_details", "1");
+        u.searchParams.set("hide_landing_page_details", "1");
+      }
+      u.searchParams.set("primary_color", primaryColor);
+      u.searchParams.set("text_color", textColor);
+      return u.toString();
+    } catch {
+      return "";
     }
-    u.searchParams.set("primary_color", primaryColor);
-    u.searchParams.set("text_color", textColor);
-    return u.toString();
   }, [url, hideGDPR, hideDetails, primaryColor, textColor]);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -64,6 +69,45 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  // Show placeholder if no URL configured
+  if (!finalUrl) {
+    return (
+      <div
+        className={className}
+        style={{ 
+          borderRadius: rounded, 
+          overflow: "hidden",
+          height,
+          background: "#f5f5f5",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "2rem",
+          textAlign: "center"
+        }}
+      >
+        <div style={{ color: "#666", fontSize: "1.1rem", marginBottom: "1rem" }}>
+          📅 Scheduling Widget
+        </div>
+        <div style={{ color: "#999", fontSize: "0.9rem", maxWidth: "300px" }}>
+          To enable scheduling, add your Calendly URL to the .env file:
+          <br />
+          <code style={{ 
+            display: "block", 
+            marginTop: "0.5rem", 
+            padding: "0.5rem", 
+            background: "#e5e5e5", 
+            borderRadius: "4px",
+            fontSize: "0.8rem"
+          }}>
+            VITE_CALENDLY_URL=your-url
+          </code>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
