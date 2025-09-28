@@ -10,8 +10,8 @@ const sources = {
 export default function LandscapeCanvas() {
   return (
     <div className="relative w-full bg-stone-50">
-      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={1827} minScale={0} maxScale={1} className="mx-auto w-full overflow-hidden">
-        <div className="relative w-[1650px] h-[1827px]">
+      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={2100} minScale={0} maxScale={1} className="mx-auto w-full overflow-hidden">
+        <div className="relative w-[1650px] h-[2100px]">
           {/* Content container - no background here since it's on the parent */}
         {/* Local MM removed in favor of global StickyMM */}
         <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '47.52%', top: '7.22%', width: '46.24%' }}>
@@ -53,10 +53,10 @@ export default function LandscapeCanvas() {
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
         {/* Calendly embed - styled to match site design */}
-        <div className="absolute left-[828px] top-[1100px] w-[725px] h-[650px]">
+        <div className="absolute left-[828px] top-[1100px] w-[725px] h-[900px]">
           <CalendlyEmbed 
-            height={650} 
-            rounded={24} 
+            height={900} 
+            rounded={0} 
             primaryColor="3b5849" 
             textColor="000000" 
             url={import.meta.env.VITE_CALENDLY_URL} 

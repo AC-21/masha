@@ -135,10 +135,8 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       className={className}
       style={{ 
         borderRadius: rounded, 
-        overflow: "auto", // Allow scrolling if needed
-        background: "#fafaf9", // Match site's stone-50 background
-        border: "1px solid rgba(0, 0, 0, 0.05)", // Subtle border
-        boxShadow: "0 1px 3px rgba(0,0,0,0.05)", // Softer shadow to match site aesthetic
+        overflow: "visible", // Changed to visible to prevent cutoff
+        background: "transparent", // Transparent to blend with page
         fontFamily: "'Roboto Mono', monospace" // Try to influence font (though Calendly may override)
       }}
     >
