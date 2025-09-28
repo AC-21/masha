@@ -6,10 +6,17 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-gray-50 overflow-x-hidden">
       <StickyMM />
-      <div className="hidden lg:block">
+      <div className="hidden xl:block">
         <LandscapeCanvas />
       </div>
-      <div className="block lg:hidden">
+      {/* Tablet layout: 768–1279px */}
+      <div className="hidden md:block xl:hidden">
+        <div className="mx-auto max-w-[960px] px-6">
+          {/* Reuse mobile layout as centered stack with larger max-width */}
+          <MobileCanvas />
+        </div>
+      </div>
+      <div className="block md:hidden">
         <div className="mx-auto max-w-[560px] px-4">
           <MobileCanvas />
         </div>
