@@ -34,6 +34,12 @@ export default function LandscapeCanvas() {
         {/* Section titles */}
         <div className="absolute left-[159px] top-[1043px] text-black text-3xl font-bold font-['Roboto_Mono'] uppercase leading-7">My Work</div>
         <div className="absolute left-[1069px] top-[1043px] w-[490px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Schedule an intro to learn more</div>
+        {/* Modalities subtitle - italic text */}
+        <div className="absolute left-[159px] top-[1120px] w-[560px] text-black/70 text-xs font-['Inter'] italic leading-5">
+          EVERY SESSION IS UNIQUE & GUIDED BY YOUR OVERALL DESIRES.<br/>
+          WE WILL NOT BE CONSTRAINED BY A SPECIFIC MODALITY; AND<br/>
+          HERE'S SOME INFO BELOW ON WHERE WE MAY GO.
+        </div>
         {/* Modalities headings */}
         <div className="absolute left-[188px] top-[1239px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Movement</div>
         <div className="absolute left-[498px] top-[1239px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Laughter</div>

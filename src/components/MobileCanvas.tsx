@@ -25,13 +25,17 @@ export default function MobileCanvas() {
         {/* Modalities heading and divider */}
         <div className="absolute left-[42px] top-[941px] text-black text-xl font-bold font-['Roboto_Mono'] uppercase leading-7">Modalities</div>
         <div className="absolute left-[184px] top-[941px] text-stone-300 text-base font-bold font-['Roboto_Mono'] uppercase leading-7">-----------------</div>
+        {/* Modalities subtitle - italic text */}
+        <div className="absolute left-[42px] top-[971px] w-[300px] text-black/70 text-[10px] font-['Inter'] italic leading-4">
+          EVERY SESSION IS UNIQUE & GUIDED BY YOUR OVERALL DESIRES. WE WILL NOT BE CONSTRAINED BY A SPECIFIC MODALITY; AND HERE'S SOME INFO BELOW ON WHERE WE MAY GO.
+        </div>
         {/* Example modality */}
-        <div className="absolute left-[63px] top-[989px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">Modalitiy</div>
-        <div className="absolute left-[93px] top-[1023px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[63px] top-[1030px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">Modalitiy</div>
+        <div className="absolute left-[93px] top-[1064px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[93px] top-[1133px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
-        <div className="absolute left-[93px] top-[1161px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
+        <div className="absolute left-[93px] top-[1174px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
+        <div className="absolute left-[93px] top-[1202px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
         {/* Safari bottom mock removed */}
       </div>
     </ScaleFrame>
