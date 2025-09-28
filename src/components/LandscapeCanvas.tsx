@@ -24,9 +24,9 @@ export default function LandscapeCanvas() {
         </div>
         {/* Portrait */}
         <picture className="absolute left-[122px] top-[136px] block w-[581px] h-[775px] overflow-hidden rounded-[37px]">
-          <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1280px) 581px, 90vw" />
-          <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1280px) 581px, 90vw" />
-          <img srcSet={sources.jpg} sizes="(min-width: 1280px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
+          <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1024px) 581px, 90vw" />
+          <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1024px) 581px, 90vw" />
+          <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
         </picture>
         {/* Divider */}
         <div className="absolute left-[341px] top-[1045px] w-[711px] text-stone-300 text-base font-bold font-['Roboto_Mono'] uppercase leading-7">--------------------------------------------------------------------------------</div>
