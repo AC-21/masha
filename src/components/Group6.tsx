@@ -2,6 +2,8 @@
 const imgScreenshot20250926At30727Pm1 = "/placeholder-schedule.jpg";
 const imgDsc74001 = "/placeholder-portrait.jpg";
 
+import CalendlyEmbed from "./CalendlyEmbed";
+
 export default function Group6() {
   return (
     <div className="relative size-full">
@@ -126,10 +128,8 @@ export default function Group6() {
       <div className="absolute font-['Roboto_Mono:Bold',_sans-serif] font-bold leading-[0] left-[498px] text-[23px] text-black top-[1239px] uppercase w-[112px]">
         <p className="leading-[28px]">Laughter</p>
       </div>
-      <div className="absolute h-[570px] left-[828px] rounded-[40px] top-[1133px] w-[755px]" data-name="Screenshot 2025-09-26 at 3.07.27 PM 1">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[40px]">
-          <img alt="Schedule booking interface" className="absolute h-[101.96%] left-[-1.73%] max-w-none top-[-1.95%] w-[103.99%]" src={imgScreenshot20250926At30727Pm1} />
-        </div>
+      <div className="absolute left-[828px] top-[1133px]" style={{ width: 755, height: 570 }}>
+        <CalendlyEmbed height={570} rounded={40} primaryColor="3b5849" textColor="ffffff" url={import.meta.env.VITE_CALENDLY_URL || "https://calendly.com/mashamaria/returning-clients-clone?hide_landing_page_details=1&hide_gdpr_banner=1"} />
       </div>
       <div className="absolute font-['Roboto_Mono:Bold',_sans-serif] font-bold leading-[0] left-[369px] text-[#d4cccc] text-[16px] top-[1043px] uppercase w-[726px]">
         <p className="leading-[28px]">--------------------------------------------------------------------------------</p>
