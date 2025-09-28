@@ -9,7 +9,7 @@ const sources = {
 
 export default function LandscapeCanvas() {
   return (
-    <ScaleFrame designWidth={1650} designHeight={1827} minScale={0.9} className="mx-auto max-w-full px-6 sm:px-8">
+    <ScaleFrame designWidth={1650} designHeight={1827} minScale={0.9} maxScale={1} className="mx-auto max-w-full px-4 sm:px-8 overflow-hidden">
       <div className="relative w-[1650px] h-[1827px]">
         <div className="absolute left-0 top-0 w-[1650px] h-[1827px] bg-stone-50 rounded-[5px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] border border-black/0" />
         <div className="absolute left-[1547px] top-[50px] text-black text-4xl font-bold font-['Caveat'] uppercase leading-7">MM</div>

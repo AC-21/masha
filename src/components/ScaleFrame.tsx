@@ -6,13 +6,15 @@ type ScaleFrameProps = PropsWithChildren<{
   className?: string;
   /** Minimum scale so typography doesn't shrink excessively on tablet */
   minScale?: number; // e.g. 0.85
+  /** Maximum scale so layout never exceeds container width on large screens */
+  maxScale?: number; // default 1 (100%)
 }>;
 
 /**
  * Scales an absolutely-positioned Figma frame to fit the container width
  * while preserving the original pixel layout and aspect ratio.
  */
-export default function ScaleFrame({ designWidth, designHeight, className, minScale = 0.85, children }: ScaleFrameProps) {
+export default function ScaleFrame({ designWidth, designHeight, className, minScale = 0.85, maxScale = 1, children }: ScaleFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [viewportH, setViewportH] = useState<number | null>(null);
@@ -23,7 +25,7 @@ export default function ScaleFrame({ designWidth, designHeight, className, minSc
     const update = () => {
       const width = el.clientWidth;
       const next = width / designWidth;
-      const clamped = Math.max(next, minScale);
+      const clamped = Math.max(minScale, Math.min(next, maxScale));
       setScale(clamped > 0 ? clamped : 1);
       setViewportH(window.innerHeight);
     };
