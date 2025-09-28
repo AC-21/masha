@@ -15,8 +15,8 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const {
     url = import.meta.env.VITE_CALENDLY_URL || "",
     height = 700,
-    primaryColor = "3b5849",
-    textColor = "4b5563", // Changed to darker text for better readability
+    primaryColor = "3b5849", // Keep the green accent
+    textColor = "000000", // Black text to match site
     hideGDPR = true,
     hideDetails = false, // Show details for better user experience
     className,
@@ -34,6 +34,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       }
       u.searchParams.set("primary_color", primaryColor);
       u.searchParams.set("text_color", textColor);
+      u.searchParams.set("background_color", "fafaf9"); // Try to set background to match site
       return u.toString();
     } catch {
       return "";
@@ -69,6 +70,25 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  // Inject custom styles to try to influence Calendly's appearance
+  useEffect(() => {
+    if (scriptLoaded && !document.querySelector('#calendly-custom-styles')) {
+      const style = document.createElement('style');
+      style.id = 'calendly-custom-styles';
+      style.innerHTML = `
+        /* Try to style Calendly iframe content */
+        .calendly-inline-widget iframe {
+          font-family: 'Roboto Mono', 'Inter', monospace !important;
+        }
+        /* Style the container background */
+        .calendly-inline-widget {
+          background: #fafaf9 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, [scriptLoaded]);
 
   // Show placeholder if no URL configured
   if (!finalUrl) {
@@ -115,10 +135,11 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       className={className}
       style={{ 
         borderRadius: rounded, 
-        overflow: "auto", // Changed from hidden to auto for scrolling
-        background: "#ffffff", // White background for better contrast
-        border: "1px solid #e5e5e5",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
+        overflow: "auto", // Allow scrolling if needed
+        background: "#fafaf9", // Match site's stone-50 background
+        border: "1px solid rgba(0, 0, 0, 0.05)", // Subtle border
+        boxShadow: "0 1px 3px rgba(0,0,0,0.05)", // Softer shadow to match site aesthetic
+        fontFamily: "'Roboto Mono', monospace" // Try to influence font (though Calendly may override)
       }}
     >
       <div
@@ -131,8 +152,8 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         }}
       />
       {!scriptLoaded && (
-        <div className="grid place-items-center" style={{ minHeight: height }}>
-          <span className="text-muted-foreground text-sm">Loading scheduler…</span>
+        <div className="grid place-items-center" style={{ minHeight: height, background: "#fafaf9" }}>
+          <span className="font-['Roboto_Mono'] text-black text-sm uppercase">Loading scheduler…</span>
         </div>
       )}
     </div>

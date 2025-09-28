@@ -46,13 +46,13 @@ export default function LandscapeCanvas() {
         <div className="absolute left-[501px] top-[1282px] w-[196px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        {/* Calendly embed - optimized for visibility */}
+        {/* Calendly embed - styled to match site design */}
         <div className="absolute left-[828px] top-[1100px] w-[725px] h-[650px]">
           <CalendlyEmbed 
             height={650} 
             rounded={24} 
             primaryColor="3b5849" 
-            textColor="4b5563" 
+            textColor="000000" 
             url={import.meta.env.VITE_CALENDLY_URL} 
           />
         </div>
