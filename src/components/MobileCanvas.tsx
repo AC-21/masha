@@ -10,7 +10,7 @@ export default function MobileCanvas() {
           One Sentence that lets people<br/>know what The good word is.
         </div>
         {/* Portrait */}
-        <img src="/images/portrait-480.jpg" alt="Portrait" width="279" height="372" className="absolute left-1/2 -translate-x-1/2 top-[84px] w-72 h-96 rounded-xl object-cover" decoding="async" />
+        <img src="/images/portrait-480.jpg" alt="Portrait" width="279" height="372" className="hero-image absolute left-1/2 -translate-x-1/2 top-[84px] w-72 h-96 rounded-xl object-cover" decoding="async" />
         {/* Section title */}
         <div className="absolute left-[46px] top-[508px] text-black text-xl font-bold font-['Roboto_Mono'] uppercase leading-7">More About my Practice</div>
         {/* Body paragraph */}
