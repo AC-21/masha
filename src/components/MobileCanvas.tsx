@@ -4,7 +4,12 @@ export default function MobileCanvas() {
   return (
     <ScaleFrame designWidth={384} designHeight={1433} minScale={0.9} maxScale={1} className="mx-auto max-w-[560px]">
       <div className="relative w-96 h-[1433px] bg-stone-50 overflow-hidden mx-auto" style={{ ['--image-offset' as any]: 'calc((var(--container-max, 560px) - 18rem) / 2)' }}>
-        {/* Initials removed – global StickyMM handles this */}
+        {/* Mobile MM Logo - right edge aligned with image right edge */}
+        <div className="md:hidden absolute right-[48px] top-[20px] z-50 pointer-events-none select-none">
+          <span className="font-['Caveat'] font-bold uppercase text-[39px] leading-[28px] text-black">
+            MM
+          </span>
+        </div>
         {/* Tagline */}
         <div className="absolute left-[44px] top-[20px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-tight">
           One Sentence that lets people<br/>know what The good word is.
