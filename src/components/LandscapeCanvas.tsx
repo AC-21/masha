@@ -46,9 +46,15 @@ export default function LandscapeCanvas() {
         <div className="absolute left-[501px] top-[1282px] w-[196px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        {/* Calendly embed placed in screenshot area */}
-        <div className="absolute left-[828px] top-[1156px] w-[725px] h-[546px] rounded-[40px] overflow-hidden">
-          <CalendlyEmbed height={546} rounded={40} primaryColor="3b5849" textColor="ffffff" url={import.meta.env.VITE_CALENDLY_URL} />
+        {/* Calendly embed - optimized for visibility */}
+        <div className="absolute left-[828px] top-[1100px] w-[725px] h-[650px]">
+          <CalendlyEmbed 
+            height={650} 
+            rounded={24} 
+            primaryColor="3b5849" 
+            textColor="4b5563" 
+            url={import.meta.env.VITE_CALENDLY_URL} 
+          />
         </div>
       </div>
     </ScaleFrame>

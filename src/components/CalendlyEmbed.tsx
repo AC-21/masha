@@ -16,9 +16,9 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     url = import.meta.env.VITE_CALENDLY_URL || "",
     height = 700,
     primaryColor = "3b5849",
-    textColor = "ffffff",
+    textColor = "4b5563", // Changed to darker text for better readability
     hideGDPR = true,
-    hideDetails = true,
+    hideDetails = false, // Show details for better user experience
     className,
     rounded = 40,
   } = props;
@@ -113,15 +113,25 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     <div
       ref={ref}
       className={className}
-      style={{ borderRadius: rounded, overflow: "hidden" }}
+      style={{ 
+        borderRadius: rounded, 
+        overflow: "auto", // Changed from hidden to auto for scrolling
+        background: "#ffffff", // White background for better contrast
+        border: "1px solid #e5e5e5",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
+      }}
     >
       <div
         className="calendly-inline-widget"
         data-url={finalUrl}
-        style={{ minWidth: 320, height }}
+        style={{ 
+          minWidth: 320, 
+          height: "100%", // Use full height of container
+          minHeight: height 
+        }}
       />
       {!scriptLoaded && (
-        <div className="grid place-items-center" style={{ height }}>
+        <div className="grid place-items-center" style={{ minHeight: height }}>
           <span className="text-muted-foreground text-sm">Loading scheduler…</span>
         </div>
       )}
