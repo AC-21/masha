@@ -11,7 +11,7 @@ export default function MobileCanvas() {
           One Sentence that lets people<br/>know what The good word is.
         </div>
         {/* Portrait */}
-        <img src="/placeholder-portrait.jpg" alt="Portrait" className="absolute left-[46px] top-[84px] w-72 h-96 rounded-xl object-cover" />
+        <img src="/portrait.jpg" alt="Portrait" className="absolute left-[46px] top-[84px] w-72 h-96 rounded-xl object-cover" />
         {/* Section title */}
         <div className="absolute left-[46px] top-[508px] text-black text-xl font-bold font-['Roboto_Mono'] uppercase leading-7">More About my Practice</div>
         {/* Body paragraph */}

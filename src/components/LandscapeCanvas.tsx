@@ -1,7 +1,7 @@
 import ScaleFrame from "./ScaleFrame";
 import CalendlyEmbed from "./CalendlyEmbed";
 
-const PORTRAIT = "/placeholder-portrait.jpg";
+const PORTRAIT = "/portrait.jpg";
 
 export default function LandscapeCanvas() {
   return (
