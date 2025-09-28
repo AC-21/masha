@@ -1,3 +1,4 @@
+@import "@tailwindcss/postcss" layer(base);
 @custom-variant dark (&:is(.dark *));
 
 :root {
