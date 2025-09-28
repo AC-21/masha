@@ -7,7 +7,7 @@ export default function App() {
       <div className="hidden lg:block">
         <LandscapeCanvas />
       </div>
-      <div className="block lg:hidden">
+      <div className="block lg:hidden flex items-center justify-center">
         <MobileCanvas />
       </div>
     </div>
