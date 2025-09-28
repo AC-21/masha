@@ -42,7 +42,7 @@ export default function ScaleFrame({ designWidth, designHeight, className, minSc
     <div
       ref={containerRef}
       className={className ? className : ""}
-      style={{ position: "relative", width: "100%", maxHeight: viewportH ?? undefined, overflow: "auto" }}
+      style={{ position: "relative", width: "100%", maxWidth: "100vw", margin: "0 auto", maxHeight: viewportH ?? undefined, overflow: "auto", overflowX: "hidden" }}
     >
       <div style={{ position: "relative", width: scaledWidth, height: scaledHeight }}>
         <div
