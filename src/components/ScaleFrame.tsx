@@ -33,26 +33,29 @@ export default function ScaleFrame({ designWidth, designHeight, className, minSc
     return () => ro.disconnect();
   }, [designWidth]);
 
-  const height = Math.round(designHeight * scale);
+  const scaledWidth = Math.round(designWidth * scale);
+  const scaledHeight = Math.round(designHeight * scale);
 
   return (
     <div
       ref={containerRef}
       className={className ? className : ""}
-      style={{ position: "relative", width: "100%", height, maxHeight: viewportH ?? undefined, overflow: "auto" }}
+      style={{ position: "relative", width: "100%", maxHeight: viewportH ?? undefined, overflow: "auto" }}
     >
-      <div
-        style={{
-          width: designWidth,
-          height: designHeight,
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
-        {children}
+      <div style={{ position: "relative", width: scaledWidth, height: scaledHeight }}>
+        <div
+          style={{
+            width: designWidth,
+            height: designHeight,
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
