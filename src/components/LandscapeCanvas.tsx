@@ -2,9 +2,9 @@ import ScaleFrame from "./ScaleFrame";
 import CalendlyEmbed from "./CalendlyEmbed";
 
 const sources = {
-  avif: [480, 768, 1080, 1440].map(w => `/src/assets/portrait-${w}.avif ${w}w`).join(', '),
-  webp: [480, 768, 1080, 1440].map(w => `/src/assets/portrait-${w}.webp ${w}w`).join(', '),
-  jpg:  [480, 768, 1080, 1440].map(w => `/src/assets/portrait-${w}.jpg ${w}w`).join(', '),
+  avif: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.avif ${w}w`).join(', '),
+  webp: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.webp ${w}w`).join(', '),
+  jpg:  [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.jpg ${w}w`).join(', '),
 };
 
 export default function LandscapeCanvas() {
@@ -24,9 +24,9 @@ export default function LandscapeCanvas() {
         </div>
         {/* Portrait */}
         <picture className="absolute left-[122px] top-[136px] block w-[581px] h-[775px] overflow-hidden rounded-[37px]">
-          <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1024px) 581px, 90vw" />
-          <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1024px) 581px, 90vw" />
-          <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/portrait.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
+          <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1280px) 581px, 90vw" />
+          <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1280px) 581px, 90vw" />
+          <img srcSet={sources.jpg} sizes="(min-width: 1280px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
         </picture>
         {/* Divider */}
         <div className="absolute left-[341px] top-[1045px] w-[711px] text-stone-300 text-base font-bold font-['Roboto_Mono'] uppercase leading-7">--------------------------------------------------------------------------------</div>

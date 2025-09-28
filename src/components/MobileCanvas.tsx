@@ -28,13 +28,7 @@ export default function MobileCanvas() {
         </div>
         <div className="absolute left-[93px] top-[1133px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
         <div className="absolute left-[93px] top-[1161px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-7">Some text on who its for</div>
-        {/* Fake bottom bar */}
-        <div className="absolute left-0 top-[1304px] w-96 h-32">
-          <div className="absolute left-0 top-[81px] w-96 h-12 bg-neutral-100/75 shadow-[0px_-0.4px_0px_0px_#c1c1c1]" />
-          <div className="absolute left-[132.71px] top-[91px] inline-flex items-center gap-1">
-            <div className="text-neutral-800 text-xs font-normal">mashamaria.earth</div>
-          </div>
-        </div>
+        {/* Safari bottom mock removed */}
       </div>
     </ScaleFrame>
   );
