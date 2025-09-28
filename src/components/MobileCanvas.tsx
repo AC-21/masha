@@ -2,10 +2,9 @@ import ScaleFrame from "./ScaleFrame";
 
 export default function MobileCanvas() {
   return (
-    <ScaleFrame designWidth={384} designHeight={1433} minScale={0.9} maxScale={1} className="mx-auto max-w-[420px]">
+    <ScaleFrame designWidth={384} designHeight={1433} minScale={0.9} maxScale={1} className="mx-auto max-w-[560px]">
       <div className="relative w-96 h-[1433px] bg-stone-50 overflow-hidden mx-auto">
-        {/* Initials */}
-        <div className="absolute left-[309px] top-[17px] text-black text-2xl font-bold font-['Caveat'] uppercase leading-7">MM</div>
+        {/* Initials removed – global StickyMM handles this */}
         {/* Tagline */}
         <div className="absolute left-[44px] top-[20px] text-black text-xs font-bold font-['Roboto_Mono'] uppercase leading-tight">
           One Sentence that lets people<br/>know what The good word is.
