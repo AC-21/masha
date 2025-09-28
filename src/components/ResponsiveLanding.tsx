@@ -4,11 +4,11 @@ const PORTRAIT = "/placeholder-portrait.jpg";
 
 export default function ResponsiveLanding() {
   return (
-    <main className="min-h-screen w-full bg-[#fefef7] text-black">
+    <main className="min-h-screen w-full overflow-x-clip bg-[#fefef7] text-black">
       {/* Header / Tagline */}
       <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-8">
-        <div className="flex items-start justify-between">
-          <h1 className="font-['Roboto Mono'] font-bold uppercase text-[1.25rem] sm:text-2xl lg:text-[32px] leading-[1.2] max-w-[46ch]">
+        <div className="flex items-start justify-between gap-6">
+          <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.08em] text-[1.125rem] sm:text-[1.375rem] lg:text-[32px] leading-[1.2] max-w-[46ch]">
             One Sentence that lets people know what
             <br />
             The good word is.
@@ -23,10 +23,10 @@ export default function ResponsiveLanding() {
       <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-10 lg:pt-16">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
           <div className="order-2 lg:order-1">
-            <h2 className="font-['Roboto Mono'] font-bold uppercase text-2xl sm:text-3xl lg:text-[40px] tracking-tight mb-4 lg:mb-6">
+            <h2 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[22px] sm:text-[28px] lg:text-[40px] leading-[1.15] mb-4 lg:mb-6">
               More about my practice
             </h2>
-            <div className="space-y-4 sm:space-y-5 lg:space-y-7 text-[14px] leading-7 lowercase font-['Inter']">
+            <div className="space-y-4 sm:space-y-5 lg:space-y-7 text-[14px] leading-[28px] lowercase font-['Inter'] max-w-prose">
               <p>i am deeply in love with what i do.</p>
               <p>it has been a struggle, though, to express in a sentence or two what it really is.</p>
               <p>
@@ -50,7 +50,7 @@ export default function ResponsiveLanding() {
 
       {/* Divider */}
       <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-8 lg:py-12">
-        <div className="h-px w-full bg-[#d4cccc]" />
+        <div className="border-t border-dashed border-[#d4cccc]" />
       </div>
 
       {/* Modalities + Calendly */}
@@ -58,12 +58,12 @@ export default function ResponsiveLanding() {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Modalities */}
           <div className="lg:col-span-7">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase text-xl sm:text-2xl mb-3">Modalities</h3>
-            <p className="uppercase text-[12px] text-[#525050] mb-6 font-['Roboto Mono']">
+            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[18px] sm:text-[22px] mb-3">Modalities</h3>
+            <p className="uppercase text-[12px] text-[#525050] mb-6 font-['Roboto Mono'] leading-[18px]">
               every session is unique & guided by your overall desires.
               <br /> we will not be constrained by a specific modality; and here's some info on where we may go.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
               {[
                 { title: "Movement" },
                 { title: "Laughter" },
@@ -71,13 +71,13 @@ export default function ResponsiveLanding() {
                 { title: "Deep Connection" },
               ].map(({ title }) => (
                 <div key={title}>
-                  <h4 className="font-['Roboto Mono'] font-bold uppercase text-[18px] mb-2">{title}</h4>
-                  <div className="font-['Roboto Mono'] uppercase text-[12px] space-y-1">
+                  <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.04em] text-[18px] mb-2">{title}</h4>
+                  <div className="font-['Roboto Mono'] uppercase text-[12px] space-y-1 leading-[20px]">
                     <p>Some text on what it is</p>
                     <p>Some text on what it is</p>
                     <p>Some text on what it is</p>
                   </div>
-                  <div className="font-['Roboto Mono'] uppercase text-[12px] mt-2 space-y-1">
+                  <div className="font-['Roboto Mono'] uppercase text-[12px] mt-2 space-y-1 leading-[20px]">
                     <p>Some text on who its for</p>
                     <p>Some text on who its for</p>
                   </div>
@@ -88,7 +88,7 @@ export default function ResponsiveLanding() {
 
           {/* Calendly */}
           <div className="lg:col-span-5">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase text-lg sm:text-xl mb-4">
+            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] sm:text-[18px] mb-4">
               Schedule an intro to learn more
             </h3>
             <CalendlyEmbed
