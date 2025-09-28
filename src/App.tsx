@@ -4,7 +4,7 @@ import StickyMM from "./components/StickyMM";
 
 export default function App() {
   return (
-    <div className="min-h-screen w-full bg-stone-50 overflow-x-hidden" style={{ ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
+    <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#FEFEF7', ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
       <StickyMM />
       <div className="hidden xl:block" style={{ ['--container-max' as any]: '100vw', ['--container-pad' as any]: '16px', ['--image-width' as any]: '0px' }}>
         <LandscapeCanvas />

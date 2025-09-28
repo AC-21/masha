@@ -9,7 +9,7 @@ const sources = {
 
 export default function LandscapeCanvas() {
   return (
-    <div className="relative w-full bg-stone-50">
+    <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
       <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={2100} minScale={0} maxScale={1} className="mx-auto w-full overflow-hidden">
         <div className="relative w-[1650px] h-[2100px]">
           {/* Content container - no background here since it's on the parent */}

@@ -34,7 +34,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       }
       u.searchParams.set("primary_color", primaryColor);
       u.searchParams.set("text_color", textColor);
-      u.searchParams.set("background_color", "fafaf9"); // Try to set background to match site
+      u.searchParams.set("background_color", "FEFEF7"); // Try to set background to match site
       return u.toString();
     } catch {
       return "";
@@ -83,7 +83,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         }
         /* Style the container background */
         .calendly-inline-widget {
-          background: #fafaf9 !important;
+          background: #FEFEF7 !important;
         }
       `;
       document.head.appendChild(style);
@@ -99,7 +99,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
           borderRadius: rounded, 
           overflow: "hidden",
           height,
-          background: "#f5f5f5",
+          background: "#FEFEF7",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -150,7 +150,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         }}
       />
       {!scriptLoaded && (
-        <div className="grid place-items-center" style={{ minHeight: height, background: "#fafaf9" }}>
+        <div className="grid place-items-center" style={{ minHeight: height, background: "#FEFEF7" }}>
           <span className="font-['Roboto_Mono'] text-black text-sm uppercase">Loading scheduler…</span>
         </div>
       )}
