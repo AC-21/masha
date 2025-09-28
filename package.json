@@ -28,6 +28,8 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "figma-tokens": "^0.0.8",
     "postcss": "^8.4.32",
+    "puppeteer": "^22.15.0",
+    "sharp": "^0.34.4",
     "style-dictionary": "^5.0.4",
     "tailwindcss": "^4.0.0-alpha.29",
     "typescript": "^5.2.2",
