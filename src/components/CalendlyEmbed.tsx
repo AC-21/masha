@@ -169,8 +169,9 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         style={{ 
           minWidth: 320, 
           height: typeof height === 'number' ? `${height}px` : height, // Use the actual height
-          width: "100%", // Full width for now
-          marginTop: "-30px" // Slight offset to remove Calendly's internal padding
+          width: "65%", // 65% width as tested
+          margin: "-50px auto 0", // Top offset and center horizontally
+          display: "block"
         }}
       />
       {!scriptLoaded && (
