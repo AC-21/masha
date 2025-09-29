@@ -135,11 +135,12 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       className={className}
       style={{ 
         borderRadius: rounded, 
-        overflow: "auto", // Allow scrolling within the container if needed
+        overflow: "visible", // No scrolling - let it flow naturally
         background: "transparent", // Transparent to blend with page
         fontFamily: "'Roboto Mono', monospace", // Try to influence font (though Calendly may override)
-        height: "100%",
-        width: "100%"
+        height: height,
+        width: "100%",
+        position: "relative"
       }}
     >
       <div
@@ -147,8 +148,8 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         data-url={finalUrl}
         style={{ 
           minWidth: 320, 
-          height: "100%", // Use full height of container
-          minHeight: height 
+          height: height, // Fixed height to prevent overflow
+          width: "100%"
         }}
       />
       {!scriptLoaded && (
