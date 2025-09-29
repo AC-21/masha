@@ -4,9 +4,9 @@ export default function LayoutPositioner() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   const [positions, setPositions] = useState({
-    headline: 82,
-    bodytext: 185,
-    portrait: 86,
+    headline: 71,
+    bodytext: 196,
+    portrait: 71,
     mywork: 1048,
     modsubtitle: 1095,
     modrow1: 1200,
