@@ -77,9 +77,9 @@ export default function LandscapeCanvas() {
           Some text on who its for<br/>Some text on who its for
         </div>
           {/* Calendly embed - styled to match site design */}
-          <div className="absolute left-[580px] top-[1150px] w-[1070px] h-[770px]">
+          <div className="absolute left-[800px] top-[1150px] w-[750px] h-[750px] overflow-visible">
             <CalendlyEmbed 
-              height={820} 
+              height={750} 
               rounded={0} 
               primaryColor="3b5849" 
               textColor="000000" 

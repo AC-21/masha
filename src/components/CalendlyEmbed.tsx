@@ -44,70 +44,21 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   
-  // Remove debug logging in production
-  // Uncomment for debugging
-  // useEffect(() => {
-  //   console.log('CalendlyEmbed Debug Info:');
-  //   console.log('  height prop:', height);
-  //   console.log('  container ref:', ref.current);
-  //   if (ref.current) {
-  //     console.log('  container dimensions:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
-  //     console.log('  container scrollHeight:', ref.current.scrollHeight);
-  //     console.log('  is scrollable:', ref.current.scrollHeight > ref.current.clientHeight);
-  //     const widget = ref.current.querySelector('.calendly-inline-widget');
-  //     if (widget) {
-  //       console.log('  widget dimensions:', (widget as HTMLElement).offsetWidth, 'x', (widget as HTMLElement).offsetHeight);
-  //     }
-  //   }
-  // }, [height, scriptLoaded]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Load Calendly script lazily once visible
-            if (!document.querySelector('script[data-calendly]')) {
-              const s = document.createElement("script");
-              s.src = "https://assets.calendly.com/assets/external/widget.js";
-              s.async = true;
-              s.setAttribute('data-calendly', 'true');
-              s.onload = () => setScriptLoaded(true);
-              document.body.appendChild(s);
-            } else {
-              setScriptLoaded(true);
-            }
-            observer.disconnect();
-          }
-        });
-      },
-      { rootMargin: "200px" }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    // Load Calendly script immediately
+    if (!document.querySelector('script[data-calendly]')) {
+      const s = document.createElement("script");
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      s.setAttribute('data-calendly', 'true');
+      s.onload = () => setScriptLoaded(true);
+      document.body.appendChild(s);
+    } else {
+      setScriptLoaded(true);
+    }
   }, []);
 
-  // Inject custom styles to try to influence Calendly's appearance
-  useEffect(() => {
-    if (scriptLoaded && !document.querySelector('#calendly-custom-styles')) {
-      const style = document.createElement('style');
-      style.id = 'calendly-custom-styles';
-      style.innerHTML = `
-        /* Style Calendly iframe and container */
-        .calendly-inline-widget iframe {
-          font-family: 'Roboto Mono', 'Inter', monospace !important;
-          overflow: hidden !important;
-        }
-        /* Style the container */
-        .calendly-inline-widget {
-          background: #FEFEF7 !important;
-          overflow: hidden !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }, [scriptLoaded]);
 
   // Show placeholder if no URL configured
   if (!finalUrl) {
@@ -153,10 +104,6 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       ref={ref}
       className={className}
       style={{ 
-        borderRadius: rounded, 
-        overflow: "hidden", // Hide overflow to prevent scrolling
-        background: "transparent", // Transparent to blend with page
-        fontFamily: "'Roboto Mono', monospace", // Try to influence font (though Calendly may override)
         height: height,
         width: "100%",
         position: "relative"
@@ -165,13 +112,10 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       <div
         className="calendly-inline-widget"
         data-url={finalUrl}
-        data-resize="true"
         style={{ 
-          minWidth: 320, 
-          height: typeof height === 'number' ? `${height}px` : height, // Use the actual height
-          width: "65%", // 65% width as tested
-          margin: "-50px auto 0", // Top offset and center horizontally
-          display: "block"
+          minWidth: "320px", 
+          height: typeof height === 'number' ? `${height}px` : height,
+          width: "100%"
         }}
       />
       {!scriptLoaded && (
