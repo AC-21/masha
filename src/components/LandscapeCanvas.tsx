@@ -10,11 +10,11 @@ const sources = {
 export default function LandscapeCanvas() {
   return (
     <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
-      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={2100} minScale={0} maxScale={1} className="mx-auto w-full overflow-hidden">
-        <div className="relative w-[1650px] h-[2100px]">
-          {/* Content container - no background here since it's on the parent */}
+      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={2300} minScale={0} maxScale={1} className="mx-auto w-full">
+        <div className="relative w-[1650px] h-[2300px]" style={{ backgroundColor: '#FEFEF7' }}>
+          {/* Content container with background */}
         {/* Local MM removed in favor of global StickyMM */}
-        <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '47.52%', top: '7.22%', width: '46.24%' }}>
+        <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '47.52%', top: '132px', width: '46.24%' }}>
           One Sentence that lets people know what
           <br />
           The good word is.
@@ -24,7 +24,7 @@ export default function LandscapeCanvas() {
           I am deeply in love with what I do. <br /><br /> It has been a struggle, though, to express in a sentence or two what it really is. I cultivate an environment where a person can come exactly as they are, feeling accepted and loved in their pain, inner battles, fears, desires, brightness, uniqueness, comfort, and discomfort. It is the most beautiful thing each time to witness someone opening up and beginning to love and accept themselves. My heart feels so full guiding and witnessing the beautiful transformations happening within people. <br /><br /> Recently, I have realized another core reason why I love it so much: since I was little, I have always wanted to connect with people on the truest, deepest level. I have always felt uncomfortable in scenarios where we all tend to follow a “normal,” superficial way of interacting, often not speaking to how we truly feel, what we experience, what is burning or crying inside of us, what is real. But with people who choose to work with me, I get to see so much of their inner world, and the part of me that craves intimacy and truth feels safe. <br /><br /> So, it is not “work.” It is the time when my heart feels so grateful to connect with another in what really matters, to recognize each other’s souls behind the masks, while acknowledging the masks and their purpose, as well as other infinite parts of ourselves. This precious time of heartfelt connection is healing for me, too. <br /><br /> And that is why I can be grateful for my own suffering. It has led me to what I thought I was missing - deeper meaning and purpose. It made me realize what turning pain into a gift means for me. Sitting with it, working with plant medicine, spending days and nights suffocated inside my own misery, studying modalities - all of it so I can relate, guide, listen, understand, and hopefully help more and more people feel seen, whole, loved, and not alone.  Alienation, shame, and keeping our suffering to ourselves only create more suffering. Seeing each other through eyes and hearts of truth and compassion is the only way that will create sustainable change - for the highest good of all.
         </div>
         {/* Portrait */}
-        <picture className="absolute left-[7.39%] top-[7.45%] block" style={{ width: '35.21%', height: '42.43%', borderRadius: 37, overflow: 'hidden' }}>
+        <picture className="absolute left-[7.39%] top-[136px] block" style={{ width: '35.21%', height: '42.43%', borderRadius: 37, overflow: 'hidden' }}>
           <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1024px) 581px, 90vw" />
           <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1024px) 581px, 90vw" />
           <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
@@ -53,9 +53,9 @@ export default function LandscapeCanvas() {
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
         {/* Calendly embed - styled to match site design */}
-        <div className="absolute left-[828px] top-[1100px] w-[725px] h-[900px]">
+        <div className="absolute left-[828px] top-[1100px] w-[725px] h-[1000px] overflow-visible">
           <CalendlyEmbed 
-            height={900} 
+            height={1000} 
             rounded={0} 
             primaryColor="3b5849" 
             textColor="000000" 
