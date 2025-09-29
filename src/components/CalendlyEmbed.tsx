@@ -43,31 +43,17 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
 
   const ref = useRef<HTMLDivElement>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  
-  useEffect(() => {
-    console.log('Calendly Component Mounted');
-    console.log('Final URL:', finalUrl);
-    console.log('Has URL:', !!finalUrl);
-  }, [finalUrl]);
 
   useEffect(() => {
     // Load Calendly script immediately
     if (!document.querySelector('script[data-calendly]')) {
-      console.log('Loading Calendly script...');
       const s = document.createElement("script");
       s.src = "https://assets.calendly.com/assets/external/widget.js";
       s.async = true;
       s.setAttribute('data-calendly', 'true');
-      s.onload = () => {
-        console.log('Calendly script loaded successfully');
-        setScriptLoaded(true);
-      };
-      s.onerror = () => {
-        console.error('Failed to load Calendly script');
-      };
+      s.onload = () => setScriptLoaded(true);
       document.body.appendChild(s);
     } else {
-      console.log('Calendly script already exists');
       setScriptLoaded(true);
     }
   }, []);
@@ -127,8 +113,9 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         data-url={finalUrl}
         style={{ 
           minWidth: "320px", 
-          height: "750px",
-          width: "100%"
+          height: typeof height === 'number' ? `${height}px` : height,
+          width: "100%",
+          marginTop: "-20px"
         }}
       />
       {!scriptLoaded && (
