@@ -4,14 +4,14 @@ export default function LayoutPositioner() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   const [positions, setPositions] = useState({
-    headline: 71,
-    bodytext: 196,
-    portrait: 71,
-    mywork: 949,
-    modsubtitle: 1023,
-    modrow1: 1133,
-    modrow2: 1320,
-    calendly: 1036
+    headline: 81,
+    bodytext: 206,
+    portrait: 81,
+    mywork: 959,
+    modsubtitle: 1033,
+    modrow1: 1143,
+    modrow2: 1330,
+    calendly: 1046
   });
 
   const draggedElement = useRef<string | null>(null);
