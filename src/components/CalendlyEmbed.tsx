@@ -135,9 +135,11 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       className={className}
       style={{ 
         borderRadius: rounded, 
-        overflow: "visible", // Changed to visible to prevent cutoff
+        overflow: "auto", // Allow scrolling within the container if needed
         background: "transparent", // Transparent to blend with page
-        fontFamily: "'Roboto Mono', monospace" // Try to influence font (though Calendly may override)
+        fontFamily: "'Roboto Mono', monospace", // Try to influence font (though Calendly may override)
+        height: "100%",
+        width: "100%"
       }}
     >
       <div
