@@ -115,7 +115,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
           minWidth: "320px", 
           height: typeof height === 'number' ? `${height}px` : height,
           width: "100%",
-          marginTop: "-20px"
+          marginTop: "-35px"
         }}
       />
       {!scriptLoaded && (
