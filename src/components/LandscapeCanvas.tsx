@@ -76,16 +76,16 @@ export default function LandscapeCanvas() {
         <div className="absolute left-[460px] top-[1616px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
-        {/* Calendly embed - styled to match site design */}
-        <div className="absolute left-[900px] top-[1200px] w-[650px] h-[650px]">
-          <CalendlyEmbed 
-            height={650} 
-            rounded={0} 
-            primaryColor="3b5849" 
-            textColor="000000" 
-            url={import.meta.env.VITE_CALENDLY_URL} 
-          />
-        </div>
+          {/* Calendly embed - styled to match site design */}
+          <div className="absolute left-[828px] top-[1150px] w-[725px] h-[750px] overflow-hidden">
+            <CalendlyEmbed 
+              height={750} 
+              rounded={0} 
+              primaryColor="3b5849" 
+              textColor="000000" 
+              url={import.meta.env.VITE_CALENDLY_URL} 
+            />
+          </div>
       </div>
     </ScaleFrame>
     </div>

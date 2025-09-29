@@ -14,7 +14,7 @@ type CalendlyEmbedProps = {
 export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const {
     url = import.meta.env.VITE_CALENDLY_URL || "",
-    height = 700,
+    height = 750, // Calendly's recommended height
     primaryColor = "3b5849", // Keep the green accent
     textColor = "000000", // Black text to match site
     hideGDPR = true,
@@ -43,6 +43,23 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
 
   const ref = useRef<HTMLDivElement>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  
+  // Remove debug logging in production
+  // Uncomment for debugging
+  // useEffect(() => {
+  //   console.log('CalendlyEmbed Debug Info:');
+  //   console.log('  height prop:', height);
+  //   console.log('  container ref:', ref.current);
+  //   if (ref.current) {
+  //     console.log('  container dimensions:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
+  //     console.log('  container scrollHeight:', ref.current.scrollHeight);
+  //     console.log('  is scrollable:', ref.current.scrollHeight > ref.current.clientHeight);
+  //     const widget = ref.current.querySelector('.calendly-inline-widget');
+  //     if (widget) {
+  //       console.log('  widget dimensions:', (widget as HTMLElement).offsetWidth, 'x', (widget as HTMLElement).offsetHeight);
+  //     }
+  //   }
+  // }, [height, scriptLoaded]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,13 +94,15 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       const style = document.createElement('style');
       style.id = 'calendly-custom-styles';
       style.innerHTML = `
-        /* Try to style Calendly iframe content */
+        /* Style Calendly iframe and container */
         .calendly-inline-widget iframe {
           font-family: 'Roboto Mono', 'Inter', monospace !important;
+          overflow: hidden !important;
         }
-        /* Style the container background */
+        /* Style the container */
         .calendly-inline-widget {
           background: #FEFEF7 !important;
+          overflow: hidden !important;
         }
       `;
       document.head.appendChild(style);
@@ -146,11 +165,11 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       <div
         className="calendly-inline-widget"
         data-url={finalUrl}
+        data-resize="true"
         style={{ 
           minWidth: 320, 
-          height: height, // Use exact height passed in
-          width: "100%",
-          maxWidth: "100%"
+          height: typeof height === 'number' ? `${height}px` : height, // Use the actual height
+          width: "100%"
         }}
       />
       {!scriptLoaded && (
