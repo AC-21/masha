@@ -7,11 +7,11 @@ export default function LayoutPositioner() {
     headline: 71,
     bodytext: 196,
     portrait: 71,
-    mywork: 1048,
-    modsubtitle: 1095,
-    modrow1: 1200,
-    modrow2: 1400,
-    calendly: 1100
+    mywork: 949,
+    modsubtitle: 1023,
+    modrow1: 1133,
+    modrow2: 1320,
+    calendly: 1036
   });
 
   const draggedElement = useRef<string | null>(null);

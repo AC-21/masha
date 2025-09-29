@@ -30,51 +30,51 @@ export default function LandscapeCanvas() {
           <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
         </picture>
         {/* Section titles */}
-        <div className="absolute left-[159px] top-[1048px] text-black text-3xl font-bold font-['Roboto_Mono'] uppercase leading-7">My Work</div>
+        <div className="absolute left-[159px] top-[949px] text-black text-3xl font-bold font-['Roboto_Mono'] uppercase leading-7">My Work</div>
         {/* Modalities subtitle - italic text */}
-        <div className="absolute left-[159px] top-[1095px] w-[650px] text-black/70 text-xs font-['Inter'] italic leading-5">
+        <div className="absolute left-[159px] top-[1023px] w-[650px] text-black/70 text-xs font-['Inter'] italic leading-5">
           EVERY SESSION IS UNIQUE & GUIDED BY YOUR OVERALL DESIRES.<br/>
           WE WILL NOT BE CONSTRAINED BY A SPECIFIC MODALITY; AND<br/>
           HERE'S SOME INFO BELOW ON WHERE WE MAY GO.
         </div>
         {/* Modalities headings - aligned with My Work start position */}
-        <div className="absolute left-[159px] top-[1200px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Movement</div>
-        <div className="absolute left-[430px] top-[1200px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Laughter</div>
-        <div className="absolute left-[159px] top-[1400px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Parts</div>
-        <div className="absolute left-[430px] top-[1400px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Deep Connection</div>
+        <div className="absolute left-[159px] top-[1133px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Movement</div>
+        <div className="absolute left-[430px] top-[1133px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Laughter</div>
+        <div className="absolute left-[159px] top-[1320px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Parts</div>
+        <div className="absolute left-[430px] top-[1320px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Deep Connection</div>
         {/* Sample bullets - Movement */}
-        <div className="absolute left-[189px] top-[1242px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1175px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[189px] top-[1336px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1269px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Laughter */}
-        <div className="absolute left-[460px] top-[1242px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1175px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[460px] top-[1336px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1269px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Parts */}
-        <div className="absolute left-[189px] top-[1442px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1362px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[189px] top-[1536px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1456px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Deep Connection */}
-        <div className="absolute left-[460px] top-[1442px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1362px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[460px] top-[1536px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1456px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
           {/* Calendly embed - styled to match site design */}
-          <div className="absolute left-[800px] top-[1100px] w-[750px] h-[770px] overflow-visible">
+          <div className="absolute left-[800px] top-[1036px] w-[750px] h-[770px] overflow-visible">
             <CalendlyEmbed 
               height={770} 
               rounded={0} 
