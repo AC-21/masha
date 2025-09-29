@@ -33,7 +33,7 @@ export default function LandscapeCanvas() {
         <div className="absolute left-[341px] top-[1100px] w-[711px] text-stone-300 text-base font-bold font-['Roboto_Mono'] uppercase leading-7">--------------------------------------------------------------------------------</div>
         {/* Section titles */}
         <div className="absolute left-[159px] top-[1098px] text-black text-3xl font-bold font-['Roboto_Mono'] uppercase leading-7">My Work</div>
-        <div className="absolute left-[1069px] top-[1098px] w-[490px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Schedule an intro to learn more</div>
+        <div className="absolute left-[920px] top-[1098px] w-[600px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Schedule an intro to learn more</div>
         {/* Modalities subtitle - italic text */}
         <div className="absolute left-[159px] top-[1175px] w-[650px] text-black/70 text-xs font-['Inter'] italic leading-5">
           EVERY SESSION IS UNIQUE & GUIDED BY YOUR OVERALL DESIRES.<br/>
@@ -77,9 +77,9 @@ export default function LandscapeCanvas() {
           Some text on who its for<br/>Some text on who its for
         </div>
           {/* Calendly embed - styled to match site design */}
-          <div className="absolute left-[828px] top-[1150px] w-[725px] h-[750px] overflow-hidden">
+          <div className="absolute left-[580px] top-[1150px] w-[1070px] h-[770px] overflow-hidden">
             <CalendlyEmbed 
-              height={750} 
+              height={820} 
               rounded={0} 
               primaryColor="3b5849" 
               textColor="000000" 
