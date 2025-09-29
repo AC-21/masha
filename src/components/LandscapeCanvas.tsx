@@ -10,8 +10,8 @@ const sources = {
 export default function LandscapeCanvas() {
   return (
     <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
-      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={2000} minScale={0} maxScale={1} className="mx-auto w-full">
-        <div className="relative w-[1650px] h-[2000px]" style={{ backgroundColor: '#FEFEF7' }}>
+      <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={1900} minScale={0} maxScale={1} className="mx-auto w-full">
+        <div className="relative w-[1650px] h-[1900px]" style={{ backgroundColor: '#FEFEF7' }}>
           {/* Content container with background */}
         {/* Local MM removed in favor of global StickyMM */}
         <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '784px', top: '132px', width: '763px' }}>
@@ -77,9 +77,9 @@ export default function LandscapeCanvas() {
           Some text on who its for<br/>Some text on who its for
         </div>
         {/* Calendly embed - styled to match site design */}
-        <div className="absolute left-[828px] top-[1200px] w-[725px] h-[750px]">
+        <div className="absolute left-[828px] top-[1200px] w-[725px] h-[700px]">
           <CalendlyEmbed 
-            height={750} 
+            height={650} 
             rounded={0} 
             primaryColor="3b5849" 
             textColor="000000" 
