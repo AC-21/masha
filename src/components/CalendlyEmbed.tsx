@@ -148,8 +148,9 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
         data-url={finalUrl}
         style={{ 
           minWidth: 320, 
-          height: "100%", // Use percentage to fit container
-          width: "100%"
+          height: height, // Use exact height passed in
+          width: "100%",
+          maxWidth: "100%"
         }}
       />
       {!scriptLoaded && (

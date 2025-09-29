@@ -60,8 +60,8 @@ export default function ResponsiveLanding() {
           <div className="lg:col-span-7">
             <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[18px] sm:text-[22px] mb-3">Modalities</h3>
             <p className="uppercase text-[12px] text-[#525050] mb-6 font-['Roboto Mono'] leading-[18px]">
-              every session is unique & guided by your overall desires.
-              <br /> we will not be constrained by a specific modality; and here's some info on where we may go.
+              every session is unique & guided by your overall intentions. You will be received where you are,
+              <br /> and we will get to where we need to go. 
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
               {[
