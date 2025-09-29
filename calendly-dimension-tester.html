@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendly Dimension Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: #FEFEF7;
+            padding: 20px;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #3b5849;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            max-width: 350px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #3b5849;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .control-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .value-display {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .container {
+            margin: 0 auto;
+            margin-right: 400px; /* Space for controls */
+            padding: 20px;
+        }
+        
+        .calendly-wrapper {
+            border: 2px dashed #3b5849;
+            position: relative;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        
+        .calendly-wrapper.overflow-hidden {
+            overflow: hidden;
+        }
+        
+        .calendly-wrapper.overflow-auto {
+            overflow: auto;
+        }
+        
+        .calendly-wrapper.overflow-visible {
+            overflow: visible;
+        }
+        
+        .dimension-overlay {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            font-size: 11px;
+            background: #3b5849;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            color: #3b5849;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .preset-btn {
+            padding: 6px 12px;
+            background: #3b5849;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        
+        .preset-btn:hover {
+            background: #2a4336;
+        }
+        
+        .info-box {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        
+        .reload-btn {
+            width: 100%;
+            padding: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+        
+        .reload-btn:hover {
+            background: #c0392b;
+        }
+        
+        select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #3b5849;
+            border-radius: 4px;
+        }
+    </style>
+    
+    <style id="debug-styles">
+        /* Debug styling to see the actual Calendly container */
+        .calendly-inline-widget {
+            border: 2px solid red !important;
+            background: rgba(255, 0, 0, 0.05) !important;
+        }
+        
+        /* Show iframe boundaries */
+        .calendly-inline-widget iframe {
+            border: 2px solid blue !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h3>Calendly Controls</h3>
+        
+        <div class="preset-buttons">
+            <button class="preset-btn" onclick="applyPreset(650, 700)">Current (650×700)</button>
+            <button class="preset-btn" onclick="applyPreset(750, 750)">Calendly Rec (750×750)</button>
+            <button class="preset-btn" onclick="applyPreset(630, 650)">Minimum (630×650)</button>
+            <button class="preset-btn" onclick="applyPreset(1000, 1000)">Large (1000×1000)</button>
+        </div>
+        
+        <div class="control-group">
+            <label for="widgetHeight">Widget Height (px)</label>
+            <div class="value-display">Value: <span id="heightValue">750</span>px</div>
+            <input type="range" id="widgetHeight" min="400" max="1200" value="750" step="10">
+        </div>
+        
+        <div class="control-group">
+            <label for="widgetWidth">Widget Width</label>
+            <select id="widgetWidthType" style="margin-bottom: 5px;">
+                <option value="percent">Percentage</option>
+                <option value="pixels">Pixels</option>
+            </select>
+            <div class="value-display">Value: <span id="widgetWidthValue">100</span><span id="widgetWidthUnit">%</span></div>
+            <input type="range" id="widgetWidth" min="50" max="100" value="100" step="5">
+        </div>
+        
+        <div class="control-group">
+            <label for="containerWidth">Container Width (px)</label>
+            <div class="value-display">Value: <span id="widthValue">725</span>px</div>
+            <input type="range" id="containerWidth" min="320" max="1200" value="725" step="25">
+        </div>
+        
+        <div class="control-group">
+            <label for="containerHeight">Container Height (px)</label>
+            <div class="value-display">Value: <span id="containerHeightValue">750</span>px</div>
+            <input type="range" id="containerHeight" min="400" max="1200" value="750" step="10">
+        </div>
+        
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="dataResize" checked>
+                Enable data-resize="true"
+            </label>
+        </div>
+        
+        <div class="control-group">
+            <label for="overflowStyle">Container Overflow</label>
+            <select id="overflowStyle">
+                <option value="hidden" selected>Hidden</option>
+                <option value="auto">Auto</option>
+                <option value="scroll">Scroll</option>
+                <option value="visible">Visible</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="hideDetails">
+                Hide Event Details
+            </label>
+        </div>
+        
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="hideGDPR" checked>
+                Hide GDPR Banner
+            </label>
+        </div>
+        
+        <div class="control-group">
+            <label for="topOffset">Top Offset (px)</label>
+            <div class="value-display">Value: <span id="topOffsetValue">0</span>px</div>
+            <input type="range" id="topOffset" min="-50" max="50" value="0" step="1">
+        </div>
+        
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="showDebugInfo" checked>
+                Show Debug Borders
+            </label>
+        </div>
+        
+        <button class="reload-btn" onclick="reloadCalendly()">Reload Calendly Widget</button>
+        
+        <div class="info-box">
+            <strong>Notes:</strong><br>
+            • Calendly recommends 750px height<br>
+            • Minimum width is 320px<br>
+            • data-resize allows dynamic height<br>
+            • Container overflow affects scrolling<br>
+            <br>
+            <strong>Widget Width:</strong><br>
+            • % mode: relative to container<br>
+            • px mode: fixed pixel width<br>
+            • Auto-centers when < 100%<br>
+            <br>
+            <strong>Debug Borders:</strong><br>
+            • Green dashed = outer container<br>
+            • Red solid = Calendly widget div<br>
+            • Blue solid = iframe element<br>
+            <br>
+            <strong>Top Space Issue:</strong><br>
+            The gap at the top is from Calendly's<br>
+            internal padding. Use negative Top<br>
+            Offset (-20 to -30px) to compensate.
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>Calendly Dimension Tester</h1>
+        
+        <div id="calendlyWrapper" class="calendly-wrapper overflow-hidden" style="width: 725px; height: 750px;">
+            <div class="dimension-overlay" id="dimensionDisplay">725×750px</div>
+            <div id="calendlyContainer"></div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    
+    <script>
+        const widgetHeight = document.getElementById('widgetHeight');
+        const widgetWidth = document.getElementById('widgetWidth');
+        const widgetWidthType = document.getElementById('widgetWidthType');
+        const containerWidth = document.getElementById('containerWidth');
+        const containerHeight = document.getElementById('containerHeight');
+        const dataResize = document.getElementById('dataResize');
+        const overflowStyle = document.getElementById('overflowStyle');
+        const hideDetails = document.getElementById('hideDetails');
+        const hideGDPR = document.getElementById('hideGDPR');
+        const topOffset = document.getElementById('topOffset');
+        const showDebugInfo = document.getElementById('showDebugInfo');
+        const wrapper = document.getElementById('calendlyWrapper');
+        const container = document.getElementById('calendlyContainer');
+        const dimensionDisplay = document.getElementById('dimensionDisplay');
+        
+        // Update value displays
+        widgetHeight.addEventListener('input', (e) => {
+            document.getElementById('heightValue').textContent = e.target.value;
+            updateCalendly();
+        });
+        
+        widgetWidth.addEventListener('input', (e) => {
+            document.getElementById('widgetWidthValue').textContent = e.target.value;
+            updateCalendly();
+        });
+        
+        widgetWidthType.addEventListener('change', (e) => {
+            const isPixels = e.target.value === 'pixels';
+            document.getElementById('widgetWidthUnit').textContent = isPixels ? 'px' : '%';
+            if (isPixels) {
+                widgetWidth.min = '320';
+                widgetWidth.max = '1200';
+                widgetWidth.step = '25';
+                widgetWidth.value = '725';
+                document.getElementById('widgetWidthValue').textContent = '725';
+            } else {
+                widgetWidth.min = '50';
+                widgetWidth.max = '100';
+                widgetWidth.step = '5';
+                widgetWidth.value = '100';
+                document.getElementById('widgetWidthValue').textContent = '100';
+            }
+            updateCalendly();
+        });
+        
+        containerWidth.addEventListener('input', (e) => {
+            document.getElementById('widthValue').textContent = e.target.value;
+            updateWrapper();
+        });
+        
+        containerHeight.addEventListener('input', (e) => {
+            document.getElementById('containerHeightValue').textContent = e.target.value;
+            updateWrapper();
+        });
+        
+        topOffset.addEventListener('input', (e) => {
+            document.getElementById('topOffsetValue').textContent = e.target.value;
+            updateCalendly();
+        });
+        
+        overflowStyle.addEventListener('change', updateWrapper);
+        dataResize.addEventListener('change', updateCalendly);
+        hideDetails.addEventListener('change', updateCalendly);
+        hideGDPR.addEventListener('change', updateCalendly);
+        showDebugInfo.addEventListener('change', updateDebugBorders);
+        
+        function updateWrapper() {
+            const width = containerWidth.value;
+            const height = containerHeight.value;
+            const overflow = overflowStyle.value;
+            
+            wrapper.style.width = width + 'px';
+            wrapper.style.height = height + 'px';
+            wrapper.className = `calendly-wrapper overflow-${overflow}`;
+            
+            dimensionDisplay.textContent = `${width}×${height}px`;
+        }
+        
+        function updateCalendly() {
+            renderCalendly();
+        }
+        
+        function renderCalendly() {
+            // Build URL with parameters
+            let url = 'https://calendly.com/mashamaria/returning-clients-clone';
+            const params = new URLSearchParams({
+                primary_color: '3b5849',
+                text_color: '000000',
+                background_color: 'FEFEF7'
+            });
+            
+            if (hideGDPR.checked) {
+                params.append('hide_gdpr_banner', '1');
+            }
+            
+            if (hideDetails.checked) {
+                params.append('hide_event_type_details', '1');
+                params.append('hide_landing_page_details', '1');
+            }
+            
+            url = `${url}?${params.toString()}`;
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            // Create new widget div
+            const widget = document.createElement('div');
+            widget.className = 'calendly-inline-widget';
+            widget.setAttribute('data-url', url);
+            
+            if (dataResize.checked) {
+                widget.setAttribute('data-resize', 'true');
+            }
+            
+            widget.style.minWidth = '320px';
+            
+            // Apply width based on type
+            const isPixels = widgetWidthType.value === 'pixels';
+            widget.style.width = widgetWidth.value + (isPixels ? 'px' : '%');
+            widget.style.height = widgetHeight.value + 'px';
+            
+            // Center widget if less than 100% width or if using pixels
+            if ((isPixels) || (parseInt(widgetWidth.value) < 100)) {
+                widget.style.margin = '0 auto';
+                widget.style.display = 'block';
+            }
+            
+            // Apply top offset if set
+            const offset = parseInt(topOffset.value);
+            if (offset !== 0) {
+                widget.style.position = 'relative';
+                widget.style.top = offset + 'px';
+            }
+            
+            container.appendChild(widget);
+            
+            // Re-initialize Calendly
+            if (window.Calendly) {
+                window.Calendly.initInlineWidget({
+                    url: url,
+                    parentElement: widget,
+                    prefill: {},
+                    utm: {}
+                });
+            }
+        }
+        
+        function reloadCalendly() {
+            renderCalendly();
+        }
+        
+        function updateDebugBorders() {
+            if (showDebugInfo.checked) {
+                document.querySelector('.calendly-wrapper').style.border = '2px dashed #3b5849';
+                const style = document.getElementById('debug-styles');
+                if (style) {
+                    style.disabled = false;
+                }
+            } else {
+                document.querySelector('.calendly-wrapper').style.border = 'none';
+                const style = document.getElementById('debug-styles');
+                if (style) {
+                    style.disabled = true;
+                }
+            }
+        }
+        
+        function applyPreset(height, containerH) {
+            widgetHeight.value = height;
+            containerHeight.value = containerH;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('containerHeightValue').textContent = containerH;
+            updateWrapper();
+            updateCalendly();
+        }
+        
+        // Initial render
+        setTimeout(() => {
+            renderCalendly();
+        }, 1000);
+    </script>
+</body>
+</html>
