@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function LayoutPositioner() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
   const [positions, setPositions] = useState({
     headline: 82,
     bodytext: 185,
@@ -13,90 +14,46 @@ export default function LayoutPositioner() {
     calendly: 1100
   });
 
-  // Apply positions in real-time to actual elements
+  const draggedElement = useRef<string | null>(null);
+  const dragOffset = useRef(0);
+
+  const handleMouseDown = (e: React.MouseEvent, elementId: string) => {
+    draggedElement.current = elementId;
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    dragOffset.current = e.clientY - rect.top;
+    e.preventDefault();
+  };
+
   useEffect(() => {
-    const applyPositions = () => {
-      // Get the desktop canvas container
-      const canvas = document.querySelector('#desktop-canvas');
-      if (!canvas) return;
-      
-      // Find elements by their style attributes and classes
-      const allElements = canvas.querySelectorAll('[style*="top:"], .absolute');
-      
-      allElements.forEach((elem) => {
-        const style = elem.getAttribute('style') || '';
-        const classes = elem.className || '';
+    const handleMouseMove = (e: MouseEvent) => {
+      if (draggedElement.current) {
+        const canvas = document.querySelector('#desktop-canvas');
+        if (!canvas) return;
         
-        // Headline (left: 784px)
-        if (style.includes("left: '784px'") || style.includes('left: 784px')) {
-          (elem as HTMLElement).style.top = `${positions.headline}px`;
-        }
-        // Body text (left: 788px)
-        else if (style.includes("left: '788px'") || style.includes('left: 788px')) {
-          (elem as HTMLElement).style.top = `${positions.bodytext}px`;
-        }
-        // Portrait (picture element)
-        else if (elem.tagName === 'PICTURE' && classes.includes('absolute')) {
-          (elem as HTMLElement).style.top = `${positions.portrait}px`;
-        }
-        // My Work title (text-3xl)
-        else if (classes.includes('text-3xl') && classes.includes('left-[159px]')) {
-          (elem as HTMLElement).style.top = `${positions.mywork}px`;
-        }
-        // Modalities subtitle (w-[650px])
-        else if (classes.includes('w-[650px]') && classes.includes('left-[159px]')) {
-          (elem as HTMLElement).style.top = `${positions.modsubtitle}px`;
-        }
-        // Movement/Laughter row (top-[1200px])
-        else if (classes.includes('left-[159px]') && classes.includes('top-[1200px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1}px`;
-        }
-        else if (classes.includes('left-[430px]') && classes.includes('top-[1200px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1}px`;
-        }
-        // Parts/Deep Connection row (top-[1400px])
-        else if (classes.includes('left-[159px]') && classes.includes('top-[1400px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2}px`;
-        }
-        else if (classes.includes('left-[430px]') && classes.includes('top-[1400px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2}px`;
-        }
-        // Calendly container (left-[800px])
-        else if (classes.includes('left-[800px]')) {
-          (elem as HTMLElement).style.top = `${positions.calendly}px`;
-        }
+        const canvasRect = canvas.getBoundingClientRect();
+        const scale = canvasRect.width / 1650; // Account for ScaleFrame scaling
         
-        // Also update bullet points relative to their headings
-        if (classes.includes('left-[189px]') && classes.includes('top-[1242px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1 + 42}px`;
-        }
-        else if (classes.includes('left-[189px]') && classes.includes('top-[1336px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1 + 136}px`;
-        }
-        else if (classes.includes('left-[460px]') && classes.includes('top-[1242px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1 + 42}px`;
-        }
-        else if (classes.includes('left-[460px]') && classes.includes('top-[1336px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow1 + 136}px`;
-        }
-        else if (classes.includes('left-[189px]') && classes.includes('top-[1442px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2 + 42}px`;
-        }
-        else if (classes.includes('left-[189px]') && classes.includes('top-[1536px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2 + 136}px`;
-        }
-        else if (classes.includes('left-[460px]') && classes.includes('top-[1442px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2 + 42}px`;
-        }
-        else if (classes.includes('left-[460px]') && classes.includes('top-[1536px]')) {
-          (elem as HTMLElement).style.top = `${positions.modrow2 + 136}px`;
-        }
-      });
+        const newTop = (e.clientY - canvasRect.top - dragOffset.current) / scale;
+        
+        setPositions(prev => ({
+          ...prev,
+          [draggedElement.current!]: Math.max(0, Math.round(newTop))
+        }));
+      }
     };
 
-    // Wait a bit for the DOM to be ready
-    setTimeout(applyPositions, 100);
-  }, [positions]);
+    const handleMouseUp = () => {
+      draggedElement.current = null;
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
 
   const handlePositionChange = (element: string, value: number) => {
     setPositions(prev => ({
@@ -117,6 +74,22 @@ Calendly Widget: ${positions.calendly}px`;
     
     navigator.clipboard.writeText(text);
   };
+
+  // Get the scale of the desktop canvas
+  const [canvasScale, setCanvasScale] = useState(1);
+  useEffect(() => {
+    const updateScale = () => {
+      const canvas = document.querySelector('#desktop-canvas');
+      if (canvas) {
+        const rect = canvas.getBoundingClientRect();
+        setCanvasScale(rect.width / 1650);
+      }
+    };
+    
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   return (
     <>
@@ -143,6 +116,208 @@ Calendly Widget: ${positions.calendly}px`;
         {isCollapsed ? '📐 Position Tool' : '✕'}
       </button>
 
+      {/* Overlay Placeholder Boxes */}
+      {showOverlay && !isCollapsed && (
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}>
+          {/* Get the desktop canvas bounds */}
+          <div id="overlay-container" style={{ position: 'relative' }}>
+            {/* Portrait Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'portrait')}
+              style={{
+                position: 'absolute',
+                left: `${122 * canvasScale}px`,
+                top: `${positions.portrait * canvasScale}px`,
+                width: `${581 * canvasScale}px`,
+                height: `${775 * canvasScale}px`,
+                background: 'rgba(103, 126, 234, 0.3)',
+                border: '2px dashed #667eea',
+                borderRadius: '37px',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#667eea',
+                fontWeight: 'bold',
+                fontSize: `${20 * canvasScale}px`
+              }}
+            >
+              PORTRAIT
+            </div>
+
+            {/* Headline Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'headline')}
+              style={{
+                position: 'absolute',
+                left: `${784 * canvasScale}px`,
+                top: `${positions.headline * canvasScale}px`,
+                width: `${763 * canvasScale}px`,
+                height: `${80 * canvasScale}px`,
+                background: 'rgba(59, 88, 73, 0.2)',
+                border: '2px dashed #3b5849',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#3b5849',
+                fontWeight: 'bold',
+                fontSize: `${14 * canvasScale}px`
+              }}
+            >
+              HEADLINE
+            </div>
+
+            {/* Body Text Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'bodytext')}
+              style={{
+                position: 'absolute',
+                left: `${788 * canvasScale}px`,
+                top: `${positions.bodytext * canvasScale}px`,
+                width: `${746 * canvasScale}px`,
+                height: `${650 * canvasScale}px`,
+                background: 'rgba(59, 88, 73, 0.1)',
+                border: '2px dashed #3b5849',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingTop: '20px',
+                color: '#3b5849',
+                fontWeight: 'bold',
+                fontSize: `${14 * canvasScale}px`
+              }}
+            >
+              BODY TEXT
+            </div>
+
+            {/* My Work Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'mywork')}
+              style={{
+                position: 'absolute',
+                left: `${159 * canvasScale}px`,
+                top: `${positions.mywork * canvasScale}px`,
+                width: `${200 * canvasScale}px`,
+                height: `${40 * canvasScale}px`,
+                background: 'rgba(255, 87, 34, 0.2)',
+                border: '2px dashed #ff5722',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ff5722',
+                fontWeight: 'bold',
+                fontSize: `${14 * canvasScale}px`
+              }}
+            >
+              MY WORK
+            </div>
+
+            {/* Modalities Subtitle Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'modsubtitle')}
+              style={{
+                position: 'absolute',
+                left: `${159 * canvasScale}px`,
+                top: `${positions.modsubtitle * canvasScale}px`,
+                width: `${650 * canvasScale}px`,
+                height: `${60 * canvasScale}px`,
+                background: 'rgba(255, 87, 34, 0.1)',
+                border: '2px dashed #ff5722',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ff5722',
+                fontWeight: 'bold',
+                fontSize: `${12 * canvasScale}px`
+              }}
+            >
+              SUBTITLE
+            </div>
+
+            {/* Modalities Row 1 Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'modrow1')}
+              style={{
+                position: 'absolute',
+                left: `${159 * canvasScale}px`,
+                top: `${positions.modrow1 * canvasScale}px`,
+                width: `${550 * canvasScale}px`,
+                height: `${150 * canvasScale}px`,
+                background: 'rgba(33, 150, 243, 0.15)',
+                border: '2px dashed #2196f3',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#2196f3',
+                fontWeight: 'bold',
+                fontSize: `${14 * canvasScale}px`
+              }}
+            >
+              MODALITIES ROW 1
+            </div>
+
+            {/* Modalities Row 2 Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'modrow2')}
+              style={{
+                position: 'absolute',
+                left: `${159 * canvasScale}px`,
+                top: `${positions.modrow2 * canvasScale}px`,
+                width: `${550 * canvasScale}px`,
+                height: `${150 * canvasScale}px`,
+                background: 'rgba(33, 150, 243, 0.15)',
+                border: '2px dashed #2196f3',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#2196f3',
+                fontWeight: 'bold',
+                fontSize: `${14 * canvasScale}px`
+              }}
+            >
+              MODALITIES ROW 2
+            </div>
+
+            {/* Calendly Placeholder */}
+            <div
+              onMouseDown={(e) => handleMouseDown(e, 'calendly')}
+              style={{
+                position: 'absolute',
+                left: `${800 * canvasScale}px`,
+                top: `${positions.calendly * canvasScale}px`,
+                width: `${750 * canvasScale}px`,
+                height: `${770 * canvasScale}px`,
+                background: 'rgba(156, 39, 176, 0.15)',
+                border: '2px dashed #9c27b0',
+                cursor: 'move',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#9c27b0',
+                fontWeight: 'bold',
+                fontSize: `${16 * canvasScale}px`
+              }}
+            >
+              CALENDLY
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal Panel */}
       <div
         style={{
@@ -164,9 +339,22 @@ Calendly Widget: ${positions.calendly}px`;
             Layout Positioner
           </h3>
           
-          <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>
-            Adjust values to see real-time positioning changes
+          <p style={{ fontSize: '12px', color: '#666', marginBottom: '15px' }}>
+            Drag the overlay boxes or use sliders below
           </p>
+
+          {/* Toggle Overlay */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', fontSize: '13px' }}>
+              <input
+                type="checkbox"
+                checked={showOverlay}
+                onChange={(e) => setShowOverlay(e.target.checked)}
+                style={{ marginRight: '8px' }}
+              />
+              Show Overlay Boxes
+            </label>
+          </div>
 
           {/* Hero Section */}
           <div style={{ marginBottom: '20px', paddingBottom: '15px', borderBottom: '1px solid #e0e0e0' }}>
