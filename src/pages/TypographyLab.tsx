@@ -247,7 +247,7 @@ export default function TypographyLab() {
 
   return (
     <main className="min-h-screen bg-[#fefef7] text-black">
-      <div className="mx-auto max-w-screen-md px-4 py-6">
+      <div className="w-screen max-w-none px-4 md:px-6 lg:px-10 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px]">Typography Lab</h1>
           <div className="flex items-center gap-3">
@@ -261,7 +261,7 @@ export default function TypographyLab() {
           </div>
         </header>
 
-        <section className="grid grid-cols-12 gap-4 items-start">
+        <section className="grid grid-cols-12 gap-4 items-start max-w-[1700px] mx-auto">
           <div className="col-span-12 lg:col-span-3 xl:col-span-4 2xl:col-span-3 space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4 sticky top-4 self-start">
             {/* Style selectors */}
             <div className="flex gap-2 text-[12px]">
@@ -388,7 +388,9 @@ export default function TypographyLab() {
 
           <div className="col-span-12 lg:col-span-9 xl:col-span-8 2xl:col-span-9 border border-[#d4cccc] bg-white rounded-[8px] p-4 overflow-auto">
             <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Preview (Before / After)</div>
-            <div className="grid gap-4" style={{ width }}>
+            <div className="w-full">
+              <div className="mx-auto" style={{ width }}>
+                <div className="grid gap-4">
               {/* H1 block (e.g., My Work) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -430,6 +432,8 @@ export default function TypographyLab() {
                   <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">After</div>
                   <h3 style={{ ...styleOf(specs.h3), marginTop: specs.h3.marginTop || 0, marginBottom: specs.h3.marginBottom || 0 }}>{content?.modalities?.[0]?.title?.replace(/\*+/g,'') || 'Modality Title'}</h3>
                   <p style={styleOf(specs.small)}>{content?.modalities?.[0]?.short || ''}</p>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
