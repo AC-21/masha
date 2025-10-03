@@ -1,7 +1,5 @@
-import CalendlyEmbed from "./CalendlyEmbed";
 import { useContent } from "../lib/useContent";
-import { useState } from "react";
-import MobileCanvas from "./MobileCanvas";
+import { useState, useEffect, useRef } from "react";
 import LandscapeCanvas from "./LandscapeCanvas";
 
 export default function ResponsiveLanding() {
@@ -19,44 +17,19 @@ export default function ResponsiveLanding() {
         </div>
       </div>
 
-      {/* Hero: image + story intro (hidden on lg+, where LandscapeCanvas handles the layout) */}
-      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-10 lg:pt-16 lg:hidden">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
-          <div className="order-2 lg:order-1">
-            <h2 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[22px] sm:text-[28px] lg:text-[40px] leading-[1.15] mb-4 lg:mb-6">
-              More about my practice
-            </h2>
-            <div className="space-y-4 sm:space-y-5 lg:space-y-7 text-[14px] leading-[28px] lowercase font-['Inter'] max-w-prose">
-              {content.about.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          </div>
+      {/* Hero removed on mobile to avoid duplication; desktop handled by LandscapeCanvas */}
+      <section className="hidden lg:pt-16 lg:hidden" />
 
-          <div className="order-1 lg:order-2">
-            <img
-              src={content.images.portrait}
-              alt="Portrait"
-              className="w-full h-auto rounded-[24px] sm:rounded-[28px] lg:rounded-[37px] object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Divider (hidden on lg+ because LandscapeCanvas owns layout there) */}
-      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-8 lg:py-12 lg:hidden">
-        <div className="border-t border-dashed border-[#d4cccc]" />
-      </div>
+      {/* Divider hidden on mobile */}
+      <div className="hidden lg:hidden" />
 
       {/* Desktop parity: use LandscapeCanvas with live content */}
       <section className="hidden lg:block">
         <LandscapeCanvas content={content as any} />
       </section>
 
-      {/* Mobile: strict parity frame — use reference MobileCanvas with live content */}
-      <section className="block lg:hidden">
-        <MobileCanvas content={content as any} />
-      </section>
+      {/* Mobile: My Work V2 — sticky header, modalities scroll under, glass CTA at bottom */}
+      <MobileModalities content={content as any} />
     </main>
   );
 }
@@ -74,6 +47,70 @@ function Expandable({ textShort, textLong }: { textShort: string; textLong: stri
         {open ? 'Read less' : 'Read more'}
       </button>
     </div>
+  );
+}
+
+function MobileModalities({ content }: { content: any }) {
+  const listRef = useRef<HTMLDivElement>(null);
+  // Glass CTA visibility when user reaches modalities
+  const [ctaVisible, setCtaVisible] = useState(false);
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const e = entries[0];
+        setCtaVisible(e.isIntersecting);
+      },
+      { root: null, threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section className="block lg:hidden px-4 pb-24">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-[#fefef7] py-3">
+        <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px]">My Work</h3>
+        {/* Blur veil */}
+        <div className="relative h-5 pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(254,254,247,1), rgba(254,254,247,0))',
+              WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+              maskImage: 'linear-gradient(to bottom, black, transparent)',
+              backdropFilter: 'blur(6px)'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Modalities list */}
+      <div ref={listRef} className="pt-2 space-y-8">
+        {content.modalities.map((m: any, i: number) => (
+          <div key={i}>
+            <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] mb-1">
+              {m.title.replace(/\*+/g, '').trim()}
+            </h4>
+            <Expandable textShort={m.short} textLong={m.long} />
+          </div>
+        ))}
+      </div>
+
+      {/* Glass CTA sticky at bottom when in modalities */}
+      <div
+        className={`fixed left-0 right-0 bottom-3 z-30 px-4 transition-opacity ${ctaVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+        <a
+          href="#calendly"
+          className="block backdrop-blur-md bg-white/30 border border-white/50 shadow-lg rounded-full text-center py-3 font-['Roboto Mono'] uppercase text-[12px]"
+        >
+          Interested in a session
+        </a>
+      </div>
+    </section>
   );
 }
 
