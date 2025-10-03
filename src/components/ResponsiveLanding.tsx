@@ -46,7 +46,7 @@ export default function ResponsiveLanding() {
         <div className="border-t border-dashed border-[#d4cccc]" />
       </div>
 
-      {/* Modalities + Calendly */}
+      {/* Modalities + Calendly (Desktop / Tablet) */}
       <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pb-16">
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Modalities */}
@@ -84,7 +84,53 @@ export default function ResponsiveLanding() {
           </div>
         </div>
       </section>
+
+      {/* Mobile Modalities V2: sticky header + blur veil + expand/collapse */}
+      <section className="block lg:hidden px-4 pb-16">
+        <div className="sticky top-0 z-20 bg-[#fefef7]">
+          <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] py-3">My Work</h3>
+          {/* Blur veil: try backdrop-filter; fallback is a gradient fade mask */}
+          <div className="relative h-5 pointer-events-none">
+            <div
+              className="absolute inset-0"
+              style={{
+                // Fallback gradient
+                background: 'linear-gradient(to bottom, rgba(254,254,247,1), rgba(254,254,247,0))',
+                WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+                maskImage: 'linear-gradient(to bottom, black, transparent)',
+                // Blur overlay — supported on modern mobile
+                backdropFilter: 'blur(6px)'
+              }}
+            />
+          </div>
+        </div>
+
+        <ul className="pt-2 space-y-8">
+          {content.modalities.map((m, i) => (
+            <li key={i}>
+              <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] mb-1">{m.title}</h4>
+              <Expandable textShort={m.short} textLong={m.long} />
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
+  );
+}
+
+function Expandable({ textShort, textLong }: { textShort: string; textLong: string }) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="font-['Inter'] text-[12px] leading-6 lowercase max-w-prose">
+      <p className="mb-1">{textShort}</p>
+      {open && <p className="mt-1">{textLong}</p>}
+      <button
+        className="mt-1 text-[12px] underline"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? 'Read less' : 'Read more'}
+      </button>
+    </div>
   );
 }
 

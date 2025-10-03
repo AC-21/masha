@@ -10,6 +10,7 @@ const sources = {
 export default function LandscapeCanvas() {
   return (
     <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
+      {/* Legacy pixel-perfect reference (not rendered in production UI). */}
       <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={1900} minScale={0} maxScale={1} className="mx-auto w-full">
         <div className="relative w-[1650px] h-[1900px]" style={{ backgroundColor: '#FEFEF7' }}>
           {/* Content container with background */}
