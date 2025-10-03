@@ -26,11 +26,22 @@ const defaults: Scale = {
 
 export default function TypographyLab() {
   const { content } = useContent();
-  type Keys = 'body' | 'h2' | 'h3' | 'small';
+  type Keys = 'body' | 'h1' | 'h2' | 'h3' | 'small';
   const [active, setActive] = useState<Keys>('body');
   const [viewport, setViewport] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
   const [specs, setSpecs] = useState<Record<Keys, Scale>>({
     body: { ...defaults },
+    h1: {
+      label: 'H1',
+      fontFamily: "'Roboto Mono', ui-monospace, SFMono-Regular, monospace",
+      size: 22,
+      lineHeight: 26,
+      weight: 700,
+      letterSpacing: 0.06,
+      transform: 'uppercase',
+      marginTop: 0,
+      marginBottom: 8
+    },
     h2: {
       label: 'H2',
       fontFamily: "'Roboto Mono', ui-monospace, SFMono-Regular, monospace",
@@ -114,19 +125,23 @@ export default function TypographyLab() {
   // Persist in URL for easy sharing
   useEffect(() => {
     const params = new URLSearchParams();
+    const pref = (k: Keys) => (k === 'body' ? 'b_' : k + '_');
     const write = (key: Keys, s: Scale) => {
-      const p = key[0]; // b, h, h, s — keys must be unique
+      const p = pref(key);
       params.set(`${p}ff`, s.fontFamily);
       params.set(`${p}fs`, String(s.size));
       params.set(`${p}lh`, String(s.lineHeight));
       params.set(`${p}fw`, String(s.weight));
       params.set(`${p}ls`, String(s.letterSpacing));
       params.set(`${p}tt`, s.transform || 'none');
+      if (typeof s.marginTop === 'number') params.set(`${p}mt`, String(s.marginTop));
+      if (typeof s.marginBottom === 'number') params.set(`${p}mb`, String(s.marginBottom));
     };
     write('body', specs.body);
-    params.set('H2', '1'); write('h2', specs.h2);
-    params.set('H3', '1'); write('h3', specs.h3);
-    params.set('S', '1'); write('small', specs.small);
+    write('h1', specs.h1);
+    write('h2', specs.h2);
+    write('h3', specs.h3);
+    write('small', specs.small);
     params.set('vp', viewport);
     params.set('t', sample);
     const next = `${location.pathname}?${params.toString()}`;
@@ -147,13 +162,16 @@ export default function TypographyLab() {
       lineHeight: getNum(`${p}lh`, d.lineHeight),
       weight: getNum(`${p}fw`, Number(d.weight)) || d.weight,
       letterSpacing: getNum(`${p}ls`, d.letterSpacing),
-      transform: (q.get(`${p}tt`) as any) || d.transform || 'none'
+      transform: (q.get(`${p}tt`) as any) || d.transform || 'none',
+      marginTop: getNum(`${p}mt`, d.marginTop || 0),
+      marginBottom: getNum(`${p}mb`, d.marginBottom || 0),
     });
     setSpecs({
-      body: read('b', specs.body),
-      h2: read('h', specs.h2),
-      h3: read('j', specs.h3), // use j to avoid collision with h2
-      small: read('s', specs.small)
+      body: read('b_', specs.body),
+      h1: read('h1_', specs.h1),
+      h2: read('h2_', specs.h2),
+      h3: read('h3_', specs.h3),
+      small: read('small_', specs.small) // allow both s_ and small_
     });
     const vp = q.get('vp') as any;
     if (vp === 'mobile' || vp === 'tablet' || vp === 'desktop') setViewport(vp);
@@ -194,7 +212,7 @@ export default function TypographyLab() {
           <div className="space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4">
             {/* Style selectors */}
             <div className="flex gap-2 text-[12px]">
-              {(['body','h2','h3','small'] as const).map(k => (
+              {(['body','h1','h2','h3','small'] as const).map(k => (
                 <button key={k} onClick={() => setActive(k)} className={`px-2 py-1 rounded border ${active===k?'bg-black text-white':'bg-[#FEFEF7]'}`}>{k.toUpperCase()}</button>
               ))}
             </div>
@@ -291,7 +309,21 @@ export default function TypographyLab() {
           <div className="border border-[#d4cccc] bg-white rounded-[8px] p-4">
             <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Preview (Before / After)</div>
             <div className="grid gap-4" style={{ width }}>
-              {/* About block */}
+              {/* H1 block (e.g., My Work) */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">Before</div>
+                  <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[22px]">My Work</h1>
+                </div>
+                <div>
+                  <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">After</div>
+                  <h1 style={{ ...styleOf(specs.h1), marginTop: specs.h1.marginTop || 0, marginBottom: specs.h1.marginBottom || 0 }}>My Work</h1>
+                </div>
+              </div>
+
+              <hr className="border-[#d4cccc]" />
+
+              {/* About block (H2 + Body) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">Before</div>
@@ -326,6 +358,7 @@ export default function TypographyLab() {
             <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Export tokens</div>
             <pre className="text-[12px] whitespace-pre-wrap">{JSON.stringify({
               fontSize: {
+                h1: [specs.h1.size + 'px', { lineHeight: specs.h1.lineHeight + 'px', letterSpacing: specs.h1.letterSpacing + 'em' }],
                 h2: [specs.h2.size + 'px', { lineHeight: specs.h2.lineHeight + 'px', letterSpacing: specs.h2.letterSpacing + 'em' }],
                 h3: [specs.h3.size + 'px', { lineHeight: specs.h3.lineHeight + 'px', letterSpacing: specs.h3.letterSpacing + 'em' }],
                 body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px' }],
@@ -349,6 +382,7 @@ function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSp
   const [message, setMessage] = useState<string | null>(null);
   const payload = {
     fontSize: {
+      h1: [specs.h1.size + 'px', { lineHeight: specs.h1.lineHeight + 'px', letterSpacing: specs.h1.letterSpacing + 'em' }],
       h2: [specs.h2.size + 'px', { lineHeight: specs.h2.lineHeight + 'px', letterSpacing: specs.h2.letterSpacing + 'em' }],
       h3: [specs.h3.size + 'px', { lineHeight: specs.h3.lineHeight + 'px', letterSpacing: specs.h3.letterSpacing + 'em' }],
       body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px' }],
