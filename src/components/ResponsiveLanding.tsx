@@ -1,7 +1,7 @@
 import CalendlyEmbed from "./CalendlyEmbed";
 import { useContent } from "../lib/useContent";
 import { useState } from "react";
-import MobileParity from "./MobileParity";
+import MobileCanvas from "./MobileCanvas";
 
 export default function ResponsiveLanding() {
   const { content } = useContent();
@@ -87,9 +87,9 @@ export default function ResponsiveLanding() {
         </div>
       </section>
 
-      {/* Mobile: strict parity frame with content slotted into reference layout */}
+      {/* Mobile: strict parity frame — use reference MobileCanvas with live content */}
       <section className="block lg:hidden">
-        <MobileParity content={content as any} />
+        <MobileCanvas content={content as any} />
       </section>
     </main>
   );
