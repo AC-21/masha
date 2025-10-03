@@ -43,8 +43,8 @@ export default function ResponsiveLanding() {
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-8 lg:py-12">
+      {/* Divider (hidden on lg+ because LandscapeCanvas owns layout there) */}
+      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-8 lg:py-12 lg:hidden">
         <div className="border-t border-dashed border-[#d4cccc]" />
       </div>
 
