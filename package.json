@@ -10,7 +10,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "tokens:build": "style-dictionary build --config style-dictionary.config.mjs",
     "tokens:sync": "node scripts/sync-figma-tokens.js && npm run tokens:build",
-    "import:modalities": "ts-node --swc scripts/import-modalities-from-md.ts"
+    "import:modalities": "node scripts/import-modalities-from-md.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",
