@@ -9,6 +9,9 @@ type Scale = {
   weight: number | string;
   letterSpacing: number; // em
   transform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+  // Spacing controls
+  marginTop?: number;
+  marginBottom?: number;
 };
 
 const defaults: Scale = {
@@ -35,7 +38,9 @@ export default function TypographyLab() {
       lineHeight: 24,
       weight: 700,
       letterSpacing: 0.06,
-      transform: 'uppercase'
+      transform: 'uppercase',
+      marginTop: 0,
+      marginBottom: 8
     },
     h3: {
       label: 'H3',
@@ -44,7 +49,9 @@ export default function TypographyLab() {
       lineHeight: 20,
       weight: 700,
       letterSpacing: 0.06,
-      transform: 'uppercase'
+      transform: 'uppercase',
+      marginTop: 12,
+      marginBottom: 6
     },
     small: {
       label: 'Small',
@@ -57,6 +64,7 @@ export default function TypographyLab() {
     }
   });
   const [sample, setSample] = useState<string>(content?.about?.[0] || '');
+  const [paragraphSpacing, setParagraphSpacing] = useState<number>(16);
 
   // Quick font lists (from your shortlist; Fontshare families)
   const fontShare: Record<string, string> = {
@@ -76,6 +84,31 @@ export default function TypographyLab() {
     'Erode': 'Erode, Inter, system-ui, sans-serif',
     'Supreme': 'Supreme, Inter, system-ui, sans-serif',
     'Sentient': 'Sentient, Inter, system-ui, sans-serif',
+  };
+
+  // Fontshare CSS loader helpers
+  const ensurePreconnect = (href: string) => {
+    if (document.querySelector(`link[data-preconnect='${href}']`)) return;
+    const l = document.createElement('link');
+    l.rel = 'preconnect';
+    l.href = href;
+    l.setAttribute('data-preconnect', href);
+    document.head.appendChild(l);
+  };
+  const loadFontCss = (url: string) => {
+    if (!url) return;
+    if (document.querySelector(`link[data-fontshare='${url}']`)) return;
+    ensurePreconnect('https://api.fontshare.com');
+    ensurePreconnect('https://cdn.fontshare.com');
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = url;
+    l.setAttribute('data-fontshare', url);
+    document.head.appendChild(l);
+  };
+  const guessCss = (name: string) => {
+    const slug = name.toLowerCase().replace(/\s+/g, '');
+    return `https://api.fontshare.com/v2/css?f[]=${slug}@400,500,700&display=swap`;
   };
 
   // Persist in URL for easy sharing
@@ -173,13 +206,27 @@ export default function TypographyLab() {
                 {Object.entries(fontShare).map(([name, stack]) => (
                   <button
                     key={name}
-                    onClick={() => setSpecs({ ...specs, [active]: { ...specs[active], fontFamily: stack } })}
+                    onClick={() => {
+                      setSpecs({ ...specs, [active]: { ...specs[active], fontFamily: stack } });
+                      loadFontCss(guessCss(name));
+                    }}
                     className="px-2 py-1 border rounded text-[12px] bg-[#FEFEF7] hover:bg-black hover:text-white"
                     title={stack}
                   >
                     {name}
                   </button>
                 ))}
+              </div>
+              <div className="grid grid-cols-6 gap-2 mt-2 items-center">
+                <label className="text-[12px] uppercase font-['Roboto Mono'] col-span-2">Fontshare CSS URL</label>
+                <input id="cssUrl" className="col-span-3 border border-[#d4cccc] rounded px-2 py-1" placeholder="https://api.fontshare.com/v2/css?f[]=family@400.." />
+                <button
+                  className="px-2 py-1 border rounded text-[12px]"
+                  onClick={() => {
+                    const el = document.getElementById('cssUrl') as HTMLInputElement | null;
+                    if (el && el.value) loadFontCss(el.value);
+                  }}
+                >Load CSS</button>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -211,9 +258,33 @@ export default function TypographyLab() {
                 </select>
               </div>
             </div>
+            {/* Rhythm controls */}
+            {active === 'body' ? (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[12px] uppercase font-['Roboto Mono']">Paragraph Spacing (px)</label>
+                  <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" value={paragraphSpacing} onChange={(e) => setParagraphSpacing(Number(e.target.value))} />
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[12px] uppercase font-['Roboto Mono']">Heading Margin Top (px)</label>
+                  <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" value={specs[active].marginTop || 0} onChange={(e) => setSpecs({ ...specs, [active]: { ...specs[active], marginTop: Number(e.target.value) } })} />
+                </div>
+                <div>
+                  <label className="text-[12px] uppercase font-['Roboto Mono']">Heading Margin Bottom (px)</label>
+                  <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" value={specs[active].marginBottom || 0} onChange={(e) => setSpecs({ ...specs, [active]: { ...specs[active], marginBottom: Number(e.target.value) } })} />
+                </div>
+              </div>
+            )}
             <div className="grid gap-2">
               <label className="text-[12px] uppercase font-['Roboto Mono']">Sample Text</label>
               <textarea className="border border-[#d4cccc] rounded px-2 py-1" rows={5} value={sample} onChange={(e) => setSample(e.target.value)} />
+            </div>
+            {/* Save as tokens */}
+            <div className="pt-2">
+              <SaveTokensButton specs={specs} paragraphSpacing={paragraphSpacing} />
             </div>
           </div>
 
@@ -229,8 +300,8 @@ export default function TypographyLab() {
                 </div>
                 <div>
                   <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">After</div>
-                  <h2 style={styleOf(specs.h2)} className="mb-2">Here for your liberation</h2>
-                  <p style={styleOf(specs.body)}>{content?.about?.[0] || sample}</p>
+                  <h2 style={{ ...styleOf(specs.h2), marginTop: specs.h2.marginTop || 0, marginBottom: specs.h2.marginBottom || 0 }}>Here for your liberation</h2>
+                  <p style={{ ...styleOf(specs.body), marginBottom: paragraphSpacing }}>{content?.about?.[0] || sample}</p>
                 </div>
               </div>
 
@@ -245,7 +316,7 @@ export default function TypographyLab() {
                 </div>
                 <div>
                   <div className="text-[12px] uppercase font-['Roboto Mono'] mb-1">After</div>
-                  <h3 style={styleOf(specs.h3)} className="mb-1">{content?.modalities?.[0]?.title?.replace(/\*+/g,'') || 'Modality Title'}</h3>
+                  <h3 style={{ ...styleOf(specs.h3), marginTop: specs.h3.marginTop || 0, marginBottom: specs.h3.marginBottom || 0 }}>{content?.modalities?.[0]?.title?.replace(/\*+/g,'') || 'Modality Title'}</h3>
                   <p style={styleOf(specs.small)}>{content?.modalities?.[0]?.short || ''}</p>
                 </div>
               </div>
@@ -270,5 +341,53 @@ export default function TypographyLab() {
         </section>
       </div>
     </main>
+  );
+}
+
+function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSpacing: number }) {
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const payload = {
+    fontSize: {
+      h2: [specs.h2.size + 'px', { lineHeight: specs.h2.lineHeight + 'px', letterSpacing: specs.h2.letterSpacing + 'em' }],
+      h3: [specs.h3.size + 'px', { lineHeight: specs.h3.lineHeight + 'px', letterSpacing: specs.h3.letterSpacing + 'em' }],
+      body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px' }],
+      small: [specs.small.size + 'px', { lineHeight: specs.small.lineHeight + 'px' }]
+    },
+    fonts: {
+      body: specs.body.fontFamily,
+      mono: specs.h2.fontFamily
+    },
+    spacing: {
+      paragraph: paragraphSpacing,
+      h2: { mt: specs.h2.marginTop || 0, mb: specs.h2.marginBottom || 0 },
+      h3: { mt: specs.h3.marginTop || 0, mb: specs.h3.marginBottom || 0 }
+    }
+  };
+
+  const save = async () => {
+    setSaving(true); setMessage(null);
+    try {
+      const res = await fetch('/api/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ __tokens: payload }, null, 2)
+      });
+      if (!res.ok) throw new Error('Failed');
+      setMessage('Saved to content file. I will port these into tokens-clean.js on next pass.');
+    } catch (e) {
+      setMessage('Save failed. I can copy these tokens manually.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-3">
+      <button onClick={save} disabled={saving} className="px-3 py-2 rounded bg-black text-white text-[12px]">
+        {saving ? 'Saving…' : 'Save as tokens'}
+      </button>
+      {message && <span className="text-[12px] text-[#4c4848]">{message}</span>}
+    </div>
   );
 }
