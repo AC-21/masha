@@ -6,7 +6,8 @@ import TypographyLab from "./pages/TypographyLab";
 
 export default function App() {
   // Show layout positioner only in development or with a URL parameter
-  const showPositioner = import.meta.env.DEV || window.location.search.includes('?position=true');
+  const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const showPositioner = params.get('position') === 'true' || params.get('position') === '1';
   const isEdit = typeof window !== 'undefined' && window.location.pathname === '/edit';
   const isType = typeof window !== 'undefined' && window.location.pathname === '/type';
   

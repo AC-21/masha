@@ -58,6 +58,26 @@ export default function TypographyLab() {
   });
   const [sample, setSample] = useState<string>(content?.about?.[0] || '');
 
+  // Quick font lists (from your shortlist; Fontshare families)
+  const fontShare: Record<string, string> = {
+    'Satoshi': 'Satoshi, Inter, system-ui, sans-serif',
+    'Epilogue': 'Epilogue, Inter, system-ui, sans-serif',
+    'Gambarino': 'Gambarino, serif',
+    'Clash Grotesk': 'Clash Grotesk, Inter, system-ui, sans-serif',
+    'Cabinet Grotesk': 'Cabinet Grotesk, Inter, system-ui, sans-serif',
+    'Chillax': 'Chillax, Inter, system-ui, sans-serif',
+    'Tanker': 'Tanker, Inter, system-ui, sans-serif',
+    'Alpino': 'Alpino, Inter, system-ui, sans-serif',
+    'General Sans': 'General Sans, Inter, system-ui, sans-serif',
+    'Red Hat Display': 'Red Hat Display, Inter, system-ui, sans-serif',
+    'Outfit': 'Outfit, Inter, system-ui, sans-serif',
+    'Public Sans': 'Public Sans, Inter, system-ui, sans-serif',
+    'RX100': 'RX100, Inter, system-ui, sans-serif',
+    'Erode': 'Erode, Inter, system-ui, sans-serif',
+    'Supreme': 'Supreme, Inter, system-ui, sans-serif',
+    'Sentient': 'Sentient, Inter, system-ui, sans-serif',
+  };
+
   // Persist in URL for easy sharing
   useEffect(() => {
     const params = new URLSearchParams();
@@ -149,6 +169,18 @@ export default function TypographyLab() {
             <div className="grid gap-2">
               <label className="text-[12px] uppercase font-['Roboto Mono']">Font Family</label>
               <input className="border border-[#d4cccc] rounded px-2 py-1" value={specs[active].fontFamily} onChange={(e) => setSpecs({ ...specs, [active]: { ...specs[active], fontFamily: e.target.value } })} />
+              <div className="flex flex-wrap gap-2 mt-2">
+                {Object.entries(fontShare).map(([name, stack]) => (
+                  <button
+                    key={name}
+                    onClick={() => setSpecs({ ...specs, [active]: { ...specs[active], fontFamily: stack } })}
+                    className="px-2 py-1 border rounded text-[12px] bg-[#FEFEF7] hover:bg-black hover:text-white"
+                    title={stack}
+                  >
+                    {name}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
