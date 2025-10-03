@@ -2,6 +2,7 @@ import CalendlyEmbed from "./CalendlyEmbed";
 import { useContent } from "../lib/useContent";
 import { useState } from "react";
 import MobileCanvas from "./MobileCanvas";
+import LandscapeCanvas from "./LandscapeCanvas";
 
 export default function ResponsiveLanding() {
   const { content } = useContent();
@@ -18,8 +19,8 @@ export default function ResponsiveLanding() {
         </div>
       </div>
 
-      {/* Hero: image + story intro */}
-      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-10 lg:pt-16">
+      {/* Hero: image + story intro (hidden on lg+, where LandscapeCanvas handles the layout) */}
+      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-10 lg:pt-16 lg:hidden">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
           <div className="order-2 lg:order-1">
             <h2 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[22px] sm:text-[28px] lg:text-[40px] leading-[1.15] mb-4 lg:mb-6">
@@ -47,44 +48,9 @@ export default function ResponsiveLanding() {
         <div className="border-t border-dashed border-[#d4cccc]" />
       </div>
 
-      {/* Modalities + Calendly (Desktop / Tablet) */}
-      <section className="hidden lg:block mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pb-16">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Modalities */}
-          <div className="lg:col-span-7">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[18px] sm:text-[22px] mb-3">Modalities</h3>
-            <p className="uppercase text-[12px] text-[#525050] mb-6 font-['Roboto Mono'] leading-[18px]">
-              every session is unique & guided by your overall intentions. You will be received where you are,
-              <br /> and we will get to where we need to go. 
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
-              {content.modalities.slice(0, 4).map((m) => (
-                <div key={m.title}>
-                  <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.04em] text-[18px] mb-2">{m.title}</h4>
-                  <p className="font-['Inter'] text-[12px] leading-[20px] lowercase max-w-prose">
-                    {m.short}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Calendly */}
-          <div className="lg:col-span-5">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] sm:text-[18px] mb-4">
-              {content.cta.label}
-            </h3>
-            <CalendlyEmbed
-              className="w-full"
-              rounded={40}
-              height={570}
-              offsetY={-20}
-              primaryColor="3b5849"
-              textColor="ffffff"
-              url={import.meta.env.VITE_CALENDLY_URL}
-            />
-          </div>
-        </div>
+      {/* Desktop parity: use LandscapeCanvas with live content */}
+      <section className="hidden lg:block">
+        <LandscapeCanvas content={content as any} />
       </section>
 
       {/* Mobile: strict parity frame — use reference MobileCanvas with live content */}
