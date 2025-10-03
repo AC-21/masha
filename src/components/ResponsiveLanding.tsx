@@ -1,5 +1,6 @@
 import CalendlyEmbed from "./CalendlyEmbed";
 import { useContent } from "../lib/useContent";
+import { useState } from "react";
 
 export default function ResponsiveLanding() {
   const { content } = useContent();
@@ -47,7 +48,7 @@ export default function ResponsiveLanding() {
       </div>
 
       {/* Modalities + Calendly (Desktop / Tablet) */}
-      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pb-16">
+      <section className="hidden lg:block mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pb-16">
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Modalities */}
           <div className="lg:col-span-7">
@@ -119,7 +120,7 @@ export default function ResponsiveLanding() {
 }
 
 function Expandable({ textShort, textLong }: { textShort: string; textLong: string }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   return (
     <div className="font-['Inter'] text-[12px] leading-6 lowercase max-w-prose">
       <p className="mb-1">{textShort}</p>
