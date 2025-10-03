@@ -22,6 +22,10 @@ export default function LandscapeCanvas({ content }: { content: Content }) {
         <div className="relative w-[1650px] h-[1900px]" style={{ backgroundColor: '#FEFEF7' }}>
           {/* Content container with background */}
         {/* Tagline is rendered by ResponsiveLanding header; do not duplicate here */}
+        {/* Section heading */}
+        <div className="absolute text-black font-bold font-['Roboto Mono'] uppercase leading-9" style={{ left: '788px', top: '152px', width: '746px', fontSize: 40 }}>
+          More About my Practice
+        </div>
         {/* Body text block (right column) */}
         <div className="absolute left-[788px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">
           {content.about.map((p, i) => (
@@ -67,6 +71,8 @@ export default function LandscapeCanvas({ content }: { content: Content }) {
             </text>
           </svg>
         </div>
+        {/* Divider */}
+        <div className="absolute border-t border-dashed border-[#d4cccc]" style={{ left: 159, top: 1000, width: 1330 }} />
         {/* Modalities subtitle - italic text */}
         <div className="absolute left-[159px] top-[1033px] w-[650px] text-black/70 text-xs font-['Inter'] italic leading-5">
           EVERY SESSION IS UNIQUE & GUIDED BY YOUR OVERALL DESIRES.<br/>
