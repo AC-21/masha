@@ -28,7 +28,9 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const finalUrl = useMemo(() => {
     if (!url) return "";
     try {
-      const u = new URL(url);
+      const clean = (url || "").trim();
+      if (!clean) return "";
+      const u = new URL(clean);
       if (hideGDPR) u.searchParams.set("hide_gdpr_banner", "1");
       if (hideDetails) {
         u.searchParams.set("hide_event_type_details", "1");
