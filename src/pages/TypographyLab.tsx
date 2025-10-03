@@ -368,13 +368,13 @@ function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSp
   const save = async () => {
     setSaving(true); setMessage(null);
     try {
-      const res = await fetch('/api/content', {
+      const res = await fetch('/api/tokens', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ __tokens: payload }, null, 2)
+        body: JSON.stringify({ tokens: payload }, null, 2)
       });
       if (!res.ok) throw new Error('Failed');
-      setMessage('Saved to content file. I will port these into tokens-clean.js on next pass.');
+      setMessage('Saved to tokens-clean.js. You may need to refresh to see updated tokens.');
     } catch (e) {
       setMessage('Save failed. I can copy these tokens manually.');
     } finally {
