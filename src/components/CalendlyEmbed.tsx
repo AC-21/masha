@@ -19,7 +19,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     primaryColor = "3b5849", // Keep the green accent
     textColor = "000000", // Black text to match site
     hideGDPR = true,
-    hideDetails = false, // Show details for better user experience
+    hideDetails = true, // Show details for better user experience
     className,
     rounded = 40,
     offsetY = 0,

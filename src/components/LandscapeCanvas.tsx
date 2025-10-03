@@ -99,9 +99,6 @@ export default function LandscapeCanvas({ content }: { content: Content }) {
         })()}
           {/* Calendly embed - styled to match site design */}
           <div className="absolute left-[800px] top-[1046px] w-[750px] h-[770px] overflow-visible">
-            <div className="absolute w-full text-center font-['Roboto Mono'] font-bold uppercase text-[18px] leading-7" style={{ top: -38 }}>
-              {content.cta?.label || 'Schedule an intro to learn more'}
-            </div>
             <CalendlyEmbed 
               height={770} 
               rounded={0} 
