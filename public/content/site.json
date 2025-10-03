@@ -1,0 +1,62 @@
+{
+  "tagline": "here to support your libeartion",
+  "about": [
+    "i am deeply in love with what i do.",
+    "it has been a struggle, though, to express in a sentence or two what it really is.",
+    "i cultivate an environment where a person can come exactly as they are, feeling accepted and loved in their pain, inner battles, fears, desires, brightness, uniqueness, comfort, and discomfort.",
+    "it is the most beautiful thing each time to witness someone opening up and beginning to love and accept themselves. my heart feels so full guiding and witnessing the beautiful transformations happening within people."
+  ],
+  "images": {
+    "portrait": "/images/portrait-1080.jpg"
+  },
+  "cta": {
+    "label": "Schedule an intro to learn more"
+  },
+  "modalities": [
+    {
+      "title": "Inner child work",
+      "short": "Inner child work is a tender yet empowering process of meeting the younger parts of ourselves with compassion and curiosity, giving them the love and safety they always longed for.",
+      "long": "Inner child work is a tender yet empowering process of meeting the younger parts of ourselves with compassion and curiosity, giving them the love and safety they always longed for. In this space, old hurts soften and unmet needs are finally seen without judgment. When those inner parts are embraced rather than pushed away, we discover deeper meaning in life, the ability to build safe and fulfilling relationships, and a grounded confidence in being true to ourselves. From that space comes our true freedom and liberation—the ability to live with openness, joy, and authenticity."
+    },
+    {
+      "title": "Movement Therapy",
+      "short": "Our bodies hold memories and stories that our minds can’t always capture. In this process, I safely guide you into the world of sensation, gradually rebuilding your connection to the body—its sensitivity and the unique wisdom it holds.",
+      "long": "My journey with my body has been long and often painful, marked by chronic health issues that made me see my body as an enemy since childhood. Over time, I realized those symptoms were signals, revealing deeper emotional and ancestral patterns that needed attention and resolution. By slowing down, listening to the body, and gently rewiring the nervous system, we gain more freedom and self-compassion. Through somatic work, I aim to help you uncover your body’s wisdom so you can move beyond stuckness, discomfort and limiting beliefs. We’ll explore how your physical sensations connect to both personal and inherited stories, then use this awareness to foster resilience, clarity, and authentic self-expression. In essence, your body becomes your best friend and guide to greater well-being and personal expansion, rather than an obstacle."
+    },
+    {
+      "title": "Energy Clearing",
+      "short": "Over time, emotions and energies can stagnate within us, shaping how we act and feel. Clearing these imprints opens space for genuine renewal, helping us step more freely into our next stage of growth.",
+      "long": "Over time, emotions and energies can stagnate within us, shaping how we act and feel. Clearing these imprints opens space for genuine renewal, helping us step more freely into our next stage of growth—learning to sense and transform our energetics toward an easily flowing, liberated state."
+    },
+    {
+      "title": "Emotional Release",
+      "short": "I provide a safe and contained space for you to express the emotions that often seem unacceptable. Often, our most ‘undesirable’ feelings are the ones crying out to be witnessed; they hold gifts we rarely see until we give them space to express.",
+      "long": "When granted acknowledgment and release, they can lead to a clearer sense of self, renewed emotional balance and inspiration. Together, we will learn how to safely feel, accept and process anger, rage, sadness and other feelings we were punished or ridiculed for. Restoring balance in our emotional landscape opens deeper self-love, excitement, and fulfilling relationships."
+    },
+    {
+      "title": "Conversation & Deep Listening",
+      "short": "Being heard without judgment can soften old wounds and invite us to be more of ourselves. We’ll create a safe space to share and be witnessed.",
+      "long": "Revealing vulnerable truth in a safe space is a profound act of courage, offering both relief and a sense of power. In our interactions, your truth, authenticity, fears, doubts, dreams, and desires—all of you—is celebrated, accepted, and deeply loved."
+    },
+    {
+      "title": "Prayer",
+      "short": "Prayer is a technology for clarifying intention and aligning with higher dimensions—free of dogma, discovering what ‘higher power’ feels like to you.",
+      "long": "I view prayer as a technology for clarifying thought, learning to align our intentions with the path of our soul, and aligning with higher dimensions—God, Unconditional Love, Source, Light—exploring what ‘higher power’ feels like to you, and healing that relationship. I’m not religious; my approach to prayer is free from dogma. Through prayer, we learn to set clear direction for our true heart desires to manifest with the most beneficial outcome for ourselves, others, and our planet—stepping into co-creation with our higher self and the benevolent unseen realms. We also cultivate discernment in navigating spiritual and physical realms."
+    },
+    {
+      "title": "Writing",
+      "short": "Writing helps clarify subconscious patterns, beliefs, and desires. By revising internal narratives, we move toward an integrated sense of self.",
+      "long": "Putting pen to paper can help clarify subconscious patterns, beliefs and desires. By gently observing and rewriting some internal narratives, we move closer to a more authentic, integrated sense of self."
+    },
+    {
+      "title": "Art Therapy",
+      "short": "Through intuitive art, the subconscious reveals what words can’t. Color and shape become vehicles for energies we cannot quite name.",
+      "long": "By inviting the subconscious to reveal its messages through intuitive, uninhibited output, we uncover truths that words alone may not convey. Color and shape become vehicles for energies we cannot quite name or have strong defenses toward, offering fresh perspectives on old narratives."
+    },
+    {
+      "title": "Shadow Work",
+      "short": "Exiled parts aren’t our enemies; with compassion they become sources of liberation and creativity, guiding us to authentic wholeness.",
+      "long": "At times, we feel severed from our true selves, from real love, or from life’s deeper meaning—numb or uncertain about the emotional weight we carry. The truth is, we already hold the keys to our own freedom. Parts of us exiled by shame or fear can transform into potent sources of liberation and creativity once we approach them with compassion and curiosity. These ‘shadow’ facets aren’t our enemies; they’re mosaics of hidden power, conditioning, and ancestral influences—mechanisms that once helped us navigate life. Leaning in, rather than pushing them away, allows these parts to emerge and guide us toward deeper self-awareness and an authentic sense of wholeness."
+    }
+  ]
+}

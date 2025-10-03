@@ -15,9 +15,7 @@ export default function LandscapeCanvas() {
           {/* Content container with background */}
         {/* Local MM removed in favor of global StickyMM */}
         <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '784px', top: '81px', width: '763px' }}>
-          One Sentence that lets people know what
-          <br />
-          The good word is.
+        I am here to support your libeartion
         </div>
         {/* Body text block */}
         <div className="absolute left-[788px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">
