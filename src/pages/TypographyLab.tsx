@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { tokens as savedTokens } from '../styles/tokens-clean.js';
 import { useContent } from '../lib/useContent';
 
 type Scale = {
@@ -77,6 +78,13 @@ export default function TypographyLab() {
   const [sample, setSample] = useState<string>(content?.about?.[0] || '');
   const [paragraphSpacing, setParagraphSpacing] = useState<number>(16);
   const [fontStatus, setFontStatus] = useState<Record<string, 'checking' | 'loaded' | 'missing'>>({});
+  const [colors, setColors] = useState(() => ({
+    base: savedTokens?.colors?.base || '#FEFEF7',
+    text: savedTokens?.colors?.text || '#000000',
+    muted: savedTokens?.colors?.muted || '#4c4848',
+    brand: savedTokens?.colors?.brand || '#3b5849',
+    line: savedTokens?.colors?.line || '#d4cccc'
+  }));
 
   // Quick font lists (from your shortlist; Fontshare families)
   const fontShare: Record<string, string> = {
@@ -269,6 +277,35 @@ export default function TypographyLab() {
                 <button key={k} onClick={() => setActive(k)} className={`px-2 py-1 rounded border ${active===k?'bg-black text-white':'bg-[#FEFEF7]'}`}>{k.toUpperCase()}</button>
               ))}
             </div>
+            {/* Color accents */}
+            <div className="grid grid-cols-2 gap-3 mt-1">
+              <div className="col-span-2 text-[12px] uppercase font-['Roboto Mono']">Color accents</div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Accent</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" value={colors.brand}
+                  onChange={(e)=>{ const v=e.target.value; setColors(c=>({...c, brand:v})); document.documentElement.style.setProperty('--color-brand', v); }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Text</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" value={colors.text}
+                  onChange={(e)=>{ const v=e.target.value; setColors(c=>({...c, text:v})); document.documentElement.style.setProperty('--color-text', v); }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Base</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" value={colors.base}
+                  onChange={(e)=>{ const v=e.target.value; setColors(c=>({...c, base:v})); document.documentElement.style.setProperty('--color-base', v); }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Muted</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" value={colors.muted}
+                  onChange={(e)=>{ const v=e.target.value; setColors(c=>({...c, muted:v})); document.documentElement.style.setProperty('--color-muted', v); }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Line</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" value={colors.line}
+                  onChange={(e)=>{ const v=e.target.value; setColors(c=>({...c, line:v})); document.documentElement.style.setProperty('--color-line', v); }} />
+              </div>
+            </div>
             {/* Current selection + status */}
             <div className="text-[12px] text-[#4c4848] mt-1">
               <span className="uppercase font-['Roboto Mono']">Current:</span>
@@ -379,6 +416,16 @@ export default function TypographyLab() {
 
             {/* Button design controls */}
             <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="col-span-2">
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Variant</label>
+                <select className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={'solid'} onChange={(e)=>{
+                  const v=e.target.value; (window as any).__styleTokens={...(window as any).__styleTokens, button:{...(window as any).__styleTokens?.button, variant:v}}; document.documentElement.style.setProperty('--btn-variant', v);
+                }}>
+                  <option value="solid">solid</option>
+                  <option value="outline">outline</option>
+                  <option value="glass">glass</option>
+                </select>
+              </div>
               <div>
                 <label className="text-[12px] uppercase font-['Roboto Mono']">Button Radius (px)</label>
                 <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={9999} onChange={(e) => {
@@ -401,6 +448,18 @@ export default function TypographyLab() {
                   const v = Number(e.target.value);
                   (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, px: v } };
                   document.documentElement.style.setProperty('--btn-px', `${v}px`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Border Width (px)</label>
+                <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={1} onChange={(e)=>{
+                  const v=Number(e.target.value); (window as any).__styleTokens={...(window as any).__styleTokens, button:{...(window as any).__styleTokens?.button, borderWidth: `${v}px`}}; document.documentElement.style.setProperty('--btn-bw', `${v}px`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Border Color</label>
+                <input type="color" className="w-full h-8 border border-[#d4cccc] rounded" defaultValue={colors.brand} onChange={(e)=>{
+                  const v=e.target.value; (window as any).__styleTokens={...(window as any).__styleTokens, button:{...(window as any).__styleTokens?.button, borderColor:v}}; document.documentElement.style.setProperty('--btn-bc', v);
                 }} />
               </div>
               <div>
@@ -439,7 +498,7 @@ export default function TypographyLab() {
             </div>
             {/* Save as tokens */}
             <div className="pt-2">
-              <SaveTokensButton specs={specs} paragraphSpacing={paragraphSpacing} />
+              <SaveTokensButton specs={specs} paragraphSpacing={paragraphSpacing} colors={colors} />
             </div>
           </div>
 
@@ -505,6 +564,7 @@ export default function TypographyLab() {
                 body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px' }],
                 small: [specs.small.size + 'px', { lineHeight: specs.small.lineHeight + 'px' }]
               },
+              colors,
               fonts: {
                 body: specs.body.fontFamily,
                 mono: specs.h2.fontFamily
@@ -518,7 +578,7 @@ export default function TypographyLab() {
   );
 }
 
-function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSpacing: number }) {
+function SaveTokensButton({ specs, paragraphSpacing, colors }: { specs: any; paragraphSpacing: number; colors: any }) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const payload = {
@@ -533,6 +593,7 @@ function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSp
       body: specs.body.fontFamily,
       mono: specs.h2.fontFamily
     },
+    colors,
     spacing: {
       paragraph: paragraphSpacing,
       h1: { mt: specs.h1.marginTop || 0, mb: specs.h1.marginBottom || 0 },
