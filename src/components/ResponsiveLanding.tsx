@@ -1,6 +1,7 @@
 import CalendlyEmbed from "./CalendlyEmbed";
 import { useContent } from "../lib/useContent";
 import { useState } from "react";
+import MobileParity from "./MobileParity";
 
 export default function ResponsiveLanding() {
   const { content } = useContent();
@@ -86,34 +87,9 @@ export default function ResponsiveLanding() {
         </div>
       </section>
 
-      {/* Mobile Modalities V2: sticky header + blur veil + expand/collapse */}
-      <section className="block lg:hidden px-4 pb-16">
-        <div className="sticky top-0 z-20 bg-[#fefef7]">
-          <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] py-3">My Work</h3>
-          {/* Blur veil: try backdrop-filter; fallback is a gradient fade mask */}
-          <div className="relative h-5 pointer-events-none">
-            <div
-              className="absolute inset-0"
-              style={{
-                // Fallback gradient
-                background: 'linear-gradient(to bottom, rgba(254,254,247,1), rgba(254,254,247,0))',
-                WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
-                maskImage: 'linear-gradient(to bottom, black, transparent)',
-                // Blur overlay — supported on modern mobile
-                backdropFilter: 'blur(6px)'
-              }}
-            />
-          </div>
-        </div>
-
-        <ul className="pt-2 space-y-8">
-          {content.modalities.map((m, i) => (
-            <li key={i}>
-              <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] mb-1">{m.title}</h4>
-              <Expandable textShort={m.short} textLong={m.long} />
-            </li>
-          ))}
-        </ul>
+      {/* Mobile: strict parity frame with content slotted into reference layout */}
+      <section className="block lg:hidden">
+        <MobileParity content={content as any} />
       </section>
     </main>
   );
