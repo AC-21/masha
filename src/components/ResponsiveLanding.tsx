@@ -1,7 +1,8 @@
 import CalendlyEmbed from "./CalendlyEmbed";
-import content from "../content/site.json";
+import { useContent } from "../lib/useContent";
 
 export default function ResponsiveLanding() {
+  const { content } = useContent();
   return (
     <main className="min-h-screen w-full overflow-x-clip bg-[#fefef7] text-black">
       {/* Header / Tagline */}
