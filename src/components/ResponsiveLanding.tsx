@@ -6,19 +6,10 @@ export default function ResponsiveLanding() {
   const { content } = useContent();
   return (
     <main className="min-h-screen w-full overflow-x-clip bg-[#fefef7] text-black">
-      {/* Header / Tagline */}
-      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-8">
-        <div className="relative flex items-start justify-between gap-6">
-          <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.08em] text-[1.125rem] sm:text-[1.375rem] lg:text-[32px] leading-[1.2] max-w-[46ch]">
-            {content.tagline}
-          </h1>
-          {/* Mobile/Tablet MM logo — anchored to the right edge of image when possible */}
-          <span className="xl:hidden absolute right-[48px] top-[0px] font-['Caveat'] font-bold uppercase text-[28px] sm:text-[34px] lg:text-[39px] leading-[28px] text-black select-none">MM</span>
-        </div>
-      </div>
+      {/* Tagline intentionally omitted on all breakpoints */}
 
-      {/* Hero removed on mobile to avoid duplication; desktop handled by LandscapeCanvas */}
-      <section className="hidden lg:pt-16 lg:hidden" />
+      {/* Mobile hero: portrait + about (scrollable) */}
+      <MobileHero content={content as any} />
 
       {/* Divider hidden on mobile */}
       <div className="hidden lg:hidden" />
@@ -50,10 +41,36 @@ function Expandable({ textShort, textLong }: { textShort: string; textLong: stri
   );
 }
 
+function MobileHero({ content }: { content: any }) {
+  return (
+    <section className="block lg:hidden px-4 pt-4">
+      {/* Portrait */}
+      <img
+        src={content.images?.portrait}
+        alt="Portrait"
+        className="w-full h-auto rounded-[24px] object-cover"
+      />
+      {/* About */}
+      <h2 className="mt-6 font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[20px]">
+        More about my practice
+      </h2>
+      <div
+        className="mt-2 font-['Inter'] lowercase text-[14px] leading-[26px] max-h-[360px] overflow-y-auto pr-2"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
+        {content.about?.map((p: string, i: number) => (
+          <p key={i} className="mb-4">{p}</p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function MobileModalities({ content }: { content: any }) {
   const listRef = useRef<HTMLDivElement>(null);
   // Glass CTA visibility when user reaches modalities
   const [ctaVisible, setCtaVisible] = useState(false);
+  const calUrl = (import.meta as any).env?.VITE_CALENDLY_URL || content?.cta?.href || 'https://calendly.com/';
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
@@ -103,12 +120,19 @@ function MobileModalities({ content }: { content: any }) {
       <div
         className={`fixed left-0 right-0 bottom-3 z-30 px-4 transition-opacity ${ctaVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
-        <a
-          href="#calendly"
-          className="block backdrop-blur-md bg-white/30 border border-white/50 shadow-lg rounded-full text-center py-3 font-['Roboto Mono'] uppercase text-[12px]"
+        <button
+          onClick={() => {
+            const el = document.getElementById('calendly');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              window.open(calUrl, '_blank');
+            }
+          }}
+          className="w-full backdrop-blur-md bg-white/30 border border-white/50 shadow-lg rounded-full text-center py-3 font-['Roboto Mono'] uppercase text-[12px]"
         >
           Interested in a session
-        </a>
+        </button>
       </div>
     </section>
   );
