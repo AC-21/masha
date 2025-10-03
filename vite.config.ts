@@ -40,15 +40,23 @@ export default defineConfig({
               req.on('end', () => {
                 const json = JSON.parse(body || '{}')
                 const tokens = json && json.tokens ? json.tokens : json
-                const out = `export const tokens = ${JSON.stringify({
-                  colors: {
-                    base: '#FEFEF7', text: '#000000', muted: '#4c4848', brand: '#3b5849', line: '#d4cccc'
-                  },
-                  fonts: tokens.fonts || { body: 'Inter, ui-sans-serif, system-ui, sans-serif', mono: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', script: 'Caveat, cursive' },
-                  radius: { portraitMobile: '28px', portraitDesktop: '37px', soft: '16px', pill: '9999px' },
-                  fontSize: tokens.fontSize || { body: ['14px', { lineHeight: '28px' }], small: ['12px', { lineHeight: '18px' }], h2: ['20px', { lineHeight: '24px', letterSpacing: '0.06em' }], h3: ['16px', { lineHeight: '20px', letterSpacing: '0.06em' }] },
-                  spacing: tokens.spacing || { paragraph: 16, h2: { mt: 0, mb: 8 }, h3: { mt: 12, mb: 6 } }
-                }, null, 2)}\n`;
+                const defaults = {
+                  colors: { base: '#FEFEF7', text: '#000000', muted: '#4c4848', brand: '#3b5849', line: '#d4cccc' },
+                  fonts: { body: 'Inter, ui-sans-serif, system-ui, sans-serif', mono: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', script: 'Caveat, cursive' },
+                  radius: { portraitMobile: '28px', portraitDesktop: '37px', soft: '16px', pill: '9999px', panel: '12px', button: '9999px', image: '28px' },
+                  button: { radius: '9999px', px: 16, py: 12, weight: 700, transform: 'uppercase', letterSpacing: '0.06em', borderWidth: '1px' },
+                  fontSize: { body: ['14px', { lineHeight: '28px' }], small: ['12px', { lineHeight: '18px' }], h1: ['22px', { lineHeight: '26px', letterSpacing: '0.06em' }], h2: ['20px', { lineHeight: '24px', letterSpacing: '0.06em' }], h3: ['16px', { lineHeight: '20px', letterSpacing: '0.06em' }] },
+                  spacing: { paragraph: 16, h1: { mt: 0, mb: 8 }, h2: { mt: 0, mb: 8 }, h3: { mt: 12, mb: 6 } }
+                }
+                const merged = {
+                  colors: tokens.colors || defaults.colors,
+                  fonts: tokens.fonts || defaults.fonts,
+                  radius: tokens.radius || defaults.radius,
+                  button: tokens.button || defaults.button,
+                  fontSize: tokens.fontSize || defaults.fontSize,
+                  spacing: tokens.spacing || defaults.spacing
+                }
+                const out = `export const tokens = ${JSON.stringify(merged, null, 2)}\n`;
                 const target = path.resolve(process.cwd(), 'src/styles/tokens-clean.js')
                 fs.writeFileSync(target, out, 'utf8')
                 res.statusCode = 200

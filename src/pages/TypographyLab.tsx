@@ -376,6 +376,63 @@ export default function TypographyLab() {
                 </div>
               </div>
             )}
+
+            {/* Button design controls */}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Radius (px)</label>
+                <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={9999} onChange={(e) => {
+                  const v = Number(e.target.value);
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, radius: `${v}px` } };
+                  document.documentElement.style.setProperty('--btn-radius', `${v}px`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Padding Y (px)</label>
+                <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={12} onChange={(e) => {
+                  const v = Number(e.target.value);
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, py: v } };
+                  document.documentElement.style.setProperty('--btn-py', `${v}px`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Padding X (px)</label>
+                <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={16} onChange={(e) => {
+                  const v = Number(e.target.value);
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, px: v } };
+                  document.documentElement.style.setProperty('--btn-px', `${v}px`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Weight</label>
+                <input type="number" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={700} onChange={(e) => {
+                  const v = Number(e.target.value);
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, weight: v } };
+                  document.documentElement.style.setProperty('--btn-weight', `${v}`);
+                }} />
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button Transform</label>
+                <select className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue="uppercase" onChange={(e) => {
+                  const v = e.target.value;
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, transform: v } };
+                  document.documentElement.style.setProperty('--btn-transform', v);
+                }}>
+                  <option value="none">none</option>
+                  <option value="uppercase">uppercase</option>
+                  <option value="lowercase">lowercase</option>
+                  <option value="capitalize">capitalize</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-[12px] uppercase font-['Roboto Mono']">Button LetterSpacing (em)</label>
+                <input type="number" step="0.01" className="w-full border border-[#d4cccc] rounded px-2 py-1" defaultValue={0.06} onChange={(e) => {
+                  const v = Number(e.target.value);
+                  (window as any).__styleTokens = { ...(window as any).__styleTokens, button: { ...(window as any).__styleTokens?.button, letterSpacing: `${v}em` } };
+                  document.documentElement.style.setProperty('--btn-ls', `${v}em`);
+                }} />
+              </div>
+            </div>
             <div className="grid gap-2">
               <label className="text-[12px] uppercase font-['Roboto Mono']">Sample Text</label>
               <textarea className="border border-[#d4cccc] rounded px-2 py-1" rows={5} value={sample} onChange={(e) => setSample(e.target.value)} />
@@ -478,8 +535,18 @@ function SaveTokensButton({ specs, paragraphSpacing }: { specs: any; paragraphSp
     },
     spacing: {
       paragraph: paragraphSpacing,
+      h1: { mt: specs.h1.marginTop || 0, mb: specs.h1.marginBottom || 0 },
       h2: { mt: specs.h2.marginTop || 0, mb: specs.h2.marginBottom || 0 },
       h3: { mt: specs.h3.marginTop || 0, mb: specs.h3.marginBottom || 0 }
+    },
+    button: {
+      radius: getComputedStyle(document.documentElement).getPropertyValue('--btn-radius') || '9999px',
+      px: Number((getComputedStyle(document.documentElement).getPropertyValue('--btn-px') || '16px').replace('px','')),
+      py: Number((getComputedStyle(document.documentElement).getPropertyValue('--btn-py') || '12px').replace('px','')),
+      weight: Number((getComputedStyle(document.documentElement).getPropertyValue('--btn-weight') || '700').trim()),
+      transform: (getComputedStyle(document.documentElement).getPropertyValue('--btn-transform') || 'uppercase').trim() as any,
+      letterSpacing: (getComputedStyle(document.documentElement).getPropertyValue('--btn-ls') || '0.06em').trim(),
+      borderWidth: '1px'
     }
   };
 
