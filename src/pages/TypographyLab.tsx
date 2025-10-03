@@ -261,8 +261,8 @@ export default function TypographyLab() {
           </div>
         </header>
 
-        <section className="grid md:grid-cols-2 gap-6 items-start">
-          <div className="space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4">
+        <section className="grid grid-cols-12 gap-4 items-start">
+          <div className="col-span-12 lg:col-span-3 xl:col-span-4 2xl:col-span-3 space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4 sticky top-4 self-start">
             {/* Style selectors */}
             <div className="flex gap-2 text-[12px]">
               {(['body','h1','h2','h3','small'] as const).map(k => (
@@ -386,7 +386,7 @@ export default function TypographyLab() {
             </div>
           </div>
 
-          <div className="border border-[#d4cccc] bg-white rounded-[8px] p-4">
+          <div className="col-span-12 lg:col-span-9 xl:col-span-8 2xl:col-span-9 border border-[#d4cccc] bg-white rounded-[8px] p-4 overflow-auto">
             <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Preview (Before / After)</div>
             <div className="grid gap-4" style={{ width }}>
               {/* H1 block (e.g., My Work) */}
