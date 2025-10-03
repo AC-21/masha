@@ -1,7 +1,14 @@
 import ScaleFrame from "./ScaleFrame";
 import CalendlyEmbed from "./CalendlyEmbed";
 
-const sources = {
+type Content = {
+  tagline: string;
+  about: string[];
+  images: { portrait: string };
+  modalities: { title: string; short: string; long: string }[];
+};
+
+export default function LandscapeCanvas({ content }: { content: Content }) {
   avif: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.avif ${w}w`).join(', '),
   webp: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.webp ${w}w`).join(', '),
   jpg:  [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.jpg ${w}w`).join(', '),
@@ -15,12 +22,14 @@ export default function LandscapeCanvas() {
         <div className="relative w-[1650px] h-[1900px]" style={{ backgroundColor: '#FEFEF7' }}>
           {/* Content container with background */}
         {/* Local MM removed in favor of global StickyMM */}
-        <div className="absolute text-black font-bold font-['Roboto_Mono'] uppercase leading-9" style={{ left: '784px', top: '81px', width: '763px' }}>
-        I am here to support your libeartion
+        <div className="absolute text-black font-bold font-['Roboto Mono'] uppercase leading-9" style={{ left: '784px', top: '81px', width: '763px' }}>
+          {content.tagline}
         </div>
         {/* Body text block */}
         <div className="absolute left-[788px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">
-          I am deeply in love with what I do. <br /><br /> It has been a struggle, though, to express in a sentence or two what it really is. I cultivate an environment where a person can come exactly as they are, feeling accepted and loved in their pain, inner battles, fears, desires, brightness, uniqueness, comfort, and discomfort. It is the most beautiful thing each time to witness someone opening up and beginning to love and accept themselves. My heart feels so full guiding and witnessing the beautiful transformations happening within people. <br /><br /> Recently, I have realized another core reason why I love it so much: since I was little, I have always wanted to connect with people on the truest, deepest level. I have always felt uncomfortable in scenarios where we all tend to follow a “normal,” superficial way of interacting, often not speaking to how we truly feel, what we experience, what is burning or crying inside of us, what is real. But with people who choose to work with me, I get to see so much of their inner world, and the part of me that craves intimacy and truth feels safe. <br /><br /> So, it is not “work.” It is the time when my heart feels so grateful to connect with another in what really matters, to recognize each other’s souls behind the masks, while acknowledging the masks and their purpose, as well as other infinite parts of ourselves. This precious time of heartfelt connection is healing for me, too. <br /><br /> And that is why I can be grateful for my own suffering. It has led me to what I thought I was missing - deeper meaning and purpose. It made me realize what turning pain into a gift means for me. Sitting with it, working with plant medicine, spending days and nights suffocated inside my own misery, studying modalities - all of it so I can relate, guide, listen, understand, and hopefully help more and more people feel seen, whole, loved, and not alone.  Alienation, shame, and keeping our suffering to ourselves only create more suffering. Seeing each other through eyes and hearts of truth and compassion is the only way that will create sustainable change - for the highest good of all.
+          {content.about.map((p, i) => (
+            <p key={i} className="mb-4">{p}</p>
+          ))}
         </div>
         {/* Portrait */}
         <picture className="absolute left-[122px] top-[96px] block" style={{ width: '581px', height: '775px', borderRadius: 37, overflow: 'hidden' }}>
@@ -29,7 +38,7 @@ export default function LandscapeCanvas() {
           <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
         </picture>
         {/* Section titles */}
-        <div className="absolute left-[159px] top-[959px] text-black text-3xl font-bold font-['Roboto_Mono'] uppercase leading-7">My Work</div>
+        <div className="absolute left-[159px] top-[959px] text-black text-3xl font-bold font-['Roboto Mono'] uppercase leading-7">My Work</div>
         
         {/* Curved arrow with text pointing to Calendly - in space between subtitle and modalities */}
         <div className="absolute left-[100px] top-[1050px] w-[800px] h-[100px]" style={{ pointerEvents: 'none', zIndex: 10 }}>
@@ -68,39 +77,39 @@ export default function LandscapeCanvas() {
           HERE'S SOME INFO BELOW ON WHERE WE MAY GO.
         </div>
         {/* Modalities headings - aligned with My Work start position */}
-        <div className="absolute left-[159px] top-[1143px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Movement</div>
-        <div className="absolute left-[430px] top-[1143px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Laughter</div>
-        <div className="absolute left-[159px] top-[1330px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Parts</div>
-        <div className="absolute left-[430px] top-[1330px] text-black text-2xl font-bold font-['Roboto_Mono'] uppercase leading-7">Deep Connection</div>
+        <div className="absolute left-[159px] top-[1143px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Movement</div>
+        <div className="absolute left-[430px] top-[1143px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Laughter</div>
+        <div className="absolute left-[159px] top-[1330px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Parts</div>
+        <div className="absolute left-[430px] top-[1330px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Deep Connection</div>
         {/* Sample bullets - Movement */}
-        <div className="absolute left-[189px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[189px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Laughter */}
-        <div className="absolute left-[460px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[460px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Parts */}
-        <div className="absolute left-[189px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[189px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[189px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
         
         {/* Sample bullets - Deep Connection */}
-        <div className="absolute left-[460px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
         </div>
-        <div className="absolute left-[460px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto_Mono'] uppercase leading-7">
+        <div className="absolute left-[460px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
           Some text on who its for<br/>Some text on who its for
         </div>
           {/* Calendly embed - styled to match site design */}
