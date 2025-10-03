@@ -25,7 +25,7 @@ export default function LandscapeCanvas({ content }: { content: Content }) {
         {/* Tagline is rendered by ResponsiveLanding header; do not duplicate here */}
         {/* Section heading */}
         <div className="absolute text-black font-bold font-['Roboto Mono'] uppercase leading-9" style={{ left: '788px', top: '152px', width: '746px', fontSize: 40 }}>
-          More About my Practice
+          Here for your liberation
         </div>
         {/* Body text block (right column) */}
         <div className="absolute left-[788px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">

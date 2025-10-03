@@ -48,14 +48,14 @@ function MobileHero({ content }: { content: any }) {
       <img
         src={content.images?.portrait}
         alt="Portrait"
-        className="w-full h-auto rounded-[24px] object-cover"
+        className="w-full h-auto rounded-[28px] object-cover"
       />
       {/* About */}
       <h2 className="mt-6 font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[20px]">
-        More about my practice
+        Here for your liberation
       </h2>
       <div
-        className="mt-2 font-['Inter'] lowercase text-[14px] leading-[26px] max-h-[360px] overflow-y-auto pr-2"
+        className="mt-2 font-['Inter'] lowercase text-[14px] leading-[24px] max-h-[320px] overflow-y-auto pr-2"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {content.about?.map((p: string, i: number) => (
@@ -68,25 +68,23 @@ function MobileHero({ content }: { content: any }) {
 
 function MobileModalities({ content }: { content: any }) {
   const listRef = useRef<HTMLDivElement>(null);
-  // Glass CTA visibility when user reaches modalities
+  // Glass CTA shows only when the My Work section is reached
   const [ctaVisible, setCtaVisible] = useState(false);
   const calUrl = (import.meta as any).env?.VITE_CALENDLY_URL || content?.cta?.href || 'https://calendly.com/';
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        const e = entries[0];
-        setCtaVisible(e.isIntersecting);
-      },
-      { root: null, threshold: 0.1 }
-    );
+    // Observe the section container entering viewport
+    const io = new IntersectionObserver((entries) => {
+      const e = entries[0];
+      setCtaVisible(e.isIntersecting);
+    }, { root: null, threshold: 0.05 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   return (
-    <section className="block lg:hidden px-4 pb-24">
+    <section className="block lg:hidden px-4 pb-28" ref={listRef}>
       {/* Sticky Header */}
       <div className="sticky top-0 z-20 bg-[#fefef7] py-3">
         <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px]">My Work</h3>
@@ -105,7 +103,7 @@ function MobileModalities({ content }: { content: any }) {
       </div>
 
       {/* Modalities list */}
-      <div ref={listRef} className="pt-2 space-y-8">
+      <div className="pt-2 space-y-8">
         {content.modalities.map((m: any, i: number) => (
           <div key={i}>
             <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] mb-1">
