@@ -1,29 +1,26 @@
-import { useState } from "react";
 import LandscapeCanvas from "./components/LandscapeCanvas";
-import FlexibleLandscapeCanvas from "./components/FlexibleLandscapeCanvas";
 import MobileCanvas from "./components/MobileCanvas";
 import StickyMM from "./components/StickyMM";
 import LayoutPositioner from "./components/LayoutPositioner";
 import LayoutSwitcher from "./components/LayoutSwitcher";
-import { layoutPresets } from "./components/LayoutVariants";
+import CurvedLineEditor from "./components/CurvedLineEditor";
 
 export default function App() {
   // Show layout positioner only in development or with a URL parameter
   const showPositioner = import.meta.env.DEV || window.location.search.includes('?position=true');
-  const showLayoutSwitcher = window.location.search.includes('?layouts=true');
   
-  // State for dynamic layout positions
-  const [layoutPositions, setLayoutPositions] = useState(layoutPresets.current);
+  // Use layout switcher in dev, regular canvas in production
+  const useLayoutSwitcher = import.meta.env.DEV;
+  
+  // Show curve editor only in development mode
+  const showCurveEditor = import.meta.env.DEV;
   
   return (
     <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#FEFEF7', ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
+      {showCurveEditor && <CurvedLineEditor />}
       <StickyMM />
       <div className="hidden xl:block" style={{ ['--container-max' as any]: '100vw', ['--container-pad' as any]: '16px', ['--image-width' as any]: '0px' }}>
-        {showLayoutSwitcher ? (
-          <FlexibleLandscapeCanvas positions={layoutPositions} />
-        ) : (
-          <LandscapeCanvas />
-        )}
+        {useLayoutSwitcher ? <LayoutSwitcher /> : <LandscapeCanvas />}
       </div>
       {/* Tablet layout: 768–1279px */}
       <div className="hidden md:block xl:hidden" style={{ ['--container-max' as any]: '960px', ['--container-pad' as any]: '24px', ['--image-width' as any]: '18rem' }}>
@@ -38,7 +35,6 @@ export default function App() {
         </div>
       </div>
       {showPositioner && <LayoutPositioner />}
-      {showLayoutSwitcher && <LayoutSwitcher onLayoutChange={setLayoutPositions} />}
     </div>
   );
 }

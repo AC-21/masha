@@ -38,7 +38,7 @@ export default function Group6() {
         <p className="leading-[28px]">My Work</p>
       </div>
       <div className="absolute font-['Roboto_Mono:Bold',_sans-serif] font-bold leading-[0] left-[1110px] text-[26px] text-black top-[1041px] uppercase w-[490px]">
-        <p className="leading-[28px]">Schedule an intro to learn more</p>
+        <p className="leading-[28px]">Schedule a call to learn more</p>
       </div>
       <div className="absolute font-['Roboto_Mono:Bold',_sans-serif] font-bold leading-[0] left-[784px] text-[32px] text-black top-[132px] uppercase w-[763px]">
         <p className="leading-[38px]">
