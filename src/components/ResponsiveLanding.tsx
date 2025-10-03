@@ -1,4 +1,5 @@
 import { useContent } from "../lib/useContent";
+import { styleFor, marginsFor, paragraphSpacing } from "../styles/typography";
 import { useState, useEffect, useRef } from "react";
 import LandscapeCanvas from "./LandscapeCanvas";
 
@@ -51,15 +52,13 @@ function MobileHero({ content }: { content: any }) {
         className="w-full h-auto rounded-[28px] object-cover"
       />
       {/* About */}
-      <h2 className="mt-6 font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[20px]">
-        Here for your liberation
-      </h2>
+      <h2 style={{ ...styleFor('h2'), ...marginsFor('h2'), marginTop: 24 }}>Here for your liberation</h2>
       <div
-        className="mt-2 font-['Inter'] lowercase text-[14px] leading-[24px] max-h-[320px] overflow-y-auto pr-2"
-        style={{ WebkitOverflowScrolling: 'touch' }}
+        className="mt-2 lowercase max-h-[320px] overflow-y-auto pr-2"
+        style={{ WebkitOverflowScrolling: 'touch', ...styleFor('body') }}
       >
         {content.about?.map((p: string, i: number) => (
-          <p key={i} className="mb-4">{p}</p>
+          <p key={i} style={{ marginBottom: paragraphSpacing() }}>{p}</p>
         ))}
       </div>
     </section>
@@ -87,7 +86,7 @@ function MobileModalities({ content }: { content: any }) {
     <section className="block lg:hidden px-4 pb-28" ref={listRef}>
       {/* Sticky Header */}
       <div className="sticky top-0 z-20 bg-[#fefef7] py-3">
-        <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px]">My Work</h3>
+        <h3 style={{ ...styleFor('h1'), ...marginsFor('h1') }}>My Work</h3>
         {/* Blur veil */}
         <div className="relative h-5 pointer-events-none">
           <div
