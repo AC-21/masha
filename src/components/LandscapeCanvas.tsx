@@ -15,6 +15,7 @@ const sources = {
 };
 
 export default function LandscapeCanvas({ content }: { content: Content }) {
+  const sanitizeTitle = (t: string) => t.replace(/\*+/g, '').replace(/_/g, '').trim();
   return (
     <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
       {/* Legacy pixel-perfect reference (not rendered in production UI). */}
@@ -80,43 +81,30 @@ export default function LandscapeCanvas({ content }: { content: Content }) {
           HERE'S SOME INFO BELOW ON WHERE WE MAY GO.
         </div>
         {/* Modalities headings - aligned with My Work start position */}
-        <div className="absolute left-[159px] top-[1143px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Movement</div>
-        <div className="absolute left-[430px] top-[1143px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Laughter</div>
-        <div className="absolute left-[159px] top-[1330px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Parts</div>
-        <div className="absolute left-[430px] top-[1330px] text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7">Deep Connection</div>
-        {/* Sample bullets - Movement */}
-        <div className="absolute left-[189px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
-        </div>
-        <div className="absolute left-[189px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on who its for<br/>Some text on who its for
-        </div>
-        
-        {/* Sample bullets - Laughter */}
-        <div className="absolute left-[460px] top-[1185px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
-        </div>
-        <div className="absolute left-[460px] top-[1279px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on who its for<br/>Some text on who its for
-        </div>
-        
-        {/* Sample bullets - Parts */}
-        <div className="absolute left-[189px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
-        </div>
-        <div className="absolute left-[189px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on who its for<br/>Some text on who its for
-        </div>
-        
-        {/* Sample bullets - Deep Connection */}
-        <div className="absolute left-[460px] top-[1372px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on what it is<br/>Some text on what it is<br/>Some text on what it is
-        </div>
-        <div className="absolute left-[460px] top-[1466px] w-[220px] text-black text-sm font-bold font-['Roboto Mono'] uppercase leading-7">
-          Some text on who its for<br/>Some text on who its for
-        </div>
+        {(() => {
+          const mods = (content.modalities || []).slice(0, 4);
+          const positions = [
+            { hLeft: 159, hTop: 1143, tLeft: 189, tTop: 1185 }, // col 1, row 1
+            { hLeft: 430, hTop: 1143, tLeft: 460, tTop: 1185 }, // col 2, row 1
+            { hLeft: 159, hTop: 1330, tLeft: 189, tTop: 1372 }, // col 1, row 2
+            { hLeft: 430, hTop: 1330, tLeft: 460, tTop: 1372 }, // col 2, row 2
+          ];
+          return mods.map((m, i) => (
+            <div key={i}>
+              <div className="absolute text-black text-2xl font-bold font-['Roboto Mono'] uppercase leading-7" style={{ left: positions[i].hLeft, top: positions[i].hTop }}>
+                {sanitizeTitle(m.title)}
+              </div>
+              <div className="absolute text-black text-xs font-['Inter'] lowercase leading-5" style={{ left: positions[i].tLeft, top: positions[i].tTop, width: 220 }}>
+                {m.short}
+              </div>
+            </div>
+          ));
+        })()}
           {/* Calendly embed - styled to match site design */}
           <div className="absolute left-[800px] top-[1046px] w-[750px] h-[770px] overflow-visible">
+            <div className="absolute w-full text-center font-['Roboto Mono'] font-bold uppercase text-[18px] leading-7" style={{ top: -38 }}>
+              {content.cta?.label || 'Schedule an intro to learn more'}
+            </div>
             <CalendlyEmbed 
               height={770} 
               rounded={0} 
