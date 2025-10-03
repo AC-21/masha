@@ -8,13 +8,12 @@ export default function ResponsiveLanding() {
     <main className="min-h-screen w-full overflow-x-clip bg-[#fefef7] text-black">
       {/* Header / Tagline */}
       <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-8">
-        <div className="flex items-start justify-between gap-6">
+        <div className="relative flex items-start justify-between gap-6">
           <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.08em] text-[1.125rem] sm:text-[1.375rem] lg:text-[32px] leading-[1.2] max-w-[46ch]">
             {content.tagline}
           </h1>
-          <div className="ml-6 shrink-0 text-right">
-            <span className="font-['Caveat'] font-bold text-[28px] sm:text-[34px] lg:text-[39px]">MM</span>
-          </div>
+          {/* Mobile/Tablet MM logo — anchored to the right edge of image when possible */}
+          <span className="xl:hidden absolute right-[48px] top-[0px] font-['Caveat'] font-bold uppercase text-[28px] sm:text-[34px] lg:text-[39px] leading-[28px] text-black select-none">MM</span>
         </div>
       </div>
 
@@ -78,6 +77,7 @@ export default function ResponsiveLanding() {
               className="w-full"
               rounded={40}
               height={570}
+              offsetY={-20}
               primaryColor="3b5849"
               textColor="ffffff"
               url={import.meta.env.VITE_CALENDLY_URL}

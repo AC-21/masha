@@ -9,6 +9,7 @@ type CalendlyEmbedProps = {
   hideDetails?: boolean;
   className?: string;
   rounded?: number; // px radius for container
+  offsetY?: number; // vertical offset (px) for fine-tuning alignment
 };
 
 export default function CalendlyEmbed(props: CalendlyEmbedProps) {
@@ -21,6 +22,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
     hideDetails = false, // Show details for better user experience
     className,
     rounded = 40,
+    offsetY = -35,
   } = props;
 
   const finalUrl = useMemo(() => {
@@ -115,7 +117,7 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
           minWidth: "320px", 
           height: typeof height === 'number' ? `${height}px` : height,
           width: "100%",
-          marginTop: "-35px"
+          marginTop: typeof offsetY === 'number' ? `${offsetY}px` : '-35px'
         }}
       />
       {!scriptLoaded && (
