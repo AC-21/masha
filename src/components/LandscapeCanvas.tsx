@@ -8,31 +8,28 @@ type Content = {
   modalities: { title: string; short: string; long: string }[];
 };
 
-export default function LandscapeCanvas({ content }: { content: Content }) {
+const sources = {
   avif: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.avif ${w}w`).join(', '),
   webp: [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.webp ${w}w`).join(', '),
   jpg:  [480, 768, 1080, 1440].map(w => `/images/portrait-${w}.jpg ${w}w`).join(', '),
 };
 
-export default function LandscapeCanvas() {
+export default function LandscapeCanvas({ content }: { content: Content }) {
   return (
     <div className="relative w-full" style={{ backgroundColor: '#FEFEF7' }}>
       {/* Legacy pixel-perfect reference (not rendered in production UI). */}
       <ScaleFrame id="desktop-canvas" testId="desktop-canvas" designWidth={1650} designHeight={1900} minScale={0} maxScale={1} className="mx-auto w-full">
         <div className="relative w-[1650px] h-[1900px]" style={{ backgroundColor: '#FEFEF7' }}>
           {/* Content container with background */}
-        {/* Local MM removed in favor of global StickyMM */}
-        <div className="absolute text-black font-bold font-['Roboto Mono'] uppercase leading-9" style={{ left: '784px', top: '81px', width: '763px' }}>
-          {content.tagline}
-        </div>
+        {/* Tagline is rendered by ResponsiveLanding header; do not duplicate here */}
         {/* Body text block */}
-        <div className="absolute left-[788px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">
+        <div className="absolute left-[159px] top-[206px] w-[746px] text-black text-sm font-medium font-['Inter'] lowercase leading-7">
           {content.about.map((p, i) => (
             <p key={i} className="mb-4">{p}</p>
           ))}
         </div>
         {/* Portrait */}
-        <picture className="absolute left-[122px] top-[96px] block" style={{ width: '581px', height: '775px', borderRadius: 37, overflow: 'hidden' }}>
+        <picture className="absolute top-[96px] block" style={{ left: 947, width: '581px', height: '775px', borderRadius: 37, overflow: 'hidden' }}>
           <source type="image/avif" srcSet={sources.avif} sizes="(min-width: 1024px) 581px, 90vw" />
           <source type="image/webp" srcSet={sources.webp} sizes="(min-width: 1024px) 581px, 90vw" />
           <img srcSet={sources.jpg} sizes="(min-width: 1024px) 581px, 90vw" src="/images/portrait-1080.jpg" alt="Portrait" width={581} height={775} className="w-full h-full object-cover" decoding="async" fetchPriority="high" />
@@ -113,10 +110,10 @@ export default function LandscapeCanvas() {
           Some text on who its for<br/>Some text on who its for
         </div>
           {/* Calendly embed - styled to match site design */}
-          <div className="absolute left-[800px] top-[1046px] w-[750px] h-[770px] overflow-visible">
+          <div className="absolute" style={{ left: 950, top: 1046, width: 650, height: 620, overflow: 'visible' }}>
             <CalendlyEmbed 
-              height={770} 
-              rounded={0} 
+              height={620} 
+              rounded={24} 
               primaryColor="3b5849" 
               textColor="000000" 
               url={import.meta.env.VITE_CALENDLY_URL} 
