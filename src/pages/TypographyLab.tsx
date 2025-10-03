@@ -254,7 +254,7 @@ export default function TypographyLab() {
   const width = viewport === 'mobile' ? 390 : viewport === 'tablet' ? 768 : 1100;
 
   return (
-    <main className="min-h-screen bg-[#fefef7] text-black">
+    <main className="min-h-screen bg-[#fefef7] text-black" style={{ backgroundColor: 'var(--color-base, #FEFEF7)', color: 'var(--color-text, #000)' }}>
       <div className="w-screen max-w-none px-4 md:px-6 lg:px-10 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px]">Typography Lab</h1>
