@@ -76,6 +76,7 @@ export default function TypographyLab() {
   });
   const [sample, setSample] = useState<string>(content?.about?.[0] || '');
   const [paragraphSpacing, setParagraphSpacing] = useState<number>(16);
+  const [fontStatus, setFontStatus] = useState<Record<string, 'checking' | 'loaded' | 'missing'>>({});
 
   // Quick font lists (from your shortlist; Fontshare families)
   const fontShare: Record<string, string> = {
@@ -120,6 +121,32 @@ export default function TypographyLab() {
   const guessCss = (name: string) => {
     const slug = name.toLowerCase().replace(/\s+/g, '');
     return `https://api.fontshare.com/v2/css?f[]=${slug}@400,500,700&display=swap`;
+  };
+
+  const primaryNameOf = (stack: string) => (stack || '').split(',')[0]?.replace(/["']/g, '').trim();
+  const checkFont = async (family: string) => {
+    if (!family) return false;
+    const name = primaryNameOf(family);
+    if (!name) return false;
+    try {
+      setFontStatus((s) => ({ ...s, [name]: 'checking' }));
+      // Wait for any pending font loads
+      // @ts-ignore
+      await (document.fonts?.ready || Promise.resolve());
+      // Check normal and quoted
+      const ok = document.fonts?.check?.(`16px "${name}"`) || document.fonts?.check?.(`16px ${name}`) || false;
+      setFontStatus((s) => ({ ...s, [name]: ok ? 'loaded' : 'missing' }));
+      return ok;
+    } catch {
+      setFontStatus((s) => ({ ...s, [name]: 'missing' }));
+      return false;
+    }
+  };
+
+  const checkAllShortlist = async () => {
+    for (const name of Object.keys(fontShare)) {
+      await checkFont(name);
+    }
   };
 
   // Persist in URL for easy sharing
@@ -216,6 +243,24 @@ export default function TypographyLab() {
                 <button key={k} onClick={() => setActive(k)} className={`px-2 py-1 rounded border ${active===k?'bg-black text-white':'bg-[#FEFEF7]'}`}>{k.toUpperCase()}</button>
               ))}
             </div>
+            {/* Current selection + status */}
+            <div className="text-[12px] text-[#4c4848] mt-1">
+              <span className="uppercase font-['Roboto Mono']">Current:</span>
+              <span className="ml-2">{specs[active].fontFamily}</span>
+              {(() => {
+                const primary = primaryNameOf(specs[active].fontFamily);
+                const st = fontStatus[primary];
+                return (
+                  <span className="ml-2">
+                    {primary && (<>
+                      <span className="uppercase font-['Roboto Mono']">Primary:</span>
+                      <span className="ml-1">{primary}</span>
+                      <span className="ml-2">{st === 'loaded' ? '✓ loaded' : st === 'missing' ? '⚠ not loaded' : st === 'checking' ? '… checking' : ''}</span>
+                    </>)}
+                  </span>
+                );
+              })()}
+            </div>
             {/* Active editor */}
             <div className="grid gap-2">
               <label className="text-[12px] uppercase font-['Roboto Mono']">Font Family</label>
@@ -227,11 +272,13 @@ export default function TypographyLab() {
                     onClick={() => {
                       setSpecs({ ...specs, [active]: { ...specs[active], fontFamily: stack } });
                       loadFontCss(guessCss(name));
+                      // re-check status shortly after CSS is requested
+                      setTimeout(() => checkFont(name), 200);
                     }}
-                    className="px-2 py-1 border rounded text-[12px] bg-[#FEFEF7] hover:bg-black hover:text-white"
+                    className={`px-2 py-1 border rounded text-[12px] ${fontStatus[name]==='loaded' ? 'bg-black text-white' : 'bg-[#FEFEF7] hover:bg-black hover:text-white'}`}
                     title={stack}
                   >
-                    {name}
+                    {name}{fontStatus[name]==='loaded' ? ' ✓' : ''}
                   </button>
                 ))}
               </div>
@@ -242,9 +289,15 @@ export default function TypographyLab() {
                   className="px-2 py-1 border rounded text-[12px]"
                   onClick={() => {
                     const el = document.getElementById('cssUrl') as HTMLInputElement | null;
-                    if (el && el.value) loadFontCss(el.value);
+                    if (el && el.value) { loadFontCss(el.value); setTimeout(() => {
+                      // Try to parse family out of URL: f[]=family
+                      const m = el.value.match(/f\[]=(.*?)(?:@|&|$)/);
+                      const fam = m ? decodeURIComponent(m[1]).replace(/\+/g,' ') : '';
+                      checkFont(fam);
+                    }, 200); }
                   }}
                 >Load CSS</button>
+                <button className="px-2 py-1 border rounded text-[12px]" onClick={checkAllShortlist}>Check fonts</button>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
