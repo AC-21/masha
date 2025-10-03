@@ -555,6 +555,61 @@ export default function TypographyLab() {
             </div>
 
             <hr className="my-4 border-[#d4cccc]" />
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Button variants preview */}
+              <div>
+                <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Button variants</div>
+                <div className="flex flex-wrap gap-8 items-center">
+                  <button className="px-[var(--btn-px,16px)] py-[var(--btn-py,12px)] rounded-[var(--btn-radius,9999px)] text-[12px] font-['Roboto Mono']" style={{
+                    fontWeight: Number(getComputedStyle(document.documentElement).getPropertyValue('--btn-weight') || '700'),
+                    textTransform: (getComputedStyle(document.documentElement).getPropertyValue('--btn-transform') || 'uppercase').trim() as any,
+                    letterSpacing: (getComputedStyle(document.documentElement).getPropertyValue('--btn-ls') || '0.06em').trim(),
+                    backgroundColor: 'var(--color-brand, #3b5849)', color: 'var(--color-base, #FEFEF7)'
+                  }}>Solid</button>
+                  <button className="px-[var(--btn-px,16px)] py-[var(--btn-py,12px)] rounded-[var(--btn-radius,9999px)] text-[12px] font-['Roboto Mono'] border" style={{
+                    fontWeight: Number(getComputedStyle(document.documentElement).getPropertyValue('--btn-weight') || '700'),
+                    textTransform: (getComputedStyle(document.documentElement).getPropertyValue('--btn-transform') || 'uppercase').trim() as any,
+                    letterSpacing: (getComputedStyle(document.documentElement).getPropertyValue('--btn-ls') || '0.06em').trim(),
+                    borderWidth: 'var(--btn-bw, 1px)', borderColor: 'var(--btn-bc, var(--color-brand, #3b5849))', color: 'var(--color-text, #000)'
+                  }}>Outline</button>
+                  <button className="px-[var(--btn-px,16px)] py-[var(--btn-py,12px)] rounded-[var(--btn-radius,9999px)] text-[12px] font-['Roboto Mono'] backdrop-blur-md" style={{
+                    fontWeight: Number(getComputedStyle(document.documentElement).getPropertyValue('--btn-weight') || '700'),
+                    textTransform: (getComputedStyle(document.documentElement).getPropertyValue('--btn-transform') || 'uppercase').trim() as any,
+                    letterSpacing: (getComputedStyle(document.documentElement).getPropertyValue('--btn-ls') || '0.06em').trim(),
+                    backgroundColor: 'color-mix(in srgb, var(--color-base, #FEFEF7) 60%, transparent)',
+                    border: '1px solid color-mix(in srgb, var(--color-base, #FEFEF7) 70%, transparent)',
+                    color: 'var(--color-text, #000)'
+                  }}>Glass</button>
+                </div>
+              </div>
+
+              {/* Palette card */}
+              <div>
+                <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Palette card</div>
+                <div className="border rounded-[8px] overflow-hidden" style={{ borderColor: 'var(--color-line, #d4cccc)' }}>
+                  <div className="p-3" style={{ backgroundColor: 'var(--color-base, #FEFEF7)', color: 'var(--color-text, #000)' }}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-block w-4 h-4 rounded" style={{ backgroundColor: 'var(--color-brand, #3b5849)' }} />
+                      <span className="text-[12px]">Accent</span>
+                    </div>
+                    <h3 className="mb-1" style={{ ...styleFor('h3'), ...marginsFor('h3') }}>Sample heading</h3>
+                    <p className="mb-2" style={styleFor('body')}>This is body text using your current body font settings.</p>
+                    <a href="#" className="underline text-[12px]" style={{ color: 'var(--color-brand, #3b5849)' }}>Sample link</a>
+                    <div className="mt-3">
+                      <button className="px-[var(--btn-px,16px)] py-[var(--btn-py,12px)] rounded-[var(--btn-radius,9999px)] text-[12px] font-['Roboto Mono']" style={{
+                        fontWeight: Number(getComputedStyle(document.documentElement).getPropertyValue('--btn-weight') || '700'),
+                        textTransform: (getComputedStyle(document.documentElement).getPropertyValue('--btn-transform') || 'uppercase').trim() as any,
+                        letterSpacing: (getComputedStyle(document.documentElement).getPropertyValue('--btn-ls') || '0.06em').trim(),
+                        backgroundColor: 'var(--color-brand, #3b5849)', color: 'var(--color-base, #FEFEF7)'
+                      }}>Primary button</button>
+                    </div>
+                  </div>
+                  <div className="border-t p-2 text-[12px]" style={{ borderColor: 'var(--color-line, #d4cccc)', color: 'var(--color-muted, #4c4848)' }}>
+                    Base: <span style={{ color: 'var(--color-text, #000)' }}>{colors.base}</span> · Text: {colors.text} · Accent: {colors.brand}
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="text-[12px] uppercase font-['Roboto Mono'] mb-2">Export tokens</div>
             <pre className="text-[12px] whitespace-pre-wrap">{JSON.stringify({
               fontSize: {
