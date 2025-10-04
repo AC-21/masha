@@ -3,6 +3,7 @@ import StickyMM from "./components/StickyMM";
 import LayoutPositioner from "./components/LayoutPositioner";
 import Edit from "./pages/Edit";
 import TypographyLab from "./pages/TypographyLab";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 export default function App() {
   // Show layout positioner only in development or with a URL parameter
@@ -13,10 +14,14 @@ export default function App() {
   const isType = typeof window !== 'undefined' && (path === '/type' || path.startsWith('/type'));
   
   return (
-    <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#FEFEF7', ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
-      <StickyMM />
-      {isEdit ? <Edit /> : isType ? <TypographyLab /> : <ResponsiveLanding />}
-      {showPositioner && <LayoutPositioner />}
-    </div>
+    <ErrorBoundary fallbackTitle="App crashed">
+      <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#FEFEF7', ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
+        <StickyMM />
+        <ErrorBoundary fallbackTitle="Page crashed">
+          {isEdit ? <Edit /> : isType ? <TypographyLab /> : <ResponsiveLanding />}
+        </ErrorBoundary>
+        {showPositioner && <LayoutPositioner />}
+      </div>
+    </ErrorBoundary>
   );
 }

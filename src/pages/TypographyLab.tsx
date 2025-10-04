@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { tokens as savedTokens } from '../styles/tokens-clean.js';
+// eslint-disable-next-line no-console
+console.log('[TypographyLab] module loaded');
 import { useContent } from '../lib/useContent';
 
 type Scale = {
@@ -26,6 +28,8 @@ const defaults: Scale = {
 };
 
 export default function TypographyLab() {
+  // eslint-disable-next-line no-console
+  console.log('[TypographyLab] render start');
   const { content } = useContent();
   type Keys = 'body' | 'h1' | 'h2' | 'h3' | 'small';
   const [active, setActive] = useState<Keys>('body');
@@ -211,6 +215,8 @@ export default function TypographyLab() {
 
   // Hydrate from URL if present
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('[TypographyLab] hydrate from URL');
     const q = new URLSearchParams(location.search);
     const getNum = (k: string, d: number) => {
       const v = Number(q.get(k));
@@ -250,6 +256,8 @@ export default function TypographyLab() {
   } as React.CSSProperties);
 
   const style = useMemo(() => styleOf(specs.body), [specs.body]);
+  // eslint-disable-next-line no-console
+  console.log('[TypographyLab] specs', specs);
 
   const width = viewport === 'mobile' ? 390 : viewport === 'tablet' ? 768 : 1100;
 
