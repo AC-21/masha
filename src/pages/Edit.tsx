@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import TokenButton from '../components/TokenButton';
 
 type Modality = {
   title: string;
@@ -67,33 +68,29 @@ export default function Edit() {
       <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-6">
         <header className="flex items-center justify-between mb-6">
           <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[18px]">Site Editor</h1>
-          <button
-            onClick={save}
-            disabled={saving}
-            className="px-4 py-2 rounded bg-[#3b5849] text-white font-['Roboto Mono'] uppercase text-[12px]"
-          >
+          <TokenButton onClick={save} disabled={saving} style={{ fontSize: 12 }}>
             {saving ? 'Saving…' : 'Save'}
-          </button>
+          </TokenButton>
         </header>
 
         {error && <div className="mb-4 text-red-600">{error}</div>}
 
         <section className="mb-8">
-          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[14px] mb-2">Tagline</h2>
+          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[12px] mb-1">Tagline</h2>
           <input
-            className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white"
+            className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white text-[12px]"
             value={content.tagline}
             onChange={(e) => setContent({ ...content, tagline: e.target.value })}
           />
         </section>
 
         <section className="mb-8">
-          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[14px] mb-2">About (paragraphs)</h2>
+          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[12px] mb-1">About (paragraphs)</h2>
           {content.about.map((p, i) => (
             <textarea
               key={i}
-              className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white mb-2"
-              rows={3}
+              className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white mb-2 text-[12px]"
+              rows={2}
               value={p}
               onChange={(e) => {
                 const next = [...content.about];
@@ -103,38 +100,36 @@ export default function Edit() {
             />
           ))}
           <div className="flex gap-2">
-            <button
-              className="px-3 py-1 rounded bg-black text-white text-[12px]"
+            <TokenButton
               onClick={() => setContent({ ...content, about: [...content.about, ''] })}
             >
               Add paragraph
-            </button>
-            <button
-              className="px-3 py-1 rounded bg-[#d4cccc] text-black text-[12px]"
+            </TokenButton>
+            <TokenButton variant="outline"
               onClick={() => setContent({ ...content, about: content.about.slice(0, -1) })}
             >
               Remove last
-            </button>
+            </TokenButton>
           </div>
         </section>
 
         <section className="mb-8">
-          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[14px] mb-2">CTA</h2>
+          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[12px] mb-1">CTA</h2>
           <input
-            className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white"
+            className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white text-[12px]"
             value={content.cta.label}
             onChange={(e) => setContent({ ...content, cta: { label: e.target.value } })}
           />
         </section>
 
         <section className="mb-8">
-          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[14px] mb-2">Modalities</h2>
+          <h2 className="font-['Roboto Mono'] font-bold uppercase text-[12px] mb-1">Modalities</h2>
           <div className="space-y-6">
             {content.modalities.map((m, i) => (
               <div key={i} className="border border-[#d4cccc] rounded-[5px] p-3 bg-white">
                 <div className="mb-2 flex items-center justify-between">
                   <input
-                    className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white mr-3"
+                    className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white mr-3 text-[12px]"
                     value={m.title}
                     onChange={(e) => {
                       const next = [...content.modalities];
@@ -148,8 +143,8 @@ export default function Edit() {
                   </span>
                 </div>
                 <textarea
-                  className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white mb-2"
-                  rows={3}
+                  className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white mb-2 text-[12px]"
+                  rows={2}
                   value={m.short}
                   onChange={(e) => {
                     const next = [...content.modalities];
@@ -159,8 +154,8 @@ export default function Edit() {
                   placeholder="Short intro (1–3 sentences)"
                 />
                 <textarea
-                  className="w-full border border-[#d4cccc] rounded-[5px] px-3 py-2 bg-white"
-                  rows={5}
+                  className="w-full border border-[#d4cccc] rounded-[5px] px-2 py-1 bg-white text-[12px]"
+                  rows={4}
                   value={m.long}
                   onChange={(e) => {
                     const next = [...content.modalities];
@@ -170,18 +165,16 @@ export default function Edit() {
                   placeholder="Long body (expands on read more)"
                 />
                 <div className="mt-2 flex gap-2">
-                  <button
-                    className="px-3 py-1 rounded bg-[#d4cccc] text-black text-[12px]"
+                  <TokenButton variant="outline"
                     onClick={() => {
                       const next = content.modalities.filter((_, idx) => idx !== i);
                       setContent({ ...content, modalities: next });
                     }}
                   >
                     Remove
-                  </button>
+                  </TokenButton>
                   {i > 0 && (
-                    <button
-                      className="px-3 py-1 rounded bg-black text-white text-[12px]"
+                    <TokenButton
                       onClick={() => {
                         const next = [...content.modalities];
                         const [item] = next.splice(i, 1);
@@ -190,11 +183,10 @@ export default function Edit() {
                       }}
                     >
                       Move up
-                    </button>
+                    </TokenButton>
                   )}
                   {i < content.modalities.length - 1 && (
-                    <button
-                      className="px-3 py-1 rounded bg-black text-white text-[12px]"
+                    <TokenButton
                       onClick={() => {
                         const next = [...content.modalities];
                         const [item] = next.splice(i, 1);
@@ -203,18 +195,18 @@ export default function Edit() {
                       }}
                     >
                       Move down
-                    </button>
+                    </TokenButton>
                   )}
                 </div>
               </div>
             ))}
           </div>
-          <button
-            className="mt-4 px-3 py-2 rounded bg-[#3b5849] text-white text-[12px]"
+          <TokenButton
+            className="mt-4"
             onClick={() => setContent({ ...content, modalities: [...content.modalities, { title: '', short: '', long: '' }] })}
           >
             Add modality
-          </button>
+          </TokenButton>
         </section>
       </div>
     </main>
