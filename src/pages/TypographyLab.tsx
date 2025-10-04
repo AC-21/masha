@@ -600,8 +600,8 @@ export default function TypographyLab() {
                       <span className="inline-block w-4 h-4 rounded" style={{ backgroundColor: 'var(--color-brand, #3b5849)' }} />
                       <span className="text-[12px]">Accent</span>
                     </div>
-                    <h3 className="mb-1" style={{ ...styleFor('h3'), ...marginsFor('h3') }}>Sample heading</h3>
-                    <p className="mb-2" style={styleFor('body')}>This is body text using your current body font settings.</p>
+                    <h3 className="mb-1" style={{ ...styleOf(specs.h3), marginTop: specs.h3.marginTop || 0, marginBottom: specs.h3.marginBottom || 0 }}>Sample heading</h3>
+                    <p className="mb-2" style={styleOf(specs.body)}>This is body text using your current body font settings.</p>
                     <a href="#" className="underline text-[12px]" style={{ color: 'var(--color-brand, #3b5849)' }}>Sample link</a>
                     <div className="mt-3">
                       <button className="px-[var(--btn-px,16px)] py-[var(--btn-py,12px)] rounded-[var(--btn-radius,9999px)] text-[12px] font-['Roboto Mono']" style={{
