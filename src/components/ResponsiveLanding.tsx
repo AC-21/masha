@@ -1,108 +1,137 @@
-import CalendlyEmbed from "./CalendlyEmbed";
-
-const PORTRAIT = "/placeholder-portrait.jpg";
+import { useContent } from "../lib/useContent";
+import { styleFor, marginsFor, paragraphSpacing } from "../styles/typography";
+import { useState, useEffect, useRef } from "react";
+import LandscapeCanvas from "./LandscapeCanvas";
 
 export default function ResponsiveLanding() {
+  const { content } = useContent();
   return (
     <main className="min-h-screen w-full overflow-x-clip bg-[#fefef7] text-black">
-      {/* Header / Tagline */}
-      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-8">
-        <div className="flex items-start justify-between gap-6">
-          <h1 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.08em] text-[1.125rem] sm:text-[1.375rem] lg:text-[32px] leading-[1.2] max-w-[46ch]">
-            One Sentence that lets people know what
-            <br />
-            The good word is.
-          </h1>
-          <div className="ml-6 shrink-0 text-right">
-            <span className="font-['Caveat'] font-bold text-[28px] sm:text-[34px] lg:text-[39px]">MM</span>
-          </div>
-        </div>
-      </div>
+      {/* Tagline intentionally omitted on all breakpoints */}
 
-      {/* Hero: image + story intro */}
-      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pt-6 sm:pt-10 lg:pt-16">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
-          <div className="order-2 lg:order-1">
-            <h2 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[22px] sm:text-[28px] lg:text-[40px] leading-[1.15] mb-4 lg:mb-6">
-              More about my practice
-            </h2>
-            <div className="space-y-4 sm:space-y-5 lg:space-y-7 text-[14px] leading-[28px] lowercase font-['Inter'] max-w-prose">
-              <p>i am deeply in love with what i do.</p>
-              <p>it has been a struggle, though, to express in a sentence or two what it really is.</p>
-              <p>
-                i cultivate an environment where a person can come exactly as they are, feeling accepted and loved in their pain, inner battles, fears, desires, brightness, uniqueness, comfort, and discomfort.
-              </p>
-              <p>
-                it is the most beautiful thing each time to witness someone opening up and beginning to love and accept themselves. my heart feels so full guiding and witnessing the beautiful transformations happening within people.
-              </p>
-            </div>
-          </div>
+      {/* Mobile hero: portrait + about (scrollable) */}
+      <MobileHero content={content as any} />
 
-          <div className="order-1 lg:order-2">
-            <img
-              src={PORTRAIT}
-              alt="Portrait"
-              className="w-full h-auto rounded-[24px] sm:rounded-[28px] lg:rounded-[37px] object-cover"
-            />
-          </div>
-        </div>
+      {/* Divider hidden on mobile */}
+      <div className="hidden lg:hidden" />
+
+      {/* Desktop parity: use LandscapeCanvas with live content */}
+      <section className="hidden lg:block">
+        <LandscapeCanvas content={content as any} />
       </section>
 
-      {/* Divider */}
-      <div className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 py-8 lg:py-12">
-        <div className="border-t border-dashed border-[#d4cccc]" />
-      </div>
-
-      {/* Modalities + Calendly */}
-      <section className="mx-auto max-w-screen-xl px-6 sm:px-8 lg:px-12 pb-16">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Modalities */}
-          <div className="lg:col-span-7">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[18px] sm:text-[22px] mb-3">Modalities</h3>
-            <p className="uppercase text-[12px] text-[#525050] mb-6 font-['Roboto Mono'] leading-[18px]">
-              every session is unique & guided by your overall intentions. You will be received where you are,
-              <br /> and we will get to where we need to go. 
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
-              {[
-                { title: "Movement" },
-                { title: "Laughter" },
-                { title: "Parts" },
-                { title: "Deep Connection" },
-              ].map(({ title }) => (
-                <div key={title}>
-                  <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.04em] text-[18px] mb-2">{title}</h4>
-                  <div className="font-['Roboto Mono'] uppercase text-[12px] space-y-1 leading-[20px]">
-                    <p>Some text on what it is</p>
-                    <p>Some text on what it is</p>
-                    <p>Some text on what it is</p>
-                  </div>
-                  <div className="font-['Roboto Mono'] uppercase text-[12px] mt-2 space-y-1 leading-[20px]">
-                    <p>Some text on who its for</p>
-                    <p>Some text on who its for</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Calendly */}
-          <div className="lg:col-span-5">
-            <h3 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] sm:text-[18px] mb-4">
-              Schedule an intro to learn more
-            </h3>
-            <CalendlyEmbed
-              className="w-full"
-              rounded={40}
-              height={570}
-              primaryColor="3b5849"
-              textColor="ffffff"
-              url={import.meta.env.VITE_CALENDLY_URL}
-            />
-          </div>
-        </div>
-      </section>
+      {/* Mobile: My Work V2 — sticky header, modalities scroll under, glass CTA at bottom */}
+      <MobileModalities content={content as any} />
     </main>
+  );
+}
+
+function Expandable({ textShort, textLong }: { textShort: string; textLong: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="font-['Inter'] text-[12px] leading-6 lowercase max-w-prose">
+      <p className="mb-1">{textShort}</p>
+      {open && <p className="mt-1">{textLong}</p>}
+      <button
+        className="mt-1 text-[12px] underline"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? 'Read less' : 'Read more'}
+      </button>
+    </div>
+  );
+}
+
+function MobileHero({ content }: { content: any }) {
+  return (
+    <section className="block lg:hidden px-4 pt-4">
+      {/* Portrait */}
+      <img
+        src={content.images?.portrait}
+        alt="Portrait"
+        className="w-full h-auto rounded-[28px] object-cover"
+      />
+      {/* About */}
+      <h2 style={{ ...styleFor('h2'), ...marginsFor('h2'), marginTop: 24 }}>Here for your liberation</h2>
+      <div
+        className="mt-2 lowercase max-h-[320px] overflow-y-auto pr-2"
+        style={{ WebkitOverflowScrolling: 'touch', ...styleFor('body') }}
+      >
+        {content.about?.map((p: string, i: number) => (
+          <p key={i} style={{ marginBottom: paragraphSpacing() }}>{p}</p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileModalities({ content }: { content: any }) {
+  const listRef = useRef<HTMLDivElement>(null);
+  // Glass CTA shows only when the My Work section is reached
+  const [ctaVisible, setCtaVisible] = useState(false);
+  const calUrl = (import.meta as any).env?.VITE_CALENDLY_URL || content?.cta?.href || 'https://calendly.com/';
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    // Observe the section container entering viewport
+    const io = new IntersectionObserver((entries) => {
+      const e = entries[0];
+      setCtaVisible(e.isIntersecting);
+    }, { root: null, threshold: 0.05 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section className="block lg:hidden px-4 pb-28" ref={listRef}>
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-20 bg-[#fefef7] py-3">
+        <h3 style={{ ...styleFor('h1'), ...marginsFor('h1') }}>My Work</h3>
+        {/* Blur veil */}
+        <div className="relative h-5 pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(254,254,247,1), rgba(254,254,247,0))',
+              WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+              maskImage: 'linear-gradient(to bottom, black, transparent)',
+              backdropFilter: 'blur(6px)'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Modalities list */}
+      <div className="pt-2 space-y-8">
+        {content.modalities.map((m: any, i: number) => (
+          <div key={i}>
+            <h4 className="font-['Roboto Mono'] font-bold uppercase tracking-[0.06em] text-[16px] mb-1">
+              {m.title.replace(/\*+/g, '').trim()}
+            </h4>
+            <Expandable textShort={m.short} textLong={m.long} />
+          </div>
+        ))}
+      </div>
+
+      {/* Glass CTA sticky at bottom when in modalities */}
+      <div
+        className={`fixed left-0 right-0 bottom-3 z-30 px-4 transition-opacity ${ctaVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+        <button
+          onClick={() => {
+            const el = document.getElementById('calendly');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              window.open(calUrl, '_blank');
+            }
+          }}
+          className="w-full backdrop-blur-md bg-white/30 border border-white/50 shadow-lg rounded-full text-center py-3 font-['Roboto Mono'] uppercase text-[12px]"
+        >
+          Interested in a session
+        </button>
+      </div>
+    </section>
   );
 }
 

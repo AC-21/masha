@@ -9,24 +9,28 @@ type CalendlyEmbedProps = {
   hideDetails?: boolean;
   className?: string;
   rounded?: number; // px radius for container
+  offsetY?: number; // vertical offset (px) for fine-tuning alignment
 };
 
 export default function CalendlyEmbed(props: CalendlyEmbedProps) {
   const {
-    url = import.meta.env.VITE_CALENDLY_URL || "",
+    url = import.meta.env.VITE_CALENDLY_URL || "https://calendly.com/mashamaria/returning-clients-clone?hide_landing_page_details=1&hide_gdpr_banner=1",
     height = 750, // Calendly's recommended height
     primaryColor = "3b5849", // Keep the green accent
     textColor = "000000", // Black text to match site
     hideGDPR = true,
-    hideDetails = false, // Show details for better user experience
+    hideDetails = true, // Show details for better user experience
     className,
     rounded = 40,
+    offsetY = 0,
   } = props;
 
   const finalUrl = useMemo(() => {
     if (!url) return "";
     try {
-      const u = new URL(url);
+      const clean = (url || "").trim();
+      if (!clean) return "";
+      const u = new URL(clean);
       if (hideGDPR) u.searchParams.set("hide_gdpr_banner", "1");
       if (hideDetails) {
         u.searchParams.set("hide_event_type_details", "1");
@@ -57,6 +61,29 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
       setScriptLoaded(true);
     }
   }, []);
+
+  // Initialize Calendly widget reliably once script is loaded and URL is ready
+  useEffect(() => {
+    const init = () => {
+      if (!scriptLoaded) return;
+      if (!finalUrl) return;
+      const root = ref.current;
+      if (!root) return;
+      // Clean container before (re)mounting
+      root.innerHTML = "";
+      try {
+        (window as any).Calendly?.initInlineWidget?.({
+          url: finalUrl,
+          parentElement: root,
+          prefill: {},
+          utm: {}
+        });
+      } catch (e) {
+        // ignore — placeholder will continue to show
+      }
+    };
+    init();
+  }, [scriptLoaded, finalUrl]);
 
 
   // Show placeholder if no URL configured
@@ -100,22 +127,17 @@ export default function CalendlyEmbed(props: CalendlyEmbedProps) {
 
   return (
     <div
-      ref={ref}
       className={className}
-      style={{ 
-        height: height,
-        width: "100%",
-        position: "relative"
-      }}
+      style={{ marginTop: typeof offsetY === 'number' ? `${offsetY}px` : undefined }}
     >
       <div
-        className="calendly-inline-widget"
-        data-url={finalUrl}
+        ref={ref}
         style={{ 
-          minWidth: "320px", 
           height: typeof height === 'number' ? `${height}px` : height,
           width: "100%",
-          marginTop: "-35px"
+          position: "relative",
+          borderRadius: rounded,
+          overflow: "hidden"
         }}
       />
       {!scriptLoaded && (
