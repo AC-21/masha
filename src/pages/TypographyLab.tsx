@@ -278,7 +278,7 @@ export default function TypographyLab() {
         </header>
 
         <section className="grid grid-cols-12 gap-4 items-start max-w-[1700px] mx-auto">
-          <div className="col-span-12 lg:col-span-3 xl:col-span-4 2xl:col-span-3 space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4 sticky top-4 self-start">
+          <div className="col-span-12 lg:col-span-3 xl:col-span-4 2xl:col-span-3 space-y-4 border border-[#d4cccc] bg-white rounded-[8px] p-4 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pr-2">
             {/* Style selectors */}
             <div className="flex gap-2 text-[12px]">
               {(['body','h1','h2','h3','small'] as const).map(k => (
