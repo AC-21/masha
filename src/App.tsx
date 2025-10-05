@@ -4,6 +4,9 @@ import LayoutPositioner from "./components/LayoutPositioner";
 import Edit from "./pages/Edit";
 import TypographyLab from "./pages/TypographyLab";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { tokens } from "./styles/tokens-clean";
+import { useEffect } from "react";
+import { loadFontsFromTokens } from "./styles/fontloader";
 
 export default function App() {
   // Show layout positioner only in development or with a URL parameter
@@ -12,6 +15,9 @@ export default function App() {
   const path = typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '';
   const isEdit = typeof window !== 'undefined' && (path === '/edit' || path.startsWith('/edit'));
   const isType = typeof window !== 'undefined' && (path === '/type' || path.startsWith('/type'));
+  useEffect(() => {
+    try { loadFontsFromTokens((tokens as any).fonts || {}); } catch {}
+  }, []);
   
   return (
     <ErrorBoundary fallbackTitle="App crashed">
