@@ -646,15 +646,19 @@ function SaveTokensButton({ specs, paragraphSpacing, colors }: { specs: any; par
   const [message, setMessage] = useState<string | null>(null);
   const payload = {
     fontSize: {
-      h1: [specs.h1.size + 'px', { lineHeight: specs.h1.lineHeight + 'px', letterSpacing: specs.h1.letterSpacing + 'em' }],
-      h2: [specs.h2.size + 'px', { lineHeight: specs.h2.lineHeight + 'px', letterSpacing: specs.h2.letterSpacing + 'em' }],
-      h3: [specs.h3.size + 'px', { lineHeight: specs.h3.lineHeight + 'px', letterSpacing: specs.h3.letterSpacing + 'em' }],
-      body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px' }],
-      small: [specs.small.size + 'px', { lineHeight: specs.small.lineHeight + 'px' }]
+      h1: [specs.h1.size + 'px', { lineHeight: specs.h1.lineHeight + 'px', letterSpacing: specs.h1.letterSpacing + 'em', fontWeight: specs.h1.weight, textTransform: specs.h1.transform || 'none' }],
+      h2: [specs.h2.size + 'px', { lineHeight: specs.h2.lineHeight + 'px', letterSpacing: specs.h2.letterSpacing + 'em', fontWeight: specs.h2.weight, textTransform: specs.h2.transform || 'none' }],
+      h3: [specs.h3.size + 'px', { lineHeight: specs.h3.lineHeight + 'px', letterSpacing: specs.h3.letterSpacing + 'em', fontWeight: specs.h3.weight, textTransform: specs.h3.transform || 'none' }],
+      body: [specs.body.size + 'px', { lineHeight: specs.body.lineHeight + 'px', fontWeight: specs.body.weight, textTransform: specs.body.transform || 'none' }],
+      small: [specs.small.size + 'px', { lineHeight: specs.small.lineHeight + 'px', fontWeight: specs.small.weight, textTransform: specs.small.transform || 'none' }]
     },
     fonts: {
       body: specs.body.fontFamily,
-      mono: specs.h2.fontFamily
+      h1: specs.h1.fontFamily,
+      h2: specs.h2.fontFamily,
+      h3: specs.h3.fontFamily,
+      small: specs.small.fontFamily,
+      mono: specs.h1.fontFamily
     },
     colors,
     spacing: {

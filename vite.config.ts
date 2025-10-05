@@ -42,10 +42,10 @@ export default defineConfig({
                 const tokens = json && json.tokens ? json.tokens : json
                 const defaults = {
                   colors: { base: '#FEFEF7', text: '#000000', muted: '#4c4848', brand: '#3b5849', line: '#d4cccc' },
-                  fonts: { body: 'Inter, ui-sans-serif, system-ui, sans-serif', mono: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', script: 'Caveat, cursive' },
+                  fonts: { body: 'Inter, ui-sans-serif, system-ui, sans-serif', mono: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', h1: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', h2: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', h3: 'Roboto Mono, ui-monospace, SFMono-Regular, monospace', small: 'Inter, ui-sans-serif, system-ui, sans-serif', script: 'Caveat, cursive' },
                   radius: { portraitMobile: '28px', portraitDesktop: '37px', soft: '16px', pill: '9999px', panel: '12px', button: '9999px', image: '28px' },
                   button: { radius: '9999px', px: 16, py: 12, weight: 700, transform: 'uppercase', letterSpacing: '0.06em', borderWidth: '1px' },
-                  fontSize: { body: ['14px', { lineHeight: '28px' }], small: ['12px', { lineHeight: '18px' }], h1: ['22px', { lineHeight: '26px', letterSpacing: '0.06em' }], h2: ['20px', { lineHeight: '24px', letterSpacing: '0.06em' }], h3: ['16px', { lineHeight: '20px', letterSpacing: '0.06em' }] },
+                  fontSize: { body: ['14px', { lineHeight: '28px', fontWeight: 400, textTransform: 'none' }], small: ['12px', { lineHeight: '18px', fontWeight: 400, textTransform: 'none' }], h1: ['22px', { lineHeight: '26px', letterSpacing: '0.06em', fontWeight: 700, textTransform: 'uppercase' }], h2: ['20px', { lineHeight: '24px', letterSpacing: '0.06em', fontWeight: 700, textTransform: 'uppercase' }], h3: ['16px', { lineHeight: '20px', letterSpacing: '0.06em', fontWeight: 700, textTransform: 'uppercase' }] },
                   spacing: { paragraph: 16, h1: { mt: 0, mb: 8 }, h2: { mt: 0, mb: 8 }, h3: { mt: 12, mb: 6 } }
                 }
                 const merged = {

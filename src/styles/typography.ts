@@ -6,21 +6,21 @@ type Key = 'h1' | 'h2' | 'h3' | 'body' | 'small';
 const asFamily = (f: string | string[]) => Array.isArray(f) ? f.join(', ') : f;
 
 const fontMeta = (k: Key) => {
-  const tuple = (tokens as any).fontSize?.[k] as [string, { lineHeight?: string; letterSpacing?: string }];
+  const tuple = (tokens as any).fontSize?.[k] as [string, { lineHeight?: string; letterSpacing?: string; fontWeight?: number | string; textTransform?: string }];
   const [size, meta] = tuple || ['14px', { lineHeight: '24px' }];
-  return { size, lineHeight: meta?.lineHeight || '24px', letterSpacing: meta?.letterSpacing };
+  return { size, lineHeight: meta?.lineHeight || '24px', letterSpacing: meta?.letterSpacing, fontWeight: meta?.fontWeight, textTransform: meta?.textTransform };
 };
 
 export const styleFor = (k: Key): CSSProperties => {
-  const { size, lineHeight, letterSpacing } = fontMeta(k);
+  const { size, lineHeight, letterSpacing, fontWeight, textTransform } = fontMeta(k);
   const heading = k === 'h1' || k === 'h2' || k === 'h3';
   return {
-    fontFamily: heading ? asFamily((tokens as any).fonts?.mono || 'Roboto Mono, ui-monospace, monospace') : asFamily((tokens as any).fonts?.body || 'Inter, ui-sans-serif, system-ui, sans-serif'),
+    fontFamily: asFamily((tokens as any).fonts?.[k] || (heading ? (tokens as any).fonts?.mono : (tokens as any).fonts?.body) || (heading ? 'Roboto Mono, ui-monospace, monospace' : 'Inter, ui-sans-serif, system-ui, sans-serif')),
     fontSize: size,
     lineHeight,
     letterSpacing,
-    textTransform: heading ? 'uppercase' : undefined,
-    fontWeight: heading ? 700 : 400,
+    textTransform: textTransform || (heading ? 'uppercase' : undefined),
+    fontWeight: fontWeight || (heading ? 700 : 400),
   };
 };
 
