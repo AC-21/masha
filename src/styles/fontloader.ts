@@ -38,6 +38,10 @@ const candidatesFor = (name: string): string[] => {
       return [fsUrl('general-sans'), fsUrl('generalsans')];
     case 'Cabinet Grotesk':
       return [fsUrl('cabinet-grotesk'), fsUrl('cabinetgrotesk')];
+    case 'Satoshi':
+      return [fsUrl('satoshi')];
+    case 'Epilogue':
+      return [gUrl('Epilogue')];
     case 'Clash Grotesk':
       return [fsUrl('clash-grotesk'), fsUrl('clashgrotesk')];
     case 'Red Hat Display':
