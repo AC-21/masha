@@ -2,7 +2,7 @@
 
 ## Local Development
 
-1. Create a `.env` file in the root of the `web figma mockup` directory
+1. Create a `.env` file in the root of the `master` project directory
 2. Add your Calendly URL:
    ```
    VITE_CALENDLY_URL=https://calendly.com/YOUR-USERNAME/YOUR-EVENT-TYPE
@@ -27,7 +27,7 @@
 ## Testing
 
 After setting up the environment variable:
-- For local: Restart your dev server (`npm run dev`)
+- For local: Restart your dev server (`npm run dev`). The Calendly widget is used in `src/components/CalendlyEmbed.tsx` and appears on the desktop landscape layout.
 - For production: Trigger a new deployment on Vercel
 
 The scheduling widget should now load properly in the bottom right section of the desktop layout.
