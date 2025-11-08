@@ -1,0 +1,11 @@
+---
+description: Project management rules.
+globs:
+alwaysApply: true
+---
+
+# Task management
+
+- Always update the todo file: [/Users/sasha/Masha-website/ToDo.md](/Users/sasha/masha-website/ToDo.md), with new tasks & close out old tasks with the proof that the task has been completed. 
+    - Example: - [X] Implement APIs. [Completed] (Link to work); All APIs have been completed end to end.
+- Always be sure that the task has been completed in accordance with guidance in the /Users/sasha/Test-project/docs folder.

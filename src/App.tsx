@@ -1,27 +1,51 @@
-import ResponsiveLanding from "./components/ResponsiveLanding";
-import StickyMM from "./components/StickyMM";
-import LayoutPositioner from "./components/LayoutPositioner";
-import Edit from "./pages/Edit";
-import TypographyLab from "./pages/TypographyLab";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { useEffect, useMemo, useState } from "react";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Modalities from "./pages/Modalities";
+import Poetry from "./pages/Poetry";
+
+type RoutePath = "/" | "/about" | "/modalities" | "/poetry";
+
+function normalizePathname(pathname: string): RoutePath {
+  const cleaned = pathname.replace(/\/+$/, "") || "/";
+  if (cleaned === "/about") return "/about";
+  if (cleaned === "/modalities") return "/modalities";
+  if (cleaned === "/poetry") return "/poetry";
+  return "/";
+}
 
 export default function App() {
-  // Show layout positioner only in development or with a URL parameter
-  const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
-  const showPositioner = params.get('position') === 'true' || params.get('position') === '1';
-  const path = typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '';
-  const isEdit = typeof window !== 'undefined' && (path === '/edit' || path.startsWith('/edit'));
-  const isType = typeof window !== 'undefined' && (path === '/type' || path.startsWith('/type'));
-  
-  return (
-    <ErrorBoundary fallbackTitle="App crashed">
-      <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#FEFEF7', ['--container-max' as any]: '560px', ['--container-pad' as any]: '16px' }}>
-        <StickyMM />
-        <ErrorBoundary fallbackTitle="Page crashed">
-          {isEdit ? <Edit /> : isType ? <TypographyLab /> : <ResponsiveLanding />}
-        </ErrorBoundary>
-        {showPositioner && <LayoutPositioner />}
-      </div>
-    </ErrorBoundary>
+  const [route, setRoute] = useState<RoutePath>(() =>
+    typeof window !== "undefined" ? normalizePathname(window.location.pathname) : "/"
   );
+
+  useEffect(() => {
+    const handler = () => setRoute(normalizePathname(window.location.pathname));
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, []);
+
+  const navigate = useMemo(
+    () =>
+      (to: RoutePath) => {
+        if (typeof window === "undefined") return;
+        if (normalizePathname(window.location.pathname) === to) return;
+        window.history.pushState({}, "", to);
+        setRoute(to);
+      },
+    []
+  );
+
+  if (route === "/about") {
+    return <About navigate={navigate} />;
+  }
+  if (route === "/modalities") {
+    return <Modalities navigate={navigate} />;
+  }
+  if (route === "/poetry") {
+    return <Poetry navigate={navigate} />;
+  }
+  return <Home navigate={navigate} />;
 }
+
+
