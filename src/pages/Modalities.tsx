@@ -27,6 +27,8 @@ function withAlpha(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
+const CARD_ALPHA = 0.78; // keep teaser and expanded card backgrounds visually consistent
+
 type LayoutMetrics = {
   collapsedHeight: number;
   peekLift: number;
@@ -47,6 +49,7 @@ type Props = {
 export default function Modalities({ navigate }: Props) {
   const [mods, setMods] = useState<LoadedModality[]>([]);
   const [index, setIndex] = useState(0);
+  const [navLock, setNavLock] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const [manualExpand, setManualExpand] = useState(false);
@@ -86,12 +89,13 @@ export default function Modalities({ navigate }: Props) {
 
   const go = useCallback(
     (delta: number) => {
-      setIndex((i) => {
-        const len = mods.length || 1;
-        return (i + delta + len) % len;
-      });
+      if (navLock) return;
+      setNavLock(true);
+      const len = mods.length || 1;
+      setIndex((i) => (i + delta + len) % len);
+      window.setTimeout(() => setNavLock(false), reducedMotion ? 150 : 320);
     },
-    [mods.length]
+    [mods.length, navLock, reducedMotion]
   );
 
   const swipe = useSwipe({ onSwipeLeft: () => go(1), onSwipeRight: () => go(-1) });
@@ -280,8 +284,8 @@ export default function Modalities({ navigate }: Props) {
           style={{ paddingBottom: `${heroPaddingBottom}px` }}
         >
           <div className="space-y-4 text-[16px] leading-[28px] text-foreground/85">
-            <p>this is a quick sentence describing how sessions are unique.</p>
-            <p>followed by a swipe down to explore the modalities i work with.</p>
+            <p>Every session is unique & guided by your overall desires. We will not be constrained by a specific modality.</p>
+            <p>Scroll down & swipe to view the modalities.</p>
           </div>
 
           <div className="flex justify-center text-[12px] uppercase tracking-[0.22em] text-foreground/55">
@@ -354,8 +358,8 @@ export default function Modalities({ navigate }: Props) {
                     <div
                       className={`${cardBaseClass} ${transitionDuration} ${isExpanded ? expandedClasses : collapsedClasses} ${cardHeightClass}`}
                       style={{
-                        // Teaser: constant stone background; Expanded: modality color tint
-                        backgroundColor: isExpanded ? withAlpha(m.color, 0.78) : "rgba(250,250,249,0.95)",
+                        // Teaser: stone-50 with same transparency; Expanded: modality color with same transparency
+                        backgroundColor: isExpanded ? withAlpha(m.color, CARD_ALPHA) : withAlpha("#FAFAF9", CARD_ALPHA),
                         borderColor: (m.textColor || "#000") + "33",
                         minHeight: isExpanded ? undefined : `${collapsedHeight}px`,
                         transform: isExpanded
@@ -374,7 +378,10 @@ export default function Modalities({ navigate }: Props) {
                         >
                           {m.title}
                         </h3>
-                        <div className={showLong ? "overflow-y-auto pr-1" : ""} style={{ maxHeight: showLong ? "46vh" : undefined }}>
+                        <div
+                          className={isExpanded ? (showLong ? "flex-1 overflow-y-auto pr-1" : "") : (showLong ? "overflow-y-auto pr-1" : "")}
+                          style={{ maxHeight: isExpanded ? (showLong ? undefined : undefined) : (showLong ? "46vh" : undefined) }}
+                        >
                           {(() => {
                             const text = showLong && m.long ? m.excerpt + "\n\n" + (m.long || "") : m.excerpt;
                             const paragraphs = (text || "")
@@ -397,10 +404,10 @@ export default function Modalities({ navigate }: Props) {
                           })()}
                         </div>
                         {m.long ? (
-                          <div className="pt-2">
+                          <div className={isExpanded ? "mt-auto pt-3" : "pt-2"}>
                             <div
-                              className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em]"
-                               onClick={handleReadMore}
+                              className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em] self-start"
+                              onClick={handleReadMore}
                               style={{ color: (m.textColor || "#000") + "99" }}
                             >
                               {showLong ? "Show Less" : "Read More"}
