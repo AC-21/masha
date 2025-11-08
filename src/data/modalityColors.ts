@@ -4,18 +4,48 @@ export type ModalityColors = {
 };
 
 // Map by slug id
-export const MODALITY_COLORS: Record<string, ModalityColors> = {
-  "somatic-internal-family-systems": { color: "#F7E8EE", textColor: "#4b2b36" },
-  "inner-child-work": { color: "#F8EFE4", textColor: "#4b3425" },
-  "movement-therapy": { color: "#EAF4F1", textColor: "#23423B" },
-  "energy-clearing": { color: "#F1F6E9", textColor: "#334222" },
-  "emotional-release": { color: "#F9E9EC", textColor: "#4b2932" },
-  "conversation-deep-listening": { color: "#ECEFF7", textColor: "#233045" },
-  prayer: { color: "#EEE9F7", textColor: "#2f2a44" },
-  writing: { color: "#F4F4E9", textColor: "#3e3c27" },
-  "art-therapy": { color: "#EDEFFC", textColor: "#2a2f5b" },
-  "shadow-work": { color: "#EDEEEE", textColor: "#2a2a2a" },
-};
+export const MODALITY_COLORS = {
+  "somatic-internal-family-systems": {
+    "color": "#efefef",
+    "textColor": "#1f2937"
+  },
+  "inner-child-work": {
+    "color": "#ffdab9",
+    "textColor": "#5f4b3a"
+  },
+  "movement-therapy": {
+    "color": "#58a4b0",
+    "textColor": "#edf6f8"
+  },
+  "energy-clearing": {
+    "color": "#bfd1e5",
+    "textColor": "#434c56"
+  },
+  "emotional-release": {
+    "color": "#bfe8d8",
+    "textColor": "#0d4e36"
+  },
+  "conversation-and-deep-listening": {
+    "color": "#f4e8c1",
+    "textColor": "#535046"
+  },
+  "prayer": {
+    "color": "#ede6f2",
+    "textColor": "#3f3545"
+  },
+  "writing": {
+    "color": "#f4f4e9",
+    "textColor": "#3e3c27"
+  },
+  "art-therapy": {
+    "color": "#e0afa0",
+    "textColor": "#31081f"
+  },
+  "shadow-work": {
+    "color": "#f9c8d4",
+    "textColor": "#471f29"
+  }
+}
 
 export function slugify(title: string): string {
   return title

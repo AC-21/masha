@@ -87,7 +87,7 @@ export default function Modalities({ navigate }: Props) {
   const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-lg";
   const expandedClasses = "relative w-full h-full rounded-none px-0 pt-14 pb-24 border-white/30 shadow-xl";
   const transitionDuration = reducedMotion ? "duration-0" : "duration-500";
-  const cardBaseClass = "bg-white/88 backdrop-blur transition-all border";
+  const cardBaseClass = "bg-white/90 backdrop-blur transition-all border";
 
   const [layout, setLayout] = useState<LayoutMetrics>(() => {
     if (typeof window === "undefined") return DEFAULT_LAYOUT;
