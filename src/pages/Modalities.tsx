@@ -188,11 +188,11 @@ export default function Modalities({ navigate }: Props) {
       />
       <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} navigate={navigate} />
 
-      {/* Hero */}
-      <section className="relative z-20 min-h-[100svh] w-full">
+      {/* Hero (locked) */}
+      <section className="sticky top-0 z-30 h-[100svh] w-full pointer-events-none">
         <div
           className={
-            "relative mx-auto flex min-h-screen max-w-[560px] flex-col justify-end gap-8 px-6 pb-8 pt-28 transition-all " +
+            "relative mx-auto flex h-full max-w-[560px] flex-col justify-end gap-8 px-6 pt-28 transition-all " +
             transitionDuration +
             " " +
             (isExpanded ? "translate-y-8 opacity-0 pointer-events-none" : "opacity-100")
@@ -207,10 +207,11 @@ export default function Modalities({ navigate }: Props) {
           <div className="flex justify-center text-[12px] uppercase tracking-[0.22em] text-foreground/55">
             <span>Scroll</span>
           </div>
-
-          <div ref={anchorRef} className="h-[1px] w-full" />
         </div>
       </section>
+
+      {/* Intersection sentinel for scroll-based expansion */}
+      <div ref={anchorRef} className="h-[1px] w-full" />
 
       {/* Full screen carousel (slides into place after hero). */}
       <section
