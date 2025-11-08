@@ -13,17 +13,17 @@ export default function Header({ title, onMenuClick, onLogoClick }: HeaderProps)
         <button
           aria-label="Home"
           onClick={onLogoClick}
-          className="text-[18px] tracking-[0.08em]"
+          className="text-[18px] tracking-[0.08em] leading-none"
           style={{ fontFamily: "'Agu Display', 'Author', system-ui, sans-serif", fontWeight: 400 }}
         >
           MM
         </button>
         <div className="flex items-center gap-3">
-          {title ? <div className="text-[14px] opacity-70 text-right">{title}</div> : null}
+          {title ? <div className="text-[14px] leading-none opacity-70 text-right translate-y-[1.5px]">{title}</div> : null}
           <button
             aria-label="Menu"
             onClick={onMenuClick}
-            className="text-[20px]"
+            className="text-[20px] leading-none"
           >
             ☰
           </button>

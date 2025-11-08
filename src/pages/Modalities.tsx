@@ -276,21 +276,18 @@ export default function Modalities({ navigate }: Props) {
       <section className="sticky top-0 z-30 h-[100svh] w-full pointer-events-none">
         <div
           className={
-            "relative mx-auto flex h-full max-w-[560px] flex-col justify-end gap-8 px-6 pt-28 transition-opacity " +
+            "relative mx-auto flex h-full max-w-[560px] flex-col justify-center gap-6 md:gap-8 px-6 pt-16 md:pt-28 transition-opacity " +
             transitionDuration +
             " " +
             (isExpanded ? "opacity-0 pointer-events-none" : "opacity-100")
           }
           style={{ paddingBottom: `${heroPaddingBottom}px` }}
         >
-          <div className="space-y-4 text-[16px] leading-[28px] text-foreground/85">
+          <div className="space-y-4 text-[16px] leading-[28px] font-semibold text-foreground/85">
             <p>Every session is unique & guided by your overall desires. We will not be constrained by a specific modality.</p>
             <p>Scroll down & swipe to view the modalities.</p>
           </div>
 
-          <div className="flex justify-center text-[12px] uppercase tracking-[0.22em] text-foreground/55">
-            <span>Scroll</span>
-          </div>
         </div>
       </section>
 
