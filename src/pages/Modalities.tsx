@@ -222,16 +222,13 @@ export default function Modalities({ navigate }: Props) {
           overflow: isExpanded ? "hidden" : "visible",
         }}
       >
-        {/* Sticky (collapsed) → Fixed (expanded) viewport to create the immersive full-screen section */}
+        {/* Fixed viewport overlay (transparent while collapsed, opaque when expanded) */}
         <div
           className={
-            "transition-all " + transitionDuration + " ease-out " +
-            (isExpanded
-              ? "fixed inset-0 z-40"
-              : "sticky top-0 z-40")
+            "fixed inset-0 z-40 transition-all " + transitionDuration + " ease-out pointer-events-none"
           }
           style={{
-            height: isExpanded ? undefined : "100svh",
+            height: isExpanded ? "100dvh" : "100svh",
           }}
         >
           <div
@@ -243,9 +240,6 @@ export default function Modalities({ navigate }: Props) {
               overscrollBehaviorY: isExpanded ? "contain" : "auto",
               overflow: "hidden",
             }}
-            onWheel={handleWheel}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
             role="region"
             aria-label="Modalities carousel"
           >
@@ -270,7 +264,14 @@ export default function Modalities({ navigate }: Props) {
                   )}
 
                   {/* Content card */}
-                  <div className={`z-40 flex h-full w-full flex-col ${isExpanded ? "fixed inset-0 items-stretch" : "relative items-center justify-end"}`}>
+                  <div
+                    className={`z-40 flex h-full w-full flex-col pointer-events-auto ${
+                      isExpanded ? "fixed inset-0 items-stretch" : "relative items-center justify-end"
+                    }`}
+                    onWheel={handleWheel}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                  >
                     <div
                       className={`${cardBaseClass} ${transitionDuration} ${isExpanded ? expandedClasses : collapsedClasses} ${cardHeightClass}`}
                       style={{
