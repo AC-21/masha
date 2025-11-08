@@ -171,6 +171,22 @@ export default function Modalities({ navigate }: Props) {
     [isExpanded, touchStartY, expand, collapse]
   );
 
+  // Ensure long content is hidden when returning to teaser
+  useEffect(() => {
+    if (!isExpanded) setShowLong(false);
+  }, [isExpanded]);
+
+  const handleReadMore = useCallback(() => {
+    // If still in teaser state, expand first, then show long content
+    if (!isExpanded) {
+      expand();
+      const delayMs = reducedMotion ? 0 : 520;
+      window.setTimeout(() => setShowLong(true), delayMs);
+    } else {
+      setShowLong((s) => !s);
+    }
+  }, [isExpanded, expand, reducedMotion]);
+
   // Deep-link support via hash: e.g., /modalities#ifs
   useEffect(() => {
     if (typeof window === "undefined" || mods.length === 0) return;
@@ -343,7 +359,7 @@ export default function Modalities({ navigate }: Props) {
                           <div className="pt-2">
                             <div
                               className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em]"
-                              onClick={() => setShowLong((s) => !s)}
+                               onClick={handleReadMore}
                               style={{ color: (m.textColor || "#000") + "99" }}
                             >
                               {showLong ? "Show Less" : "Read More"}
