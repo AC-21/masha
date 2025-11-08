@@ -10,6 +10,23 @@ import bgJpg from "../assets/Background.jpg";
 import bgAvif from "../assets/Background.avif";
 import bgWebp from "../assets/Background.webp";
 
+function withAlpha(hex: string, alpha: number): string {
+  const h = hex.replace("#", "").trim();
+  const to255 = (s: string) => parseInt(s, 16);
+  let r = 0, g = 0, b = 0;
+  if (h.length === 3) {
+    r = to255(h[0] + h[0]);
+    g = to255(h[1] + h[1]);
+    b = to255(h[2] + h[2]);
+  } else if (h.length >= 6) {
+    r = to255(h.substring(0, 2));
+    g = to255(h.substring(2, 4));
+    b = to255(h.substring(4, 6));
+  }
+  const a = Math.max(0, Math.min(1, alpha));
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
 type LayoutMetrics = {
   collapsedHeight: number;
   peekLift: number;
@@ -84,10 +101,10 @@ export default function Modalities({ navigate }: Props) {
     [isExpanded]
   );
 
-  const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-lg";
+  const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-none";
   const expandedClasses = "relative w-full h-full rounded-none px-0 pt-14 pb-24 border-white/30 shadow-xl";
   const transitionDuration = reducedMotion ? "duration-0" : "duration-500";
-  const cardBaseClass = "backdrop-blur-md transition-all border";
+  const cardBaseClass = "backdrop-blur-sm transition-all border";
 
   const [layout, setLayout] = useState<LayoutMetrics>(() => {
     if (typeof window === "undefined") return DEFAULT_LAYOUT;
@@ -320,8 +337,8 @@ export default function Modalities({ navigate }: Props) {
                   {/* Background treatments only when expanded (no color tint overlay) */}
                   {isExpanded && (
                     <>
-                      <div className="absolute inset-0 bg-black/20" />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/35" />
+                      <div className="absolute inset-0 bg-black/10" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black/20" />
                     </>
                   )}
 
@@ -337,7 +354,7 @@ export default function Modalities({ navigate }: Props) {
                     <div
                       className={`${cardBaseClass} ${transitionDuration} ${isExpanded ? expandedClasses : collapsedClasses} ${cardHeightClass}`}
                       style={{
-                        backgroundColor: m.color,
+                        backgroundColor: withAlpha(m.color, 0.78),
                         borderColor: (m.textColor || "#000") + "33",
                         transform: isExpanded
                           ? "translateY(0px)"
@@ -350,7 +367,7 @@ export default function Modalities({ navigate }: Props) {
                           className="whitespace-pre-line text-[30px] font-[750] leading-tight"
                           style={{
                             fontFamily: "Satoshi, Inter, system-ui, sans-serif",
-                            color: m.textColor || "var(--color-foreground)",
+                            color: isExpanded ? (m.textColor || "var(--color-foreground)") : "#1f2937", // stone-800
                           }}
                         >
                           {m.title}
@@ -366,7 +383,11 @@ export default function Modalities({ navigate }: Props) {
                               <p
                                 key={idx}
                                 className={"text-[16px] leading-[28px] " + (idx > 0 ? "mt-3" : "")}
-                                style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
+                                style={{
+                                  color: isExpanded
+                                    ? (m.textColor ? m.textColor + "CC" : "var(--color-foreground)")
+                                    : "#374151", // stone-700
+                                }}
                               >
                                 {p}
                               </p>
