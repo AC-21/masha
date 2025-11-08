@@ -104,7 +104,7 @@ export default function Modalities({ navigate }: Props) {
   const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-none";
   const expandedClasses = "relative w-full h-full rounded-none px-0 pt-14 pb-24 border-white/30 shadow-xl";
   const transitionDuration = reducedMotion ? "duration-0" : "duration-500";
-  const cardBaseClass = "backdrop-blur-sm transition-all border";
+  const cardBaseClass = "transition-all border";
 
   const [layout, setLayout] = useState<LayoutMetrics>(() => {
     if (typeof window === "undefined") return DEFAULT_LAYOUT;
@@ -354,8 +354,10 @@ export default function Modalities({ navigate }: Props) {
                     <div
                       className={`${cardBaseClass} ${transitionDuration} ${isExpanded ? expandedClasses : collapsedClasses} ${cardHeightClass}`}
                       style={{
-                        backgroundColor: withAlpha(m.color, 0.78),
+                        // Teaser: constant stone background; Expanded: modality color tint
+                        backgroundColor: isExpanded ? withAlpha(m.color, 0.78) : "rgba(250,250,249,0.95)",
                         borderColor: (m.textColor || "#000") + "33",
+                        minHeight: isExpanded ? undefined : `${collapsedHeight}px`,
                         transform: isExpanded
                           ? "translateY(0px)"
                           : `translateY(0px)`,
@@ -364,7 +366,7 @@ export default function Modalities({ navigate }: Props) {
                     >
                       <div className={`flex h-full flex-col justify-start gap-4 ${isExpanded ? "px-6" : ""}`}>
                         <h3
-                          className="whitespace-pre-line text-[30px] font-[750] leading-tight"
+                          className="whitespace-pre-line text-[39px] md:text-[30px] font-[750] leading-tight"
                           style={{
                             fontFamily: "Satoshi, Inter, system-ui, sans-serif",
                             color: isExpanded ? (m.textColor || "var(--color-foreground)") : "#1f2937", // stone-800
@@ -382,7 +384,7 @@ export default function Modalities({ navigate }: Props) {
                             return paragraphs.map((p, idx) => (
                               <p
                                 key={idx}
-                                className={"text-[16px] leading-[28px] " + (idx > 0 ? "mt-3" : "")}
+                                className={"text-[21px] md:text-[16px] leading-[30px] md:leading-[28px] " + (idx > 0 ? "mt-3" : "")}
                                 style={{
                                   color: isExpanded
                                     ? (m.textColor ? m.textColor + "CC" : "var(--color-foreground)")
