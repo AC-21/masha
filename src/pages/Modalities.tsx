@@ -283,7 +283,10 @@ export default function Modalities({ navigate }: Props) {
           }
           style={{ paddingBottom: `${heroPaddingBottom}px` }}
         >
-          <div className="space-y-4 text-[16px] leading-[28px] font-semibold text-foreground/85">
+          <div
+            className="space-y-4 text-[21px] md:text-[18px] leading-[30px] md:leading-[28px] text-foreground/85"
+            style={{ fontWeight: 400 }}
+          >
             <p>Every session is unique & guided by your overall desires. We will not be constrained by a specific modality.</p>
             <p>Scroll down & swipe to view the modalities.</p>
           </div>
@@ -367,7 +370,7 @@ export default function Modalities({ navigate }: Props) {
                     >
                       <div className={`flex h-full flex-col justify-start gap-4 ${isExpanded ? "px-6" : ""}`}>
                         <h3
-                          className="whitespace-pre-line text-[39px] md:text-[30px] font-[750] leading-tight"
+                          className="whitespace-pre-line text-[35px] md:text-[27px] font-[750] leading-tight"
                           style={{
                             fontFamily: "Satoshi, Inter, system-ui, sans-serif",
                             color: isExpanded ? (m.textColor || "var(--color-foreground)") : "#1f2937", // stone-800
@@ -386,9 +389,9 @@ export default function Modalities({ navigate }: Props) {
                               .map((p) => p.trim())
                               .filter(Boolean);
                             return paragraphs.map((p, idx) => (
-                              <p
+                               <p
                                 key={idx}
-                                className={"text-[21px] md:text-[16px] leading-[30px] md:leading-[28px] " + (idx > 0 ? "mt-3" : "")}
+                                 className={"text-[19px] md:text-[14px] leading-[27px] md:leading-[25px] " + (idx > 0 ? "mt-3" : "")}
                                 style={{
                                   color: isExpanded
                                     ? (m.textColor ? m.textColor + "CC" : "var(--color-foreground)")
@@ -401,7 +404,7 @@ export default function Modalities({ navigate }: Props) {
                           })()}
                         </div>
                         {m.long ? (
-                          <div className={isExpanded ? "mt-auto pt-3" : "pt-2"}>
+                          <div className={isExpanded ? "mt-auto pt-3" : "mt-3"}>
                             <div
                               className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em] self-start"
                               onClick={handleReadMore}
