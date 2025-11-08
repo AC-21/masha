@@ -31,6 +31,8 @@ export default function Modalities({ navigate }: Props) {
   const [index, setIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const [manualExpand, setManualExpand] = useState(false);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
 
   // Detect entering the slides area (after instructions)
   const [anchorRef, enteredSlides] = useInView<HTMLDivElement>({
@@ -55,7 +57,7 @@ export default function Modalities({ navigate }: Props) {
       window.removeEventListener("resize", onScroll);
     };
   }, [anchorRef]);
-  const isExpanded = enteredSlides || enteredByScroll;
+  const isExpanded = manualExpand || enteredSlides || enteredByScroll;
 
   const go = useCallback(
     (delta: number) => {
@@ -94,6 +96,7 @@ export default function Modalities({ navigate }: Props) {
     return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
+  // Always lock vertical scroll on this page; we manually expand on gesture.
   useEffect(() => {
     if (typeof document === "undefined") return;
     const body = document.body;
@@ -101,21 +104,36 @@ export default function Modalities({ navigate }: Props) {
     const prevOverflowBody = body.style.overflow;
     const prevTouchBody = body.style.touchAction;
     const prevOverflowHtml = html.style.overflow;
-    if (isExpanded) {
-      body.style.overflow = "hidden";
-      body.style.touchAction = "none";
-      html.style.overflow = "hidden";
-    } else {
-      body.style.overflow = prevOverflowBody;
-      body.style.touchAction = prevTouchBody;
-      html.style.overflow = prevOverflowHtml;
-    }
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
+    html.style.overflow = "hidden";
     return () => {
       body.style.overflow = prevOverflowBody;
       body.style.touchAction = prevTouchBody;
       html.style.overflow = prevOverflowHtml;
     };
-  }, [isExpanded]);
+  }, []);
+
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      if (!isExpanded && e.deltaY > 6) {
+        setManualExpand(true);
+      }
+    },
+    [isExpanded]
+  );
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setTouchStartY(e.touches[0].clientY);
+  }, []);
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isExpanded && touchStartY !== null) {
+        const dy = touchStartY - e.touches[0].clientY;
+        if (dy > 18) setManualExpand(true);
+      }
+    },
+    [isExpanded, touchStartY]
+  );
 
   // Deep-link support via hash: e.g., /modalities#ifs
   useEffect(() => {
@@ -218,6 +236,9 @@ export default function Modalities({ navigate }: Props) {
               overscrollBehaviorY: isExpanded ? "contain" : "auto",
               overflow: "hidden",
             }}
+            onWheel={handleWheel}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             role="region"
             aria-label="Modalities carousel"
           >
