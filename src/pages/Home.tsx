@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import useSwipe from "../lib/useSwipe";
 import CalendlyButton from "../components/CalendlyButton";
 import bgJpg from "../assets/Background.jpg";
@@ -9,12 +10,24 @@ type Props = {
 };
 
 export default function Home({ navigate }: Props) {
+  const [showHint] = useState(false);
   const CALENDLY_URL =
     "https://calendly.com/mashamaria/returning-clients-clone?hide_event_type_details=1&hide_gdpr_banner=1";
-  const swipe = useSwipe({
-    onSwipeLeft: () => navigate("/about"),
-    onSwipeRight: () => navigate("/modalities"),
-  });
+  const swipe = useSwipe(
+    useMemo(
+      () => ({
+        onSwipeLeft: () => {
+          setShowHint(false);
+          navigate("/about");
+        },
+        onSwipeRight: () => {
+          setShowHint(false);
+          navigate("/modalities");
+        },
+      }),
+      [navigate]
+    )
+  );
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -30,10 +43,16 @@ export default function Home({ navigate }: Props) {
         <div className="absolute inset-0 bg-black/25" />
         <div className="absolute inset-0 bg-background/45" />
       </div>
+      
 
       <div
         {...swipe}
-        className="relative z-10 mx-auto flex min-h-screen max-w-[560px] flex-col items-center px-6 py-12"
+        onTouchStart={(e) => {
+          setShowHint(false);
+          // @ts-ignore - forward to swipe handler if present
+          swipe.onTouchStart && swipe.onTouchStart(e);
+        }}
+        className="relative z-10 mx-auto flex min-h-screen max-w-[560px] flex-col items-center px-6 py-16"
       >
         <h1
           className="mt-2 text-center text-[36px] leading-tight tracking-[0.02em]"
@@ -41,6 +60,7 @@ export default function Home({ navigate }: Props) {
         >
           Masha Maria
         </h1>
+        
 
         <nav className="mt-14 w-full max-w-[320px] text-center">
           <ul className="flex flex-col gap-6 text-[20px]">
