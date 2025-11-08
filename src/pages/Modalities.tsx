@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import MenuSheet from "../components/MenuSheet";
 import Dots from "../components/Dots";
 import useSwipe from "../lib/useSwipe";
-import { MODALITIES } from "../data/modalities";
+import { loadModalitiesFromSeed, type LoadedModality } from "../lib/modalitiesLoader";
 import useInView from "../lib/useInView";
 import usePrefersReducedMotion from "../lib/usePrefersReducedMotion";
 import bgJpg from "../assets/Background.jpg";
@@ -28,11 +28,19 @@ type Props = {
 };
 
 export default function Modalities({ navigate }: Props) {
+  const [mods, setMods] = useState<LoadedModality[]>([]);
   const [index, setIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const [manualExpand, setManualExpand] = useState(false);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [showLong, setShowLong] = useState(false);
+  useEffect(() => {
+    setMods(loadModalitiesFromSeed());
+  }, []);
+  useEffect(() => {
+    setShowLong(false);
+  }, [index]);
 
   // Detect entering the slides area (after instructions)
   const [anchorRef, enteredSlides] = useInView<HTMLDivElement>({
@@ -61,9 +69,12 @@ export default function Modalities({ navigate }: Props) {
 
   const go = useCallback(
     (delta: number) => {
-      setIndex((i) => (i + delta + MODALITIES.length) % MODALITIES.length);
+      setIndex((i) => {
+        const len = mods.length || 1;
+        return (i + delta + len) % len;
+      });
     },
-    []
+    [mods.length]
   );
 
   const swipe = useSwipe({ onSwipeLeft: () => go(1), onSwipeRight: () => go(-1) });
@@ -73,7 +84,7 @@ export default function Modalities({ navigate }: Props) {
     [isExpanded]
   );
 
-  const collapsedClasses = "w-full rounded-[28px] px-6 py-7 border-white/45 shadow-lg";
+  const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-lg";
   const expandedClasses = "relative w-full h-full rounded-none px-0 pt-14 pb-24 border-white/30 shadow-xl";
   const transitionDuration = reducedMotion ? "duration-0" : "duration-500";
   const cardBaseClass = "bg-white/88 backdrop-blur transition-all border";
@@ -143,21 +154,21 @@ export default function Modalities({ navigate }: Props) {
 
   // Deep-link support via hash: e.g., /modalities#ifs
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || mods.length === 0) return;
     const fromHash = window.location.hash.replace(/^#/, "");
     if (!fromHash) return;
-    const i = MODALITIES.findIndex((m) => m.id === fromHash);
+    const i = mods.findIndex((m) => m.id === fromHash);
     if (i >= 0) setIndex(i);
-  }, []);
+  }, [mods]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const id = MODALITIES[index]?.id;
+    const id = mods[index]?.id;
     if (!id) return;
     const url = new URL(window.location.href);
     url.hash = id;
     history.replaceState(history.state, "", url);
-  }, [index]);
+  }, [index, mods]);
 
   return (
     <div className="relative min-h-screen w-full">
@@ -243,7 +254,7 @@ export default function Modalities({ navigate }: Props) {
             role="region"
             aria-label="Modalities carousel"
           >
-            {MODALITIES.map((m, i) => (
+            {mods.map((m, i) => (
               <article
                 key={m.id}
                 className="absolute inset-0 flex h-full w-full flex-col"
@@ -291,12 +302,28 @@ export default function Modalities({ navigate }: Props) {
                         >
                           {m.title}
                         </h3>
-                        <p
-                          className="text-[16px] leading-[28px]"
-                          style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
+                        <div
+                          className={showLong ? "overflow-y-auto pr-1" : ""}
+                          style={{ maxHeight: showLong ? "46vh" : undefined }}
                         >
-                          {m.excerpt}
-                        </p>
+                          <p
+                            className="text-[16px] leading-[28px] whitespace-pre-wrap"
+                            style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
+                          >
+                            {showLong && m.long ? m.long : m.excerpt}
+                          </p>
+                        </div>
+                        {m.long ? (
+                          <div className="pt-2">
+                            <button
+                              className="rounded-full border border-black/20 px-3 py-1 text-[12px] uppercase tracking-[0.16em] text-black/70"
+                              onClick={() => setShowLong((s) => !s)}
+                              style={{ color: m.textColor || undefined, borderColor: (m.textColor || "#000") + "55" }}
+                            >
+                              {showLong ? "Show less" : "Read more"}
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -304,9 +331,16 @@ export default function Modalities({ navigate }: Props) {
               </article>
             ))}
 
-            {isExpanded && <Dots count={MODALITIES.length} activeIndex={index} />}
+            {isExpanded && (
+              <Dots
+                count={mods.length}
+                activeIndex={index}
+                activeColor={(mods[index]?.textColor || "#000") + ""}
+                inactiveColor={(mods[index]?.textColor || "rgba(0,0,0)") + "4D"}
+              />
+            )}
             <div className="sr-only" aria-live="polite">
-              {MODALITIES[index]?.title}
+              {mods[index]?.title}
             </div>
             {isExpanded && (
               <div className="pointer-events-none absolute inset-y-0 left-0 right-0 bg-gradient-to-b from-transparent to-background/40" />
