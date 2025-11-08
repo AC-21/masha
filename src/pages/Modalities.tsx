@@ -165,7 +165,7 @@ export default function Modalities({ navigate }: Props) {
       <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} navigate={navigate} />
 
       {/* Hero */}
-      <section className="relative z-20 min-h-screen w-full">
+      <section className="relative z-20 min-h-[100svh] w-full">
         <div
           className={
             "relative mx-auto flex min-h-screen max-w-[560px] flex-col justify-end gap-8 px-6 pb-8 pt-28 transition-all " +
@@ -206,14 +206,14 @@ export default function Modalities({ navigate }: Props) {
               : "sticky top-0 z-40 pointer-events-none")
           }
           style={{
-            height: isExpanded ? undefined : "100dvh",
+            height: isExpanded ? undefined : "100svh",
           }}
         >
           <div
             {...swipe}
             className={"relative flex w-full items-end px-0 pb-0 transition-transform " + transitionDuration + " ease-out"}
             style={{
-              height: "100dvh",
+              height: isExpanded ? "100dvh" : "100svh",
               touchAction: isExpanded ? "pan-x" : "pan-y",
               overscrollBehaviorY: isExpanded ? "contain" : "auto",
               overflow: "hidden",

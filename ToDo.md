@@ -88,4 +88,5 @@ Next up (Phase 2):
 - [X] Fix card height to fill full viewport: make card wrapper `absolute inset-0` when expanded, card uses `relative w-full h-full` to fill wrapper. [Completed] (`src/pages/Modalities.tsx`)
 - [X] Align hero padding with viewport to avoid card overlap. [Completed] (`src/pages/Modalities.tsx`)
 - [X] Clamp teaser expansion so adjacent cards remain hidden. [Completed] (`src/pages/Modalities.tsx`)
+- [X] Push Modalities overhaul to GitHub. [Completed] ([fd42bf0](https://github.com/AC-21/masha/commit/fd42bf0))
 

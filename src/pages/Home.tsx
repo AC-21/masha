@@ -1,5 +1,8 @@
+import { useState } from "react";
 import useSwipe from "../lib/useSwipe";
 import CalendlyButton from "../components/CalendlyButton";
+import Header from "../components/Header";
+import MenuSheet from "../components/MenuSheet";
 import bgJpg from "../assets/Background.jpg";
 import bgAvif from "../assets/Background.avif";
 import bgWebp from "../assets/Background.webp";
@@ -9,6 +12,7 @@ type Props = {
 };
 
 export default function Home({ navigate }: Props) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const CALENDLY_URL =
     "https://calendly.com/mashamaria/returning-clients-clone?hide_event_type_details=1&hide_gdpr_banner=1";
   const swipe = useSwipe({
@@ -30,10 +34,12 @@ export default function Home({ navigate }: Props) {
         <div className="absolute inset-0 bg-black/25" />
         <div className="absolute inset-0 bg-background/45" />
       </div>
+      <Header onLogoClick={() => navigate("/")} onMenuClick={() => setMenuOpen(true)} />
+      <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} navigate={navigate} />
 
       <div
         {...swipe}
-        className="relative z-10 mx-auto flex min-h-screen max-w-[560px] flex-col items-center px-6 py-12"
+        className="relative z-10 mx-auto flex min-h-screen max-w-[560px] flex-col items-center px-6 py-16"
       >
         <h1
           className="mt-2 text-center text-[36px] leading-tight tracking-[0.02em]"
