@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modality Palette Picker</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; margin: 24px; }
+      h1 { font-size: 18px; margin: 0 0 16px 0; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+      .card { border: 1px solid rgba(0,0,0,.15); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.75); backdrop-filter: blur(4px); }
+      .preview { border-radius: 10px; padding: 12px; height: 120px; display: flex; align-items: flex-end; }
+      .row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+      .row label { width: 120px; font-size: 12px; color: rgba(0,0,0,.7); }
+      input[type="text"] { width: 120px; font-size: 12px; }
+      .out { margin-top: 20px; white-space: pre; background: rgba(0,0,0,.05); padding: 12px; border-radius: 8px; overflow: auto; }
+      button { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(0,0,0,.2); background: white; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <h1>Modality Palette Picker</h1>
+    <p style="margin-top:-6px;color:rgba(0,0,0,.65);font-size:13px">
+      Adjust colors below. Copy the JSON into <code>src/data/modalityColors.ts</code>.
+    </p>
+    <div id="grid" class="grid"></div>
+    <div class="row" style="margin-top:18px">
+      <button id="copy">Copy JSON</button>
+      <span id="msg" style="margin-left:8px;font-size:12px;color:rgba(0,0,0,.6)"></span>
+    </div>
+    <div class="out" id="out"></div>
+    <script>
+      const fallbackTitles = [
+        "Somatic Internal Family Systems",
+        "Inner child work",
+        "Movement Therapy",
+        "Energy Clearing",
+        "Emotional Release",
+        "Conversation & Deep Listening",
+        "Prayer",
+        "Writing",
+        "Art Therapy",
+        "Shadow Work",
+      ];
+      async function getTitles() {
+        try {
+          const res = await fetch("/modalities-to-seed.md");
+          if (!res.ok) throw new Error("no md");
+          const md = await res.text();
+          const rx = /^#+\s*(.+)$/gm;
+          const arr = [];
+          let m;
+          while ((m = rx.exec(md))) arr.push(m[1].trim());
+          return arr.length ? arr : fallbackTitles;
+        } catch {
+          return fallbackTitles;
+        }
+      }
+      const slug = (t) => t.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+      const DEFAULTS = {
+        "somatic-internal-family-systems": { color: "#F7E8EE", textColor: "#4b2b36" },
+        "inner-child-work": { color: "#F8EFE4", textColor: "#4b3425" },
+        "movement-therapy": { color: "#EAF4F1", textColor: "#23423B" },
+        "energy-clearing": { color: "#F1F6E9", textColor: "#334222" },
+        "emotional-release": { color: "#F9E9EC", textColor: "#4b2932" },
+        "conversation-deep-listening": { color: "#ECEFF7", textColor: "#233045" },
+        "prayer": { color: "#EEE9F7", textColor: "#2f2a44" },
+        "writing": { color: "#F4F4E9", textColor: "#3e3c27" },
+        "art-therapy": { color: "#EDEFFC", textColor: "#2a2f5b" },
+        "shadow-work": { color: "#EDEEEE", textColor: "#2a2a2a" },
+      };
+      function renderOutput(state) {
+        const obj = {};
+        for (const k in state) obj[k] = { color: state[k].bg, textColor: state[k].text };
+        out.textContent = "export const MODALITY_COLORS = " + JSON.stringify(obj, null, 2);
+      }
+      function createCard(title, state) {
+        const id = slug(title);
+        const values = state[id] || { bg: (DEFAULTS[id]?.color)||"#EFEFEF", text: (DEFAULTS[id]?.textColor)||"#1f2937" };
+        state[id] = values;
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <div style="font-weight:600;margin-bottom:6px">${title}</div>
+          <div class="preview" style="background:${values.bg};color:${values.text}">
+            <div>Preview text on background</div>
+          </div>
+          <div class="row">
+            <label>Background</label>
+            <input type="color" value="${values.bg}" />
+            <input type="text" value="${values.bg}" />
+          </div>
+          <div class="row">
+            <label>Text</label>
+            <input type="color" value="${values.text}" />
+            <input type="text" value="${values.text}" />
+          </div>
+        `;
+        const inputs = div.querySelectorAll("input");
+        const preview = div.querySelector(".preview");
+        function sync() {
+          const [bgColor, bgText, textColor, textText] = inputs;
+          bgText.value = bgColor.value;
+          textText.value = textColor.value;
+          values.bg = bgColor.value;
+          values.text = textColor.value;
+          preview.style.background = values.bg;
+          preview.style.color = values.text;
+          renderOutput(state);
+        }
+        inputs.forEach((inp) => inp.addEventListener("input", () => {
+          if (inp.type === "text") {
+            if (inp.previousElementSibling && inp.previousElementSibling.type === "color") {
+              inp.previousElementSibling.value = inp.value;
+            }
+          } else {
+            if (inp.nextElementSibling && inp.nextElementSibling.type === "text") {
+              inp.nextElementSibling.value = inp.value;
+            }
+          }
+          sync();
+        }));
+        sync();
+        return div;
+      }
+      (async function init() {
+        const state = {};
+        const titles = await getTitles();
+        titles.forEach((t) => grid.appendChild(createCard(t, state)));
+        renderOutput(state);
+        document.getElementById("copy").addEventListener("click", async () => {
+          await navigator.clipboard.writeText(out.textContent);
+          msg.textContent = "Copied!";
+          setTimeout(() => (msg.textContent = ""), 1200);
+        });
+      })();
+    </script>
+  </body>
+  </html>
+
+

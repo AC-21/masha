@@ -222,10 +222,10 @@ export default function Modalities({ navigate }: Props) {
       <section className="sticky top-0 z-30 h-[100svh] w-full pointer-events-none">
         <div
           className={
-            "relative mx-auto flex h-full max-w-[560px] flex-col justify-end gap-8 px-6 pt-28 transition-all " +
+            "relative mx-auto flex h-full max-w-[560px] flex-col justify-end gap-8 px-6 pt-28 transition-opacity " +
             transitionDuration +
             " " +
-            (isExpanded ? "translate-y-8 opacity-0 pointer-events-none" : "opacity-100")
+            (isExpanded ? "opacity-0 pointer-events-none" : "opacity-100")
           }
           style={{ paddingBottom: `${heroPaddingBottom}px` }}
         >
