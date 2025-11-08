@@ -1,5 +1,5 @@
 
-# Somatic IFS (Internal Family Systems)
+# Somatic Internal Family Systems
 
 !One of my favorite modalities - it views the human being as a constellation of distinct “parts,” each carrying its own expression, frequency, story, feelings, and emotions. 
 

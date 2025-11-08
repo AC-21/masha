@@ -48,7 +48,7 @@ export default function Modalities({ navigate }: Props) {
     // This makes the card expand to full-screen earlier and consistently across devices.
     rootMargin: "0px 0px -98% 0px",
     threshold: 0,
-  });
+  }, false);
   const [enteredByScroll, setEnteredByScroll] = useState(false);
   useEffect(() => {
     const onScroll = () => {
@@ -131,25 +131,44 @@ export default function Modalities({ navigate }: Props) {
     };
   }, [isExpanded]);
 
+  const collapse = useCallback(() => {
+    setManualExpand(false);
+    setEnteredByScroll(false);
+    try {
+      if (typeof window !== "undefined") {
+        window.scrollBy({ top: -48, behavior: "auto" });
+      }
+    } catch {
+      // no-op
+    }
+  }, []);
+  const expand = useCallback(() => {
+    setManualExpand(true);
+  }, []);
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
       if (!isExpanded && e.deltaY > 6) {
-        setManualExpand(true);
+        expand();
+      } else if (isExpanded && e.deltaY < -6) {
+        collapse();
       }
     },
-    [isExpanded]
+    [isExpanded, expand, collapse]
   );
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchStartY(e.touches[0].clientY);
   }, []);
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
-      if (!isExpanded && touchStartY !== null) {
-        const dy = touchStartY - e.touches[0].clientY;
-        if (dy > 18) setManualExpand(true);
+      if (touchStartY === null) return;
+      const dy = touchStartY - e.touches[0].clientY;
+      if (!isExpanded && dy > 18) {
+        expand();
+      } else if (isExpanded && dy < -18) {
+        collapse();
       }
     },
-    [isExpanded, touchStartY]
+    [isExpanded, touchStartY, expand, collapse]
   );
 
   // Deep-link support via hash: e.g., /modalities#ifs
@@ -302,26 +321,33 @@ export default function Modalities({ navigate }: Props) {
                         >
                           {m.title}
                         </h3>
-                        <div
-                          className={showLong ? "overflow-y-auto pr-1" : ""}
-                          style={{ maxHeight: showLong ? "46vh" : undefined }}
-                        >
-                          <p
-                            className="text-[16px] leading-[28px] whitespace-pre-wrap"
-                            style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
-                          >
-                            {showLong && m.long ? m.long : m.excerpt}
-                          </p>
+                        <div className={showLong ? "overflow-y-auto pr-1" : ""} style={{ maxHeight: showLong ? "46vh" : undefined }}>
+                          {(() => {
+                            const text = showLong && m.long ? m.excerpt + "\n\n" + (m.long || "") : m.excerpt;
+                            const paragraphs = (text || "")
+                              .split(/\r?\n\s*\r?\n/g)
+                              .map((p) => p.trim())
+                              .filter(Boolean);
+                            return paragraphs.map((p, idx) => (
+                              <p
+                                key={idx}
+                                className={"text-[16px] leading-[28px] " + (idx > 0 ? "mt-3" : "")}
+                                style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
+                              >
+                                {p}
+                              </p>
+                            ));
+                          })()}
                         </div>
                         {m.long ? (
                           <div className="pt-2">
-                            <button
-                              className="rounded-full border border-black/20 px-3 py-1 text-[12px] uppercase tracking-[0.16em] text-black/70"
+                            <div
+                              className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em]"
                               onClick={() => setShowLong((s) => !s)}
-                              style={{ color: m.textColor || undefined, borderColor: (m.textColor || "#000") + "55" }}
+                              style={{ color: (m.textColor || "#000") + "99" }}
                             >
-                              {showLong ? "Show less" : "Read more"}
-                            </button>
+                              {showLong ? "Show Less" : "Read More"}
+                            </div>
                           </div>
                         ) : null}
                       </div>

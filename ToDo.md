@@ -89,4 +89,5 @@ Next up (Phase 2):
 - [X] Align hero padding with viewport to avoid card overlap. [Completed] (`src/pages/Modalities.tsx`)
 - [X] Clamp teaser expansion so adjacent cards remain hidden. [Completed] (`src/pages/Modalities.tsx`)
 - [X] Push Modalities overhaul to GitHub. [Completed] ([fd42bf0](https://github.com/AC-21/masha/commit/fd42bf0))
+- [X] Make teaser bottom edges square (rounded top only). [Completed] ([554ff32](https://github.com/AC-21/masha/commit/554ff32))
 
