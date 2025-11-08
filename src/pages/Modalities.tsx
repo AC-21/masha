@@ -404,9 +404,9 @@ export default function Modalities({ navigate }: Props) {
                           })()}
                         </div>
                         {m.long ? (
-                          <div className={isExpanded ? "mt-auto pt-3" : "mt-3"}>
+                          <div className={isExpanded ? "mt-auto pt-3 flex justify-end" : "mt-3 flex justify-end"}>
                             <div
-                              className="block cursor-pointer select-none text-[13px] font-medium uppercase tracking-[0.16em] self-start"
+                              className="block cursor-pointer select-none text-right text-[13px] font-medium uppercase tracking-[0.16em]"
                               onClick={handleReadMore}
                               style={{ color: (m.textColor || "#000") + "99" }}
                             >

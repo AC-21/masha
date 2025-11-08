@@ -77,8 +77,8 @@ export default function MenuSheet({ open, onClose, navigate }: Props) {
               className="rounded-[10px] bg-transparent p-2 text-left transition-colors hover:bg-black/5"
               onClick={() => { onClose(); navigate("/about"); }}
             >
-              <div className="text-[13px] font-medium leading-none">About</div>
-              <p className="text-black/60 line-clamp-2 text-[12px] leading-[1.5]">
+              <div className="text-[15px] font-medium leading-none">About</div>
+              <p className="text-black/60 line-clamp-2 text-[13px] leading-[1.55]">
                 Learn more about Masha and the work.
               </p>
             </button>
@@ -86,8 +86,8 @@ export default function MenuSheet({ open, onClose, navigate }: Props) {
               className="rounded-[10px] bg-transparent p-2 text-left transition-colors hover:bg-black/5"
               onClick={() => { onClose(); navigate("/modalities"); }}
             >
-              <div className="text-[13px] font-medium leading-none">Modalities</div>
-              <p className="text-black/60 line-clamp-2 text-[12px] leading-[1.5]">
+              <div className="text-[15px] font-medium leading-none">Modalities</div>
+              <p className="text-black/60 line-clamp-2 text-[13px] leading-[1.55]">
                 Explore the methods we can use together.
               </p>
             </button>
@@ -95,8 +95,8 @@ export default function MenuSheet({ open, onClose, navigate }: Props) {
               className="rounded-[10px] bg-transparent p-2 text-left transition-colors hover:bg-black/5"
               onClick={() => { onClose(); navigate("/poetry"); }}
             >
-              <div className="text-[13px] font-medium leading-none">Poetry</div>
-              <p className="text-black/60 line-clamp-2 text-[12px] leading-[1.5]">
+              <div className="text-[15px] font-medium leading-none">Poetry</div>
+              <p className="text-black/60 line-clamp-2 text-[13px] leading-[1.55]">
                 Writing and reflections for the heart.
               </p>
             </button>
