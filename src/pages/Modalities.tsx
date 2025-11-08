@@ -24,7 +24,7 @@ const computeLayout = (viewportHeight: number): LayoutMetrics => {
 };
 
 type Props = {
-  navigate: (to: "/" | "/about" | "/modalities") => void;
+  navigate: (to: "/" | "/about" | "/modalities" | "/poetry") => void;
 };
 
 export default function Modalities({ navigate }: Props) {
@@ -87,7 +87,7 @@ export default function Modalities({ navigate }: Props) {
   const collapsedClasses = "w-full rounded-t-[28px] rounded-b-none px-6 py-7 border-white/45 shadow-lg";
   const expandedClasses = "relative w-full h-full rounded-none px-0 pt-14 pb-24 border-white/30 shadow-xl";
   const transitionDuration = reducedMotion ? "duration-0" : "duration-500";
-  const cardBaseClass = "bg-white/90 backdrop-blur transition-all border";
+  const cardBaseClass = "bg-white/90 backdrop-blur-md transition-all border";
 
   const [layout, setLayout] = useState<LayoutMetrics>(() => {
     if (typeof window === "undefined") return DEFAULT_LAYOUT;
@@ -205,6 +205,23 @@ export default function Modalities({ navigate }: Props) {
     history.replaceState(history.state, "", url);
   }, [index, mods]);
 
+  // Keyboard navigation with ArrowLeft / ArrowRight
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName?.toLowerCase();
+      if (tag === "input" || tag === "textarea" || (e.target as HTMLElement | null)?.isContentEditable) return;
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(1);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(-1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go]);
+
   return (
     <div className="relative min-h-screen w-full">
       {/* Static background layer */}
@@ -218,7 +235,7 @@ export default function Modalities({ navigate }: Props) {
         }}
       >
         <div className="absolute inset-0 bg-black/25" />
-        <div className="absolute inset-0 bg-background/45" />
+        <div className="absolute inset-0 bg-background/20" />
       </div>
       <Header
         title={
@@ -300,14 +317,19 @@ export default function Modalities({ navigate }: Props) {
                 aria-hidden={i !== index}
               >
                 <div className="relative flex h-full w-full flex-col">
-                  {/* Background treatments only when expanded */}
-                  {isExpanded && (
-                    <>
-                      <div className="absolute inset-0 bg-black/20" />
-                      <div className="absolute inset-0 mix-blend-multiply" style={{ backgroundColor: m.color, opacity: 0.55 }} />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/35" />
-                    </>
-                  )}
+                  {/* Background treatments (always on; slightly softer when collapsed) */}
+                  <>
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundColor: m.color,
+                        opacity: isExpanded ? 0.55 : 0.35,
+                        mixBlendMode: "multiply",
+                      }}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/35" />
+                  </>
 
                   {/* Content card */}
                   <div
