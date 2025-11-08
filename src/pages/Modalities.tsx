@@ -219,7 +219,7 @@ export default function Modalities({ navigate }: Props) {
         style={{
           marginTop: -collapsedHeight,
           transition: reducedMotion ? undefined : "margin-top 500ms ease",
-          overflow: "hidden",
+          overflow: isExpanded ? "hidden" : "visible",
         }}
       >
         {/* Sticky (collapsed) → Fixed (expanded) viewport to create the immersive full-screen section */}
@@ -282,12 +282,20 @@ export default function Modalities({ navigate }: Props) {
                     >
                       <div className={`flex h-full flex-col justify-start gap-4 ${isExpanded ? "px-6" : ""}`}>
                         <h3
-                          className="whitespace-pre-line text-[30px] font-[750] leading-tight text-foreground"
-                          style={{ fontFamily: "Satoshi, Inter, system-ui, sans-serif" }}
+                          className="whitespace-pre-line text-[30px] font-[750] leading-tight"
+                          style={{
+                            fontFamily: "Satoshi, Inter, system-ui, sans-serif",
+                            color: m.textColor || "var(--color-foreground)",
+                          }}
                         >
                           {m.title}
                         </h3>
-                        <p className="text-[16px] leading-[28px] text-foreground/88">{m.excerpt}</p>
+                        <p
+                          className="text-[16px] leading-[28px]"
+                          style={{ color: m.textColor ? m.textColor + "CC" : "var(--color-foreground)" }}
+                        >
+                          {m.excerpt}
+                        </p>
                       </div>
                     </div>
                   </div>
