@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useSwipe from "../lib/useSwipe";
 import CalendlyButton from "../components/CalendlyButton";
-import Header from "../components/Header";
-import MenuSheet from "../components/MenuSheet";
 import bgJpg from "../assets/Background.jpg";
 import bgAvif from "../assets/Background.avif";
 import bgWebp from "../assets/Background.webp";
@@ -12,13 +10,24 @@ type Props = {
 };
 
 export default function Home({ navigate }: Props) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [showHint, setShowHint] = useState(true);
   const CALENDLY_URL =
     "https://calendly.com/mashamaria/returning-clients-clone?hide_event_type_details=1&hide_gdpr_banner=1";
-  const swipe = useSwipe({
-    onSwipeLeft: () => navigate("/about"),
-    onSwipeRight: () => navigate("/modalities"),
-  });
+  const swipe = useSwipe(
+    useMemo(
+      () => ({
+        onSwipeLeft: () => {
+          setShowHint(false);
+          navigate("/about");
+        },
+        onSwipeRight: () => {
+          setShowHint(false);
+          navigate("/modalities");
+        },
+      }),
+      [navigate]
+    )
+  );
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -34,11 +43,45 @@ export default function Home({ navigate }: Props) {
         <div className="absolute inset-0 bg-black/25" />
         <div className="absolute inset-0 bg-background/45" />
       </div>
-      <Header onLogoClick={() => navigate("/")} onMenuClick={() => setMenuOpen(true)} />
-      <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} navigate={navigate} />
+      {/* Dashed border frame */}
+      <div className="pointer-events-none fixed inset-3 z-20 overflow-hidden rounded-[20px]">
+        <div
+          className="absolute inset-x-0 top-0 h-[6px]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, rgba(255,255,255,0.95) 0 14px, rgba(255,255,255,0) 14px 28px)",
+          }}
+        />
+        <div
+          className="absolute inset-x-0 bottom-0 h-[6px]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, rgba(255,255,255,0.95) 0 14px, rgba(255,255,255,0) 14px 28px)",
+          }}
+        />
+        <div
+          className="absolute inset-y-0 left-0 w-[6px]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,255,255,0.95) 0 14px, rgba(255,255,255,0) 14px 28px)",
+          }}
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-[6px]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,255,255,0.95) 0 14px, rgba(255,255,255,0) 14px 28px)",
+          }}
+        />
+      </div>
 
       <div
         {...swipe}
+        onTouchStart={(e) => {
+          setShowHint(false);
+          // @ts-ignore - forward to swipe handler if present
+          swipe.onTouchStart && swipe.onTouchStart(e);
+        }}
         className="relative z-10 mx-auto flex min-h-screen max-w-[560px] flex-col items-center px-6 py-16"
       >
         <h1
@@ -47,6 +90,15 @@ export default function Home({ navigate }: Props) {
         >
           Masha Maria
         </h1>
+        {/* Gesture hint */}
+        <div
+          className={
+            "mt-2 text-[12px] uppercase tracking-[0.18em] text-white/85 transition-all duration-300 " +
+            (showHint ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1")
+          }
+        >
+          Swipe left for About · right for Modalities
+        </div>
 
         <nav className="mt-14 w-full max-w-[320px] text-center">
           <ul className="flex flex-col gap-6 text-[20px]">

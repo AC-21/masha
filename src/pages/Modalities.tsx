@@ -96,7 +96,7 @@ export default function Modalities({ navigate }: Props) {
     return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
-  // Always lock vertical scroll on this page; we manually expand on gesture.
+  // Lock vertical scroll ONLY when expanded
   useEffect(() => {
     if (typeof document === "undefined") return;
     const body = document.body;
@@ -104,15 +104,21 @@ export default function Modalities({ navigate }: Props) {
     const prevOverflowBody = body.style.overflow;
     const prevTouchBody = body.style.touchAction;
     const prevOverflowHtml = html.style.overflow;
-    body.style.overflow = "hidden";
-    body.style.touchAction = "none";
-    html.style.overflow = "hidden";
+    if (isExpanded) {
+      body.style.overflow = "hidden";
+      body.style.touchAction = "none";
+      html.style.overflow = "hidden";
+    } else {
+      body.style.overflow = prevOverflowBody;
+      body.style.touchAction = prevTouchBody;
+      html.style.overflow = prevOverflowHtml;
+    }
     return () => {
       body.style.overflow = prevOverflowBody;
       body.style.touchAction = prevTouchBody;
       html.style.overflow = prevOverflowHtml;
     };
-  }, []);
+  }, [isExpanded]);
 
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
@@ -221,7 +227,7 @@ export default function Modalities({ navigate }: Props) {
             "transition-all " + transitionDuration + " ease-out " +
             (isExpanded
               ? "fixed inset-0 z-40"
-              : "sticky top-0 z-40 pointer-events-none")
+              : "sticky top-0 z-40")
           }
           style={{
             height: isExpanded ? undefined : "100svh",
