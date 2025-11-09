@@ -368,9 +368,9 @@ export default function Modalities({ navigate }: Props) {
                         transformOrigin: "center top",
                       }}
                     >
-                      <div className={`flex h-full flex-col justify-start gap-4 ${isExpanded ? "px-6" : ""}`}>
+                      <div className={`flex h-full flex-col justify-start gap-6 ${isExpanded ? "px-6" : ""}`}>
                         <h3
-                          className="whitespace-pre-line text-[35px] md:text-[27px] font-[750] leading-tight"
+                          className="whitespace-pre-line text-[35px] md:text-[27px] font-[750] leading-tight mt-2 md:mt-3"
                           style={{
                             fontFamily: "Satoshi, Inter, system-ui, sans-serif",
                             color: isExpanded ? (m.textColor || "var(--color-foreground)") : "#1f2937", // stone-800
@@ -379,7 +379,7 @@ export default function Modalities({ navigate }: Props) {
                           {m.title}
                         </h3>
                         <div
-                          className={isExpanded ? (showLong ? "flex-1 overflow-y-auto pr-1" : "") : (showLong ? "overflow-y-auto pr-1" : "")}
+                          className={(isExpanded ? (showLong ? "flex-1 overflow-y-auto pr-1 " : "") : (showLong ? "overflow-y-auto pr-1 " : "")) + "mt-3 md:mt-4"}
                           style={{ maxHeight: isExpanded ? (showLong ? undefined : undefined) : (showLong ? "46vh" : undefined) }}
                         >
                           {(() => {
@@ -404,11 +404,11 @@ export default function Modalities({ navigate }: Props) {
                           })()}
                         </div>
                         {m.long ? (
-                          <div className={isExpanded ? "mt-auto pt-3 flex justify-end" : "mt-3 flex justify-end"}>
+                          <div className={isExpanded ? "mt-auto pt-4 flex justify-end" : "mt-4 flex justify-end"}>
                             <div
                               className="block cursor-pointer select-none text-right text-[13px] font-medium uppercase tracking-[0.16em]"
                               onClick={handleReadMore}
-                              style={{ color: (m.textColor || "#000") + "99" }}
+                              style={{ color: isExpanded ? (m.textColor || "var(--color-foreground)") : "#374151" }}
                             >
                               {showLong ? "Show Less" : "Read More"}
                             </div>
