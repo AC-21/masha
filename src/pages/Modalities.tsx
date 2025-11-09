@@ -208,6 +208,22 @@ export default function Modalities({ navigate }: Props) {
     }
   }, [isExpanded, expand, reducedMotion]);
 
+  // Keep a stable viewport unit to avoid iOS Safari bottom gap with dynamic toolbars
+  useEffect(() => {
+    const setVh = () => {
+      if (typeof window === "undefined") return;
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+    setVh();
+    window.addEventListener("resize", setVh);
+    window.addEventListener("orientationchange", setVh);
+    return () => {
+      window.removeEventListener("resize", setVh);
+      window.removeEventListener("orientationchange", setVh);
+    };
+  }, []);
+
   // Deep-link support via hash: e.g., /modalities#ifs
   useEffect(() => {
     if (typeof window === "undefined" || mods.length === 0) return;
@@ -273,7 +289,7 @@ export default function Modalities({ navigate }: Props) {
       <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} navigate={navigate} />
 
       {/* Hero (locked) */}
-      <section className="sticky top-0 z-30 h-[100svh] w-full pointer-events-none">
+      <section className="sticky top-0 z-30 w-full pointer-events-none" style={{ height: "calc(var(--vh, 1vh) * 100)" }}>
         <div
           className={
             "relative mx-auto flex h-full max-w-[560px] flex-col justify-center gap-6 md:gap-8 px-6 pt-16 md:pt-28 transition-opacity " +
@@ -295,7 +311,7 @@ export default function Modalities({ navigate }: Props) {
       </section>
 
       {/* Intersection sentinel for scroll-based expansion */}
-      <div ref={anchorRef} className="h-[1px] w-full" />
+      <div ref={anchorRef} className="h-px w-full" />
 
       {/* Full screen carousel (slides into place after hero). */}
       <section
@@ -312,14 +328,14 @@ export default function Modalities({ navigate }: Props) {
             "fixed inset-0 z-40 transition-all " + transitionDuration + " ease-out pointer-events-none"
           }
           style={{
-            height: isExpanded ? "100dvh" : "100svh",
+            height: isExpanded ? "100dvh" : "calc(var(--vh, 1vh) * 100)",
           }}
         >
           <div
             {...swipe}
             className={"relative flex w-full items-end px-0 pb-0 transition-transform " + transitionDuration + " ease-out"}
             style={{
-              height: isExpanded ? "100dvh" : "100svh",
+              height: isExpanded ? "100dvh" : "calc(var(--vh, 1vh) * 100)",
               touchAction: isExpanded ? "pan-x" : "pan-y",
               overscrollBehaviorY: isExpanded ? "contain" : "auto",
               overflow: "hidden",
